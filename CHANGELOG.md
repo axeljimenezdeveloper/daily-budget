@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](///compare/v1.5.0...v1.6.0) (2026-01-07)
+
+
+### Features
+
+* **components:** implementar componente atómico AppDivider para separación visual 4f124cc
+
 ## [1.5.0](///compare/v1.4.0...v1.5.0) (2026-01-07)
 
 

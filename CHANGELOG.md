@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](///compare/v1.6.0...v1.7.0) (2026-01-07)
+
+
+### Features
+
+* **components:** implementar componente atómico AppStack para layouts flexibles e5c67fb
+
 ## [1.6.0](///compare/v1.5.0...v1.6.0) (2026-01-07)
 
 

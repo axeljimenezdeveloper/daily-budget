@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.0](///compare/v1.8.0...v1.9.0) (2026-01-08)
+
+
+### Features
+
+* **components:** implementar componente atómico AppIcon y agregar @expo/vector-icons ff3c2a6
+
 ## [1.8.0](///compare/v1.7.0...v1.8.0) (2026-01-08)
 
 

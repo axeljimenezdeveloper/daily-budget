@@ -13,6 +13,7 @@
     "diff": "npm run make:logs && git diff HEAD > logs/diff.patch"
   },
   "dependencies": {
+    "@expo/vector-icons": "^15.0.3",
     "expo": "~54.0.30",
     "expo-constants": "~18.0.12",
     "expo-linking": "~8.0.11",

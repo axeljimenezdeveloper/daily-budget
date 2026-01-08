@@ -2,8 +2,8 @@ import React, { useState } from "react"; // Core React library for state managem
 import { TextInput, View } from "react-native"; // Native components for text input and layout
 import { PALETTE } from "@/constants/colors"; // Global color palette
 import { STATE_COLORS } from "./index.utils"; // Semantic state color mapping
-import AppText from "../AppText"; // Using your existing typography atom
-import AppStack from "../AppStack"; // Using your stack atom for structural layout
+import AppText from "../../content/AppText"; // Using your existing typography atom
+import AppStack from "../../structure/AppStack"; // Using your stack atom for structural layout
 import { AppInputProps } from "./index.props"; // Component properties interface
 import { styles } from "./index.styles"; // Static styles for the input container
 

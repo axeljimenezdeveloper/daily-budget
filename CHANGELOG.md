@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.18.0](///compare/v1.17.0...v1.18.0) (2026-01-10)
+
+
+### Features
+
+* **components:** implementar componente atómico AppCheckBox para selección múltiple 069da99
+
 ## [1.17.0](///compare/v1.16.0...v1.17.0) (2026-01-10)
 
 

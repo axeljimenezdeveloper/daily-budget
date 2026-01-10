@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.13.0](///compare/v1.11.0...v1.13.0) (2026-01-10)
+
+
+### Features
+
+* **components:** implementar componente atómico AppContainer para gestión de layouts de pantalla 5b5ec70
+* **components:** implementar componente atómico AppSpinner para indicadores de carga 6da7b2c
+
 ## [1.12.0](///compare/v1.11.0...v1.12.0) (2026-01-10)
 
 

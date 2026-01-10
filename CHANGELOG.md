@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0](///compare/v1.10.1...v1.11.0) (2026-01-10)
+
+
+### Features
+
+* **components:** implementar componente atómico AppSwitch para selección binaria cf51fc3
+
 ### [1.10.1](///compare/v1.10.0...v1.10.1) (2026-01-08)
 
 ## [1.10.0](///compare/v1.9.0...v1.10.0) (2026-01-08)

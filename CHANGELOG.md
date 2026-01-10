@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.15.0](///compare/v1.14.0...v1.15.0) (2026-01-10)
+
+
+### Features
+
+* **components:** implementar componente atómico AppBadge para etiquetas de estado cd054c0
+
 ## [1.14.0](///compare/v1.13.0-stable...v1.14.0) (2026-01-10)
 
 

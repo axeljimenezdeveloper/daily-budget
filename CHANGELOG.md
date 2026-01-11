@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.23.0](///compare/v1.22.0...v1.23.0) (2026-01-11)
+
+
+### Features
+
+* **components:** implementar componente atómico AppTag con soporte para estados activos y eliminación a05a2e8
+
 ## [1.22.0](///compare/v1.21.0...v1.22.0) (2026-01-11)
 
 

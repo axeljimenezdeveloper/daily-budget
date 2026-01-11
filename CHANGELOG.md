@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.22.0](///compare/v1.21.0...v1.22.0) (2026-01-11)
+
+
+### Features
+
+* **components:** implementar componente atómico AppTooltip para información contextual f1e7b21
+
 ## [1.21.0](///compare/v1.20.0...v1.21.0) (2026-01-11)
 
 

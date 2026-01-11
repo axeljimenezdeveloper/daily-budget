@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.21.0](///compare/v1.20.0...v1.21.0) (2026-01-11)
+
+
+### Features
+
+* **components:** añadir componente AppSelect y configurar carga de recursos en RootLayout c8f81b4
+
 ## [1.20.0](///compare/v1.19.0...v1.20.0) (2026-01-10)
 
 

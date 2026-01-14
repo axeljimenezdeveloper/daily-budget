@@ -9,5 +9,6 @@ export interface AppStackProps {
   align?: ViewStyle["alignItems"]; // Horizontal alignment
   justify?: ViewStyle["justifyContent"]; // Vertical alignment
   fullWidth?: boolean; // If the stack should take all available width
+  flex?: number; // Flex grow/shrink value
   style?: ViewStyle; // Custom style overrides
 }

@@ -1,35 +1,64 @@
-import { useEffect, useState } from 'react';
-import { Stack } from 'expo-router';
-// Resource loading utilities
-import * as Font from 'expo-font';
-import { Ionicons } from '@expo/vector-icons';
+import { useEffect, useState } from "react";
+import { View } from "react-native";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import * as Font from "expo-font";
+import { Ionicons } from "@expo/vector-icons";
+import { DarkTheme, ThemeProvider } from "@react-navigation/native";
+import { PALETTE } from "@/constants/colors";
+import LoadingAnimation from "./(animations)/loading";
+
+const CustomDarkTheme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    background: PALETTE.deepNight,
+    card: PALETTE.deepNight,
+    text: PALETTE.creamWhite,
+  },
+};
 
 export default function RootLayout() {
-  // Application readiness state to prevent early rendering
   const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
     async function prepare() {
       try {
-        // Pre-load icon fonts required for atomic components (e.g., AppSelect)
         await Font.loadAsync(Ionicons.font);
+        await new Promise(resolve => setTimeout(resolve, 1000));
       } catch (e) {
-        // Silently handle font loading errors to prevent app crash
-        console.warn("Error loading font assets:", e);
+        console.warn("Error loading assets:", e);
       } finally {
-        // Release splash screen hold
         setAppIsReady(true);
       }
     }
     prepare();
   }, []);
 
-  // Guard clause to ensure assets are ready before mounting the stack
-  if (!appIsReady) return null;
+  if (!appIsReady) {
+    return (
+      <ThemeProvider value={CustomDarkTheme}>
+        <StatusBar style="light" />
+        <LoadingAnimation />
+      </ThemeProvider>
+    );
+  }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="index" />
-    </Stack>
+    <ThemeProvider value={CustomDarkTheme}>
+      <View style={{ flex: 1, backgroundColor: PALETTE.deepNight }}>
+        <StatusBar style="light" />
+        <Stack 
+          screenOptions={{ 
+            headerShown: false,
+            contentStyle: { backgroundColor: PALETTE.deepNight },
+            animation: 'fade'
+          }}
+        >
+          <Stack.Screen name="index" />
+          <Stack.Screen name="(animations)" options={{ animation: 'fade' }} />
+        </Stack>
+      </View>
+    </ThemeProvider>
   );
 }

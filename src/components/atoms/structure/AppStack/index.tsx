@@ -10,11 +10,13 @@ export default function AppStack({
   align, // Flex alignment
   justify, // Flex justification
   fullWidth = true, // Common default for mobile layouts
+  flex, // Flex grow/shrink
   style, // External style overrides
 }: AppStackProps) {
   
   // Logical mapping of props to Flexbox styles
   const stackStyle: ViewStyle = {
+    flex: flex, // Flex grow/shrink behavior
     flexDirection: direction === "vertical" ? "column" : "row", // Sets the axis
     gap: gap ? SPACING[gap] : undefined, // Applies gap from metrics system
     alignItems: align, // Align items along the cross axis

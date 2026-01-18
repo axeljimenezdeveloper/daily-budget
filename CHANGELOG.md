@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.25.0](///compare/v1.24.0-stable...v1.25.0) (2026-01-18)
+
+
+### Features
+
+* **navigation:** configurar estructura de rutas y pantallas placeholder para el flujo principal 1ed34b7
+
 ## [1.24.0](///compare/v1.23.0...v1.24.0) (2026-01-14)
 
 

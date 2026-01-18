@@ -15,7 +15,7 @@ export default function Onboarding3() {
     // Redirigimos a la pantalla de éxito en lugar del Main directamente
     router.replace("/(animations)/success");
   };
-
+  
   return (
     <AppContainer style={{ backgroundColor: PALETTE.deepNight }}>
       <AppStack 

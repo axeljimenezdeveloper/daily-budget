@@ -1,0 +1,21 @@
+{
+  "common": {
+    "oxygen_tank": "Tanque de Oxígeno",
+    "vital_supply": "Suministro Vital",
+    "leak_luxury": "Fuga / Lujo",
+    "extreme_mode": "MODO EXTREMO",
+    "life_time": "Tiempo de Vida"
+  },
+  "setup": {
+    "title": "Iniciando Misión",
+    "subtitle": "Configura tus suministros para el periodo.",
+    "budget_label": "¿Cuánto oxígeno tienes?",
+    "days_label": "¿Cuántos días debe durar?",
+    "currency_label": "Moneda de la misión"
+  },
+  "dashboard": {
+    "remaining_days": "Te quedan {{count}} días de oxígeno",
+    "safe_status": "OPERACIÓN SEGURA",
+    "warning_status": "FUGA DETECTADA"
+  }
+}

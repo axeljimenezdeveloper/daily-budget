@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import i18next from "i18next";
 import { VaultState, Transaction } from "./index.types";
 import { calculateDaysPassed, checkExtremeMode } from "./index.utils";
 
@@ -17,20 +18,17 @@ export const useVaultStore = create<VaultState>()(
       hasFinishedOnboarding: false,
       isExtremeMode: false,
       currency: "$",
+      language: "es",
 
       // --- Acciones ---
       setFinishedOnboarding: () => set({ hasFinishedOnboarding: true }),
 
-      initVault: (
-        amount,
-        days,
-        currency, 
-      ) =>
+      initVault: (amount, days, currency) =>
         set({
           totalBudget: amount,
           remainingBudget: amount,
           daysDuration: days,
-          currency: currency, 
+          currency: currency,
           startDate: new Date().toISOString(),
           transactions: [],
           isConfigured: true,
@@ -53,7 +51,7 @@ export const useVaultStore = create<VaultState>()(
             state.totalBudget,
             newRemaining,
             state.daysDuration,
-            state.startDate,
+            state.startDate
           );
 
           return {
@@ -63,7 +61,8 @@ export const useVaultStore = create<VaultState>()(
           };
         }),
 
-      resetVault: () =>
+      resetVault: () => {
+        i18next.changeLanguage("es");
         set({
           totalBudget: 0,
           remainingBudget: 0,
@@ -72,7 +71,9 @@ export const useVaultStore = create<VaultState>()(
           startDate: null,
           isConfigured: false,
           isExtremeMode: false,
-        }),
+          language: "es",
+        });
+      },
 
       getSummary: () => {
         const state = get();
@@ -86,10 +87,23 @@ export const useVaultStore = create<VaultState>()(
           dailyAverage: totalSpent / daysPassed,
         };
       },
+
+      setLanguage: (lang) => {
+        i18next.changeLanguage(lang);
+        set({ language: lang });
+      },
     }),
     {
       name: "vault-storage",
       storage: createJSONStorage(() => AsyncStorage),
-    },
-  ),
+      // SINCRONIZACIÓN AUTOMÁTICA AL INICIAR LA APP
+      onRehydrateStorage: (state) => {
+        return (rehydratedState) => {
+          if (rehydratedState?.language) {
+            i18next.changeLanguage(rehydratedState.language);
+          }
+        };
+      },
+    }
+  )
 );

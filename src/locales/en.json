@@ -1,0 +1,21 @@
+{
+  "common": {
+    "oxygen_tank": "Oxygen Tank",
+    "vital_supply": "Vital Supply",
+    "leak_luxury": "Leak / Luxury",
+    "extreme_mode": "EXTREME MODE",
+    "life_time": "Life Time"
+  },
+  "setup": {
+    "title": "Mission Start",
+    "subtitle": "Configure your supplies for the period.",
+    "budget_label": "How much oxygen do you have?",
+    "days_label": "How many days should it last?",
+    "currency_label": "Mission currency"
+  },
+  "dashboard": {
+    "remaining_days": "You have {{count}} days of oxygen left",
+    "safe_status": "SAFE OPERATION",
+    "warning_status": "LEAK DETECTED"
+  }
+}

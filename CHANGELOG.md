@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.26.0](///compare/v1.25.0...v1.26.0) (2026-01-22)
+
+
+### Features
+
+* **store:** implementar useVaultStore con Zustand y persistencia de datos 40d1140
+
 ## [1.25.0](///compare/v1.24.0-stable...v1.25.0) (2026-01-18)
 
 

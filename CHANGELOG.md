@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.27.0](///compare/v1.26.0...v1.27.0) (2026-01-22)
+
+
+### Features
+
+* **core:** implementar sistema de internacionalización (i18n) y persistencia de idioma 1253dd3
+
 ## [1.26.0](///compare/v1.25.0...v1.26.0) (2026-01-22)
 
 

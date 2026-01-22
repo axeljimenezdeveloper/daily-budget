@@ -56,6 +56,7 @@ export default function RootLayout() {
           }}
         >
           <Stack.Screen name="index" />
+          <Stack.Screen name="test-store" />
           <Stack.Screen name="(animations)" options={{ animation: 'fade' }} />
         </Stack>
       </View>

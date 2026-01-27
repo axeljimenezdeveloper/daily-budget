@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.29.0](///compare/v1.28.0-stable...v1.29.0) (2026-01-27)
+
+
+### Features
+
+* **core:** ejecutar rebranding a SURV y refinar identidad visual 62ee2c5
+
 ## [1.28.0](///compare/v1.27.0...v1.28.0) (2026-01-24)
 
 

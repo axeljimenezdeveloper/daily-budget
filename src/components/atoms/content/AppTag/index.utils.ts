@@ -7,6 +7,8 @@ export const STATE_COLORS = {
   warning: PALETTE.warningOrange, // Orange color for cautionary states
   info: PALETTE.infoBlue, // Blue color for informative actions
   neutral: PALETTE.slateGray, // Gray color for secondary or neutral states
+  primary: PALETTE.nightBlue,
+  accent: PALETTE.sunsetOrange,
 };
 
 // Generates a light version of a hex color by adding 15% transparency (hex 26)

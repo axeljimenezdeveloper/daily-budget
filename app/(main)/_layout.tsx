@@ -35,6 +35,8 @@ export default function MainLayout() {
         <Stack.Screen name="index" options={{ title: "INICIO" }} />
         <Stack.Screen name="history" options={{ title: "HISTORIAL" }} />
         <Stack.Screen name="settings" options={{ title: "AJUSTES" }} />
+        <Stack.Screen name="debug-reset" options={{ title: "DEBUG PANEL" }} />
+
       </Stack>
       <AppDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
     </>

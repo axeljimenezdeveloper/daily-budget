@@ -17,5 +17,30 @@
     "remaining_days": "Te quedan {{count}} días de oxígeno",
     "safe_status": "OPERACIÓN SEGURA",
     "warning_status": "FUGA DETECTADA"
+  },
+  "onboarding": {
+    "skip": "Saltar",
+    "next": "Siguiente",
+    "get_started": "Comenzar Ahora",
+    "screen1": {
+      "title": "Tu dinero es tu oxígeno",
+      "description_part1": "En SURV, convertimos tus ahorros en",
+      "description_accent": "días de tranquilidad",
+      "description_part2": ". Sabrás exactamente cuánto te queda para respirar."
+    },
+    "screen2": {
+      "title": "Te diremos cuántos días tienes",
+      "description_part1": "No verás saldos aburridos.",
+      "description_accent": "Verás días de vida financiera restantes",
+      "description_part2": "."
+    },
+    "screen3": {
+      "title": "Importante vs. Capricho",
+      "description_part1": "Solo dos categorías: lo que",
+      "description_accent_success": "te mantiene vivo",
+      "description_part2": "y lo que",
+      "description_accent_warning": "te hace feliz",
+      "description_part3": "."
+    }
   }
 }

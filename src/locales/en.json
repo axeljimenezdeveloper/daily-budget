@@ -17,5 +17,30 @@
     "remaining_days": "You have {{count}} days of oxygen left",
     "safe_status": "SAFE OPERATION",
     "warning_status": "LEAK DETECTED"
+  },
+  "onboarding": {
+    "skip": "Skip",
+    "next": "Next",
+    "get_started": "Get Started",
+    "screen1": {
+      "title": "Your money is your oxygen",
+      "description_part1": "At SURV, we turn your savings into",
+      "description_accent": "days of peace",
+      "description_part2": ". You'll know exactly how much you have left to breathe."
+    },
+    "screen2": {
+      "title": "We'll tell you how many days you have",
+      "description_part1": "You won't see boring balances.",
+      "description_accent": "You'll see remaining days of financial life",
+      "description_part2": "."
+    },
+    "screen3": {
+      "title": "Important vs. Whim",
+      "description_part1": "Only two categories: what",
+      "description_accent_success": "keeps you alive",
+      "description_part2": "and what",
+      "description_accent_warning": "makes you happy",
+      "description_part3": "."
+    }
   }
 }

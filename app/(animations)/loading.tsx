@@ -28,7 +28,7 @@ export default function LoadingAnimation() {
 
           <AppStack align="center" gap="xs">
             <AppText variant="h1" style={{ fontSize: 32, letterSpacing: -0.5 }}>
-              SurvivalSpend
+              SURV
             </AppText>
             <View
               style={{
@@ -55,7 +55,7 @@ export default function LoadingAnimation() {
 
         <View style={{ position: "absolute", bottom: SPACING.xxl }}>
           <AppText variant="label" color="secondary" style={{ opacity: 0.4 }}>
-            v1.0.0 • Alpha
+            v1.28.0 • Alpha
           </AppText>
         </View>
       </AppStack>

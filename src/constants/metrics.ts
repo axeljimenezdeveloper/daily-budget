@@ -66,6 +66,19 @@ export const SPACING = {
   l: 24,
   xl: 32,
   xxl: 48,
+  xxxl: 64,
+  xxxxl: 80,
+};
+
+// Size system - Extiende SPACING y agrega tamaños específicos si son necesarios
+export const SIZES = {
+  ...SPACING, // Hereda todos los valores de SPACING
+  // Tamaños adicionales específicos si se necesitan
+  '3xs': 2,    // Tamaño extra pequeño
+  '2xs': 3,    // Un poco más pequeño que xs
+  '4xl': 96,   // Tamaño extra grande
+  '5xl': 128,  // Tamaño muy grande
+  '6xl': 160,  // Tamaño enorme
 };
 
 // Border radius (For cards and buttons)
@@ -85,3 +98,7 @@ export const WINDOW = {
   width,
   height,
 };
+
+// Helper type para TypeScript
+export type SizeKey = keyof typeof SIZES;
+export type SpacingKey = keyof typeof SPACING;

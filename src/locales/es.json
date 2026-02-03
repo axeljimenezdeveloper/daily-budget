@@ -4,14 +4,37 @@
     "vital_supply": "Suministro Vital",
     "leak_luxury": "Fuga / Lujo",
     "extreme_mode": "MODO EXTREMO",
-    "life_time": "Tiempo de Vida"
+    "life_time": "Tiempo de Vida",
+    "error": "Error"
   },
   "setup": {
     "title": "Iniciando Misión",
     "subtitle": "Configura tus suministros para el periodo.",
+    "initial_configuration": "CONFIGURACIÓN INICIAL",
     "budget_label": "¿Cuánto oxígeno tienes?",
     "days_label": "¿Cuántos días debe durar?",
-    "currency_label": "Moneda de la misión"
+    "currency_label": "Moneda de la misión",
+    "resources_title": "RECURSOS",
+    "resources_description": "Define cuánto oxígeno tienes y para cuánto tiempo debe durar.",
+    "budget_placeholder": "Presupuesto total",
+    "period_label": "Duración del período",
+    "custom_days_placeholder": "Cantidad de días",
+    "custom_days_label": "Días personalizados",
+    "daily_budget": "Presupuesto diario:",
+    "divisa_title": "DIVISA",
+    "divisa_description": "Selecciona la moneda con la que gestionarás tu oxígeno.",
+    "mission_currency": "Moneda de la misión",
+    "completion": "Completado",
+    "start_mission": "INICIAR MISIÓN",
+    "complete_configuration": "COMPLETA LA CONFIGURACIÓN",
+    "confirmation_title": "¿Todo listo?",
+    "confirmation_message": "Iniciarás con {{amount}} para {{days}} días.",
+    "confirmation_daily": "Diario: {{amount}}",
+    "confirm": "CONFIRMAR",
+    "currency_modal_title": "Divisa",
+    "period_modal_title": "Duración",
+    "period_custom": "Personalizado",
+    "vault_config_error": "No pudimos configurar tu bóveda."
   },
   "dashboard": {
     "remaining_days": "Te quedan {{count}} días de oxígeno",
@@ -42,5 +65,15 @@
       "description_accent_warning": "te hace feliz",
       "description_part3": "."
     }
+  },
+  "validation": {
+    "min_budget": "Mínimo {{amount}}",
+    "max_budget": "Máximo {{amount}}",
+    "valid_number": "Ingresa un número válido",
+    "budget_required": "Ingresa un presupuesto",
+    "min_days": "Mínimo {{count}} día",
+    "min_days_plural": "Mínimo {{count}} días",
+    "max_days": "Máximo {{count}} días (1 año)",
+    "days_required": "Ingresa la cantidad de días"
   }
 }

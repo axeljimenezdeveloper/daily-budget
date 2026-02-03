@@ -7,5 +7,7 @@ export default function HomeScreen() {
     return <Redirect href="/(welcome)/onboarding1" />;
   }
 
-  return <Redirect href="/(main)" />; 
+  // return <Redirect href="/(main)/debug-reset" />; 
+  // return <Redirect href="/test-store" />; 
+  // return <Redirect href="/(main)" />; 
 }

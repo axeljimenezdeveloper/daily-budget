@@ -1,61 +1,99 @@
+// app/welcome/setup.tsx
 import React from "react";
-import { View } from "react-native";
-import AppText from "@/components/atoms/content/AppText";
+import { ScrollView } from "react-native";
 import AppContainer from "@/components/atoms/structure/AppContainer";
+import AppKeyboardAvoidingView from "@/components/atoms/structure/AppKeyboardAvoidingView";
 import AppStack from "@/components/atoms/structure/AppStack";
-import AppIcon from "@/components/atoms/content/AppIcon"; 
-import { PALETTE } from "@/constants/colors";
-import { SPACING, BORDER_RADIUS } from "@/constants/metrics";
+import AppSpacer from "@/components/atoms/structure/AppSpacer";
+import AppCard from "@/components/atoms/surface/AppCard";
 
-export default function SetupPlaceholder() {
+// Componentes moleculares
+import SetupHeader from "@/components/templates/setup/SetupHeader"; 
+import SetupProgress from "@/components/templates/setup/SetupProgress"; 
+import CurrencySection from "@/components/templates/setup/CurrencySection";
+import BudgetSection from "@/components/templates/setup/BudgetSection"; 
+import ActionSection from "@/components/templates/setup/ActionSection"; 
+import CurrencyModal from "@/components/templates/setup/CurrencyModal";
+import PeriodModal from "@/components/templates/setup/PeriodModal"; 
+
+
+import ConfirmationModal from "@/components/templates/setup/ConfirmationModal"; 
+
+// Hook personalizado
+import { useSetupForm } from "@/components/templates/setup/hooks/useSetupForm"; 
+import { SPACING } from "@/constants/metrics";
+
+export default function SetupScreen() {
+  const form = useSetupForm();
+
   return (
     <AppContainer>
-      <AppStack
-        flex={1}
-        direction="vertical"
-        justify="center"
-        align="center"
-        gap="xl" 
-      >
-        {/* Icono de configuración escalado */}
-        <View style={{ 
-              transform: [{ scale: 1.5 }] 
-        }}>
-            <AppIcon 
-              name="settings-outline" 
-              library="Ionicons" 
-              size="xxl" 
-              color="secondary" 
+      <AppKeyboardAvoidingView>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <AppStack flex={1} style={{ padding: SPACING.xs }}>
+            <SetupHeader />
+            <AppSpacer size="l" />
+            
+            <SetupProgress formCompletion={form.formCompletion} />
+            
+            <AppCard padding="l">
+              <AppStack gap="m">
+                <CurrencySection
+                  currency={form.currency}
+                  onPressCurrency={() => form.setShowCurrencyModal(true)}
+                />
+                
+                <BudgetSection
+                  budget={form.budget}
+                  setBudget={form.setBudget}
+                  currency={form.currency}
+                  selectedPeriod={form.selectedPeriod}
+                  customDays={form.customDays}
+                  setCustomDays={form.setCustomDays}
+                  errors={form.errors}
+                  onPressPeriod={() => form.setShowPeriodModal(true)}
+                  numericBudget={form.numericBudget}
+                  actualDays={form.actualDays}
+                  dailyBudget={form.dailyBudget}
+                />
+              </AppStack>
+            </AppCard>
+
+            <AppSpacer size="xl" />
+            
+            <ActionSection
+              formCompletion={form.formCompletion}
+              isProcessing={form.isProcessing}
+              validateForm={form.validateForm}
+              setShowConfirmation={form.setShowConfirmation}
             />
-        </View>
+          </AppStack>
+        </ScrollView>
+      </AppKeyboardAvoidingView>
 
-        {/* Sección de textos */}
-        <AppStack direction="vertical" align="center" gap="s" style={{ paddingHorizontal: SPACING.l }}>
-          <AppText variant="h2" align="center" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>
-            Configuración
-          </AppText>
-          
-          <AppText variant="body" align="center" color="secondary" style={{ maxWidth: 300 }}>
-            Aquí definirás tu presupuesto y el periodo de tiempo. Estamos preparando el formulario para ti.
-          </AppText>
-        </AppStack>
-
-        {/* Badge de estado del punto de desarrollo */}
-        <View style={{
-            marginTop: SPACING.m,
-            paddingVertical: SPACING.xs,
-            paddingHorizontal: SPACING.m,
-            backgroundColor: PALETTE.nightBlue, 
-            borderWidth: 1,
-            borderColor: PALETTE.darkBorder,
-            borderRadius: BORDER_RADIUS.round,
-        }}>
-            <AppText variant="label" color="accent" align="center" style={{ fontWeight: '700' }}>
-               PUNTO DE DESARROLLO: SETUP
-            </AppText>
-        </View>
-
-      </AppStack>
+      <CurrencyModal
+        isOpen={form.showCurrencyModal}
+        onClose={() => form.setShowCurrencyModal(false)}
+        currency={form.currency}
+        setCurrency={form.setCurrency}
+      />
+      
+      <PeriodModal
+        isOpen={form.showPeriodModal}
+        onClose={() => form.setShowPeriodModal(false)}
+        selectedPeriod={form.selectedPeriod}
+        setSelectedPeriod={form.setSelectedPeriod}
+      />
+      
+      <ConfirmationModal
+        isOpen={form.showConfirmation}
+        onClose={() => form.setShowConfirmation(false)}
+        numericBudget={form.numericBudget}
+        actualDays={form.actualDays}
+        dailyBudget={form.dailyBudget}
+        currency={form.currency}
+        executeSetup={form.executeSetup}
+      />
     </AppContainer>
   );
 }

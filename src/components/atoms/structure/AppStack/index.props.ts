@@ -1,14 +1,13 @@
-import { ReactNode } from "react"; // Component children type
-import { ViewStyle } from "react-native"; // Native style types
-import { SPACING } from "@/constants/metrics"; // Global spacing system
+import { ReactNode } from "react";
+import { StyleProp, ViewStyle } from "react-native"; // Importa StyleProp
+import { SPACING } from "@/constants/metrics";
 
 export interface AppStackProps {
-  children: ReactNode; // Elements to be stacked
-  direction?: "vertical" | "horizontal"; // Stack orientation
-  gap?: keyof typeof SPACING; // Spacing between children using your metrics
-  align?: ViewStyle["alignItems"]; // Horizontal alignment
-  justify?: ViewStyle["justifyContent"]; // Vertical alignment
-  fullWidth?: boolean; // If the stack should take all available width
-  flex?: number; // Flex grow/shrink value
-  style?: ViewStyle; // Custom style overrides
-}
+  children: ReactNode;
+  direction?: "vertical" | "horizontal";
+  gap?: keyof typeof SPACING;
+  align?: ViewStyle["alignItems"];
+  justify?: ViewStyle["justifyContent"];
+  fullWidth?: boolean;
+  flex?: number;
+  style?: StyleProp<ViewStyle>; 

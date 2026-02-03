@@ -4,14 +4,37 @@
     "vital_supply": "Vital Supply",
     "leak_luxury": "Leak / Luxury",
     "extreme_mode": "EXTREME MODE",
-    "life_time": "Life Time"
+    "life_time": "Life Time",
+    "error": "Error"
   },
   "setup": {
     "title": "Mission Start",
     "subtitle": "Configure your supplies for the period.",
+    "initial_configuration": "INITIAL CONFIGURATION",
     "budget_label": "How much oxygen do you have?",
     "days_label": "How many days should it last?",
-    "currency_label": "Mission currency"
+    "currency_label": "Mission currency",
+    "resources_title": "RESOURCES",
+    "resources_description": "Define how much oxygen you have and for how long it should last.",
+    "budget_placeholder": "Total budget",
+    "period_label": "Period duration",
+    "custom_days_placeholder": "Number of days",
+    "custom_days_label": "Custom days",
+    "daily_budget": "Daily budget:",
+    "divisa_title": "CURRENCY",
+    "divisa_description": "Select the currency with which you will manage your oxygen.",
+    "mission_currency": "Mission currency",
+    "completion": "Completed",
+    "start_mission": "START MISSION",
+    "complete_configuration": "COMPLETE CONFIGURATION",
+    "confirmation_title": "All set?",
+    "confirmation_message": "You will start with {{amount}} for {{days}} days.",
+    "confirmation_daily": "Daily: {{amount}}",
+    "confirm": "CONFIRM",
+    "currency_modal_title": "Currency",
+    "period_modal_title": "Duration",
+    "period_custom": "Custom",
+    "vault_config_error": "We couldn't configure your vault."
   },
   "dashboard": {
     "remaining_days": "You have {{count}} days of oxygen left",
@@ -42,5 +65,15 @@
       "description_accent_warning": "makes you happy",
       "description_part3": "."
     }
+  },
+  "validation": {
+    "min_budget": "Minimum {{amount}}",
+    "max_budget": "Maximum {{amount}}",
+    "valid_number": "Enter a valid number",
+    "budget_required": "Enter a budget",
+    "min_days": "Minimum {{count}} day",
+    "min_days_plural": "Minimum {{count}} days",
+    "max_days": "Maximum {{count}} days (1 year)",
+    "days_required": "Enter the number of days"
   }
 }

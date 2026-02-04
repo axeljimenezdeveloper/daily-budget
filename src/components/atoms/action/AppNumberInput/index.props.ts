@@ -1,5 +1,6 @@
 import { TextInputProps } from "react-native";
 import { STATE_COLORS } from "./index.utils";
+import { TYPOGRAPHY } from "@/constants/metrics"; // <- Importar TYPOGRAPHY
 
 export interface AppNumberInputProps extends Omit<TextInputProps, 'onChangeText' | 'value' | 'onChange'> {
   value: string | number;
@@ -16,4 +17,4 @@ export interface AppNumberInputProps extends Omit<TextInputProps, 'onChangeText'
   decimalPlaces?: number;
   placeholder?: string;
   disabled?: boolean;
-}
+  variant?: keyof typeof TYPOGRAPHY; 

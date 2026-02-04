@@ -71,6 +71,7 @@ export default function BudgetSection({
               showStepper={true}
               min={MIN_BUDGET}
               max={MAX_BUDGET}
+              variant="bodyMd"
             />
             {errors.budget && (
               <AppText variant="caption" color="error" style={{ marginLeft: SPACING.xs }}>

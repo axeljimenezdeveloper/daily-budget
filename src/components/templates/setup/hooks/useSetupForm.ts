@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react"; // <- Agrega useEffect
 import { useRouter } from "expo-router";
 import { Alert } from "react-native";
 import { useTranslation } from "react-i18next"; 
@@ -36,6 +36,44 @@ export const useSetupForm = () => {
   const [showPeriodModal, setShowPeriodModal] = useState(false);
   const [showCurrencyModal, setShowCurrencyModal] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Función para traducir una opción de período
+  const translatePeriodOption = useCallback((option: typeof PERIOD_OPTIONS[0]) => {
+    const translations: Record<number, { label: string; description: string }> = {
+      7: {
+        label: t("setup.period_options.weekly.label"),
+        description: t("setup.period_options.weekly.description"),
+      },
+      15: {
+        label: t("setup.period_options.biweekly.label"),
+        description: t("setup.period_options.biweekly.description"),
+      },
+      30: {
+        label: t("setup.period_options.monthly.label"),
+        description: t("setup.period_options.monthly.description"),
+      },
+      0: {
+        label: t("setup.period_options.custom.label"),
+        description: t("setup.period_options.custom.description"),
+      },
+    };
+
+    const translation = translations[option.value] || {
+      label: t("setup.period_custom"),
+      description: ""
+    };
+
+    return {
+      ...option,
+      label: translation.label,
+      description: translation.description
+    };
+  }, [t]);
+
+  // Efecto para actualizar el selectedPeriod cuando cambia el idioma
+  useEffect(() => {
+    setSelectedPeriod(prev => translatePeriodOption(prev));
+  }, [t, translatePeriodOption]);
 
   const numericBudget = useMemo(() => budget ? parseFloat(budget) : 0, [budget]);
   const actualDays = useMemo(() => 
@@ -179,7 +217,8 @@ export const useSetupForm = () => {
 
   // Manejo del cambio de período
   const handlePeriodChange = useCallback((newPeriod: typeof PERIOD_OPTIONS[0]) => {
-    setSelectedPeriod(newPeriod);
+    const translatedPeriod = translatePeriodOption(newPeriod);
+    setSelectedPeriod(translatedPeriod);
     
     // Limpiar error de días si ya no es período personalizado
     if (newPeriod.value !== 0) {
@@ -187,7 +226,7 @@ export const useSetupForm = () => {
       delete newErrors.days;
       setErrors(newErrors);
     }
-  }, [errors]);
+  }, [errors, translatePeriodOption]);
 
   const executeSetup = async () => {
     setIsProcessing(true);

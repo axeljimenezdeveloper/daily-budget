@@ -23,7 +23,7 @@ import AppText from "../../content/AppText";
 import AppStack from "../../structure/AppStack";
 import AppIcon from "../../content/AppIcon";
 
-import { AppNumberInputProps, TypographyVariant } from "./index.props";
+import { AppNumberInputProps } from "./index.props"; 
 import { styles } from "./index.styles";
 
 export default function AppNumberInput({
@@ -41,7 +41,7 @@ export default function AppNumberInput({
   decimalPlaces = 2,
   placeholder = "0",
   disabled = false,
-  variant = "bodyLg", // Valor por defecto
+  variant = "bodyMd", 
   style,
   onFocus,
   onBlur,
@@ -52,7 +52,8 @@ export default function AppNumberInput({
   const [isFocused, setIsFocused] = useState(false);
 
   // Obtener las propiedades de tipografía de la variante
-  const typographyStyle = TYPOGRAPHY[variant || "bodyLg"];
+  // Usamos 'as any' temporalmente para evitar el error de TypeScript
+  const typographyStyle = TYPOGRAPHY[variant as keyof typeof TYPOGRAPHY] || TYPOGRAPHY.bodyLg;
 
   // Inicializar el valor formateado
   useEffect(() => {
@@ -150,14 +151,6 @@ export default function AppNumberInput({
     letterSpacing: typographyStyle.letterSpacing,
   };
 
-  // Estilo para el símbolo de moneda que también sigue la variante
-  const currencySymbolStyle = {
-    fontSize: typographyStyle.fontSize,
-    fontWeight: typographyStyle.fontWeight,
-    lineHeight: typographyStyle.lineHeight,
-    letterSpacing: typographyStyle.letterSpacing,
-  };
-
   return (
     <AppStack gap="xs" style={styles.container}>
       {/* Etiqueta */}
@@ -179,7 +172,7 @@ export default function AppNumberInput({
         <View style={styles.inputContainer}>
           {currencySymbol && (
             <AppText 
-              variant={variant as TypographyVariant} 
+              variant="body" // Usar variante fija para el símbolo de moneda
               color="secondary" 
               style={[styles.currencySymbol, { fontSize: typographyStyle.fontSize }]}
             >

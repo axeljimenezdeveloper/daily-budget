@@ -34,7 +34,25 @@
     "currency_modal_title": "Divisa",
     "period_modal_title": "Duración",
     "period_custom": "Personalizado",
-    "vault_config_error": "No pudimos configurar tu bóveda."
+    "vault_config_error": "No pudimos configurar tu bóveda.",
+    "period_options": {
+      "weekly": {
+        "label": "Semanal",
+        "description": "7 días"
+      },
+      "biweekly": {
+        "label": "Quincenal",
+        "description": "15 días"
+      },
+      "monthly": {
+        "label": "Mensual",
+        "description": "30 días"
+      },
+      "custom": {
+        "label": "Personalizado",
+        "description": "Elige tus días"
+      }
+    }
   },
   "dashboard": {
     "remaining_days": "Te quedan {{count}} días de oxígeno",

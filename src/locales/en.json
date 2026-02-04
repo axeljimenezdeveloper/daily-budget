@@ -34,7 +34,25 @@
     "currency_modal_title": "Currency",
     "period_modal_title": "Duration",
     "period_custom": "Custom",
-    "vault_config_error": "We couldn't configure your vault."
+    "vault_config_error": "We couldn't configure your vault.",
+    "period_options": {
+      "weekly": {
+        "label": "Weekly",
+        "description": "7 days"
+      },
+      "biweekly": {
+        "label": "Biweekly",
+        "description": "15 days"
+      },
+      "monthly": {
+        "label": "Monthly",
+        "description": "30 days"
+      },
+      "custom": {
+        "label": "Custom",
+        "description": "Choose your days"
+      }
+    }
   },
   "dashboard": {
     "remaining_days": "You have {{count}} days of oxygen left",

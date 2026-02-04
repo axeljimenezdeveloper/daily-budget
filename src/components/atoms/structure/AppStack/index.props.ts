@@ -10,4 +10,5 @@ export interface AppStackProps {
   justify?: ViewStyle["justifyContent"];
   fullWidth?: boolean;
   flex?: number;
-  style?: StyleProp<ViewStyle>; 
+  style?: StyleProp<ViewStyle>;
+}

@@ -21,25 +21,25 @@ export default function PeriodModal({
   const getTranslatedOption = (option: { value: number }) => {
     const translations: Record<number, { label: string; description: string }> = {
       7: {
-        label: t("setup.period_options.weekly.label", "Semanal"),
-        description: t("setup.period_options.weekly.description", "7 días"),
+        label: t("setup.period_options.weekly.label"),
+        description: t("setup.period_options.weekly.description"),
       },
       15: {
-        label: t("setup.period_options.biweekly.label", "Quincenal"),
-        description: t("setup.period_options.biweekly.description", "15 días"),
+        label: t("setup.period_options.biweekly.label"),
+        description: t("setup.period_options.biweekly.description"),
       },
       30: {
-        label: t("setup.period_options.monthly.label", "Mensual"),
-        description: t("setup.period_options.monthly.description", "30 días"),
+        label: t("setup.period_options.monthly.label"),
+        description: t("setup.period_options.monthly.description"),
       },
       0: {
-        label: t("setup.period_options.custom.label", "Personalizado"),
-        description: t("setup.period_options.custom.description", "Elige tus días"),
+        label: t("setup.period_options.custom.label"),
+        description: t("setup.period_options.custom.description"),
       },
     };
 
     return translations[option.value] || { 
-      label: t("setup.period_custom", "Personalizado"), 
+      label: t("setup.period_custom"), 
       description: "" 
     };
   };
@@ -48,7 +48,7 @@ export default function PeriodModal({
     <AppModal 
       isOpen={isOpen} 
       onClose={onClose} 
-      title={t("setup.period_modal_title", "Duración")}
+      title={t("setup.period_modal_title")}
     >
       <AppStack gap="s">
         {PERIOD_OPTIONS.map((opt) => {

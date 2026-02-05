@@ -1,4 +1,5 @@
-import { useState, useMemo, useCallback, useEffect } from "react"; // <- Agrega useEffect
+// /src/components/templates/setup/hooks/useSetupForm.ts
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { useRouter } from "expo-router";
 import { Alert } from "react-native";
 import { useTranslation } from "react-i18next"; 
@@ -22,14 +23,22 @@ interface Currency {
   locale: string;
 }
 
+// Interfaz para PeriodOption
+interface PeriodOption {
+  label: string;
+  value: number;
+  description: string;
+}
+
 export const useSetupForm = () => {
   const router = useRouter();
-  const { t } = useTranslation(); // <-- Inicializar hook de traducción
+  const { t } = useTranslation();
   const { initVault, setFinishedOnboarding } = useVaultStore();
 
+  // Estado para el setup dividido en tres pantallas
   const [currency, setCurrency] = useState<Currency>(CURRENCY_LIST[0]);
   const [budget, setBudget] = useState("");
-  const [selectedPeriod, setSelectedPeriod] = useState(PERIOD_OPTIONS[0]);
+  const [selectedPeriod, setSelectedPeriod] = useState<PeriodOption>(PERIOD_OPTIONS[0]);
   const [customDays, setCustomDays] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -38,7 +47,7 @@ export const useSetupForm = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Función para traducir una opción de período
-  const translatePeriodOption = useCallback((option: typeof PERIOD_OPTIONS[0]) => {
+  const translatePeriodOption = useCallback((option: PeriodOption): PeriodOption => {
     const translations: Record<number, { label: string; description: string }> = {
       7: {
         label: t("setup.period_options.weekly.label"),
@@ -75,6 +84,7 @@ export const useSetupForm = () => {
     setSelectedPeriod(prev => translatePeriodOption(prev));
   }, [t, translatePeriodOption]);
 
+  // Cálculos derivados
   const numericBudget = useMemo(() => budget ? parseFloat(budget) : 0, [budget]);
   const actualDays = useMemo(() => 
     selectedPeriod.value === 0 && customDays ? parseInt(customDays) : selectedPeriod.value, 
@@ -85,14 +95,31 @@ export const useSetupForm = () => {
     [numericBudget, actualDays]
   );
 
-  const isBudgetValid = budget && numericBudget >= MIN_BUDGET && numericBudget <= MAX_BUDGET;
-  const isDaysValid = selectedPeriod.value !== 0 || 
-    (customDays && parseInt(customDays) >= MIN_DAYS && parseInt(customDays) <= MAX_DAYS);
-  const formCompletion = (isBudgetValid ? 0.5 : 0) + (isDaysValid ? 0.5 : 0);
+  // Validaciones para el setup dividido - CORREGIDO: asegurar tipo booleano
+  const isCurrencySelected = useMemo(() => Boolean(currency && currency.code !== undefined), [currency]);
+  
+  const isBudgetValid = useMemo(() => {
+    if (!budget.trim()) return false;
+    const num = numericBudget;
+    return !isNaN(num) && num >= MIN_BUDGET && num <= MAX_BUDGET;
+  }, [budget, numericBudget]);
+  
+  const isDaysValid = useMemo(() => {
+    if (selectedPeriod.value !== 0) return true;
+    if (!customDays.trim()) return false;
+    const days = parseInt(customDays);
+    return !isNaN(days) && days >= MIN_DAYS && days <= MAX_DAYS;
+  }, [selectedPeriod, customDays]);
+
+  // Porcentaje de completitud para el setup dividido
+  const currencyCompletion = isCurrencySelected ? 0.33 : 0;
+  const budgetCompletion = isBudgetValid ? 0.33 : 0;
+  const durationCompletion = isDaysValid ? 0.34 : 0;
+  const formCompletion = currencyCompletion + budgetCompletion + durationCompletion;
 
   // Función de validación de presupuesto con traducción
   const validateBudget = useCallback((value: string, curr: Currency): string | null => {
-    if (!value) {
+    if (!value.trim()) {
       return t("validation.budget_required", "Ingresa un presupuesto");
     }
     
@@ -116,9 +143,9 @@ export const useSetupForm = () => {
     return null;
   }, [t]);
 
-  // Función de validación de días con traducción y pluralización
+  // Función de validación de días con traducción
   const validateDays = useCallback((value: string): string | null => {
-    if (!value) {
+    if (!value.trim()) {
       return t("validation.days_required", "Ingresa la cantidad de días");
     }
     
@@ -174,7 +201,7 @@ export const useSetupForm = () => {
     setErrors(newErrors);
   }, [errors, validateDays]);
 
-  // Validación completa del formulario
+  // Validación completa del formulario para la pantalla final
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
     
@@ -216,7 +243,7 @@ export const useSetupForm = () => {
   }, [budget, errors, validateBudget]);
 
   // Manejo del cambio de período
-  const handlePeriodChange = useCallback((newPeriod: typeof PERIOD_OPTIONS[0]) => {
+  const handlePeriodChange = useCallback((newPeriod: PeriodOption) => {
     const translatedPeriod = translatePeriodOption(newPeriod);
     setSelectedPeriod(translatedPeriod);
     
@@ -228,6 +255,7 @@ export const useSetupForm = () => {
     }
   }, [errors, translatePeriodOption]);
 
+  // Función para ejecutar el setup completo
   const executeSetup = async () => {
     setIsProcessing(true);
     setShowConfirmation(false);
@@ -244,6 +272,38 @@ export const useSetupForm = () => {
     }
   };
 
+  // Función para validar solo la moneda (para setup-currency)
+  const validateCurrency = (): boolean => {
+    return isCurrencySelected;
+  };
+
+  // Función para validar solo el presupuesto (para setup-budget)
+  const validateBudgetStep = (): boolean => {
+    const error = validateBudget(budget, currency);
+    if (error) {
+      setErrors({...errors, budget: error});
+      return false;
+    }
+    return true; // Si no hay error, el presupuesto es válido
+  };
+
+  // Función para validar solo la duración (para setup-duration)
+  const validateDurationStep = (): boolean => {
+    if (selectedPeriod.value === 0) {
+      const error = validateDays(customDays);
+      if (error) {
+        setErrors({...errors, days: error});
+        return false;
+      }
+    }
+    return true; // Si no hay error, la duración es válida
+  };
+
+  // Función para obtener PERIOD_OPTIONS traducidas
+  const getTranslatedPeriodOptions = useCallback((): PeriodOption[] => {
+    return PERIOD_OPTIONS.map(option => translatePeriodOption(option));
+  }, [translatePeriodOption]);
+
   return {
     // Estado
     currency,
@@ -255,11 +315,18 @@ export const useSetupForm = () => {
     showPeriodModal,
     showCurrencyModal,
     errors,
+    
     // Cálculos
     numericBudget,
     actualDays,
     dailyBudget,
     formCompletion,
+    
+    // Validaciones por paso (booleanas)
+    isCurrencySelected,
+    isBudgetValid,
+    isDaysValid,
+    
     // Setters mejorados con validación en tiempo real
     setCurrency: handleCurrencyChange,
     setBudget: handleBudgetChange,
@@ -268,9 +335,16 @@ export const useSetupForm = () => {
     setShowConfirmation,
     setShowPeriodModal,
     setShowCurrencyModal,
-    // Funciones
+    
+    // Funciones de validación por paso (retornan boolean)
+    validateCurrency,
+    validateBudgetStep,
+    validateDurationStep,
     validateForm,
+    
+    // Función principal
     executeSetup,
+    
     // Constantes
     CURRENCY_LIST,
     PERIOD_OPTIONS,
@@ -278,5 +352,9 @@ export const useSetupForm = () => {
     MAX_BUDGET,
     MIN_DAYS,
     MAX_DAYS,
+    
+    // Función de traducción de períodos
+    translatePeriodOption,
+    getTranslatedPeriodOptions,
   };
 };

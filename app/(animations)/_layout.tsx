@@ -11,6 +11,10 @@ export default function AnimationsLayout() {
           backgroundColor: PALETTE.deepNight,
         },
       }}
-    />
+    >
+      <Stack.Screen name="loading" />
+      <Stack.Screen name="success" />
+      <Stack.Screen name="transition" />
+    </Stack>
   );
 }

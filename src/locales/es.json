@@ -5,7 +5,8 @@
     "leak_luxury": "Fuga / Lujo",
     "extreme_mode": "MODO EXTREMO",
     "life_time": "Tiempo de Vida",
-    "error": "Error"
+    "error": "Error",
+    "back": "Atrás"
   },
   "setup": {
     "title": "Iniciando Misión",
@@ -52,7 +53,11 @@
         "label": "Personalizado",
         "description": "Elige tus días"
       }
-    }
+    },
+    "total_for_days": "Total para {{days}} días:",
+    "back_button": "Atrás",
+    "configuring": "Configurando...",
+    "start_mission_confirmation": "INICIAR MISIÓN"
   },
   "dashboard": {
     "remaining_days": "Te quedan {{count}} días de oxígeno",

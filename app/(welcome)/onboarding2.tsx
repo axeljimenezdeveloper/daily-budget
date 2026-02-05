@@ -1,3 +1,4 @@
+// app/welcome/onboarding2.tsx (MODIFICADO)
 import React from "react";
 import { useRouter } from "expo-router";
 import { View } from "react-native";
@@ -19,9 +20,9 @@ export default function Onboarding2() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  // Manejadores de navegación
+  // Manejadores de navegación - MODIFICADOS
   const handleNext = () => router.push("/(welcome)/onboarding3");
-  const handleSkip = () => router.replace("/(welcome)/setup");
+  const handleSkip = () => router.replace("/(animations)/transition"); // CAMBIADO A TRANSICIÓN
 
   return (
     <AppContainer style={{ backgroundColor: PALETTE.deepNight }}>

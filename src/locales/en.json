@@ -5,7 +5,8 @@
     "leak_luxury": "Leak / Luxury",
     "extreme_mode": "EXTREME MODE",
     "life_time": "Life Time",
-    "error": "Error"
+    "error": "Error",
+    "back": "Back"
   },
   "setup": {
     "title": "Mission Start",
@@ -52,7 +53,11 @@
         "label": "Custom",
         "description": "Choose your days"
       }
-    }
+    },
+    "total_for_days": "Total for {{days}} days:",
+    "back_button": "Back",
+    "configuring": "Configuring...",
+    "start_mission_confirmation": "START MISSION"
   },
   "dashboard": {
     "remaining_days": "You have {{count}} days of oxygen left",

@@ -1,3 +1,4 @@
+// app/welcome/onboarding3.tsx (MODIFICADO)
 import React from "react";
 import { useRouter } from "expo-router";
 import { View } from "react-native";
@@ -19,9 +20,9 @@ export default function Onboarding3() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  // Manejadores de navegación - Pantalla final
-  const handleFinish = () => router.replace("/(welcome)/setup");
-  const handleSkip = () => router.replace("/(welcome)/setup");
+  // Manejadores de navegación - Pantalla final - MODIFICADOS
+  const handleFinish = () => router.replace("/(animations)/transition"); // CAMBIADO A TRANSICIÓN
+  const handleSkip = () => router.replace("/(animations)/transition"); // CAMBIADO A TRANSICIÓN
 
   return (
     <AppContainer style={{ backgroundColor: PALETTE.deepNight }}>
@@ -29,7 +30,7 @@ export default function Onboarding3() {
         flex={1}
         style={{ paddingVertical: SPACING.l, paddingHorizontal: SPACING.m }}
       >
-        {/* Header con botón de saltar (redundante en última pantalla pero mantiene consistencia) */}
+        {/* Header con botón de saltar */}
         <AppStack direction="horizontal" justify="flex-end">
           <AppButton
             onPress={handleSkip}

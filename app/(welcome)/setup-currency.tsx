@@ -2,7 +2,7 @@
 import React from "react";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, TouchableOpacity } from "react-native";
 
 // Componentes atómicos
 import AppContainer from "@/components/atoms/structure/AppContainer";
@@ -11,29 +11,91 @@ import AppText from "@/components/atoms/content/AppText";
 import AppIcon from "@/components/atoms/content/AppIcon";
 import AppButton from "@/components/atoms/action/AppButton";
 import AppProgressDots from "@/components/atoms/visual/AppProgressDots";
-
-// Componentes de templates (existentes)
-import CurrencySection from "@/components/templates/setup/CurrencySection";
-import CurrencyModal from "@/components/templates/setup/CurrencyModal";
-
-// Hook de formulario (modificado)
-import { useSetupForm } from "@/components/templates/setup/hooks/useSetupForm";
+import AppSelect from "@/components/atoms/action/AppSelect";
+import AppBadge from "@/components/atoms/visual/AppBadge";
+import AppModal from "@/components/atoms/structure/AppModal";
 
 // Constantes de diseño
 import { PALETTE } from "@/constants/colors";
 import { SPACING, BORDER_RADIUS } from "@/constants/metrics";
 
+// Interfaz para Currency (integrada directamente)
+interface Currency {
+  symbol: string;
+  name: string;
+  code: string;
+  flag: string;
+  locale: string;
+}
+
+// Lista de monedas (integrada directamente)
+const CURRENCY_LIST: Currency[] = [
+  {
+    symbol: "$",
+    name: "Dólar Estadounidense",
+    code: "USD",
+    flag: "🇺🇸",
+    locale: "en-US",
+  },
+  {
+    symbol: "Bs",
+    name: "Bolívar Venezolano",
+    code: "VES",
+    flag: "🇻🇪",
+    locale: "es-VE",
+  },
+  {
+    symbol: "$",
+    name: "Peso Mexicano",
+    code: "MXN",
+    flag: "🇲🇽",
+    locale: "es-MX",
+  },
+  {
+    symbol: "$",
+    name: "Peso Colombiano",
+    code: "COP",
+    flag: "🇨🇴",
+    locale: "es-CO",
+  },
+  {
+    symbol: "$",
+    name: "Peso Argentino",
+    code: "ARS",
+    flag: "🇦🇷",
+    locale: "es-AR",
+  },
+  {
+    symbol: "S/",
+    name: "Sol Peruano",
+    code: "PEN",
+    flag: "🇵🇪",
+    locale: "es-PE",
+  },
+  {
+    symbol: "R$",
+    name: "Real Brasileño",
+    code: "BRL",
+    flag: "🇧🇷",
+    locale: "pt-BR",
+  },
+  { symbol: "€", name: "Euro", code: "EUR", flag: "🇪🇺", locale: "es-ES" },
+  {
+    symbol: "£",
+    name: "Libra Esterlina",
+    code: "GBP",
+    flag: "🇬🇧",
+    locale: "en-GB",
+  },
+];
+
 export default function SetupCurrencyScreen() {
   const router = useRouter();
   const { t } = useTranslation();
 
-  // Usar el hook de formulario para manejar el estado de la moneda
-  const {
-    currency,
-    setCurrency,
-    showCurrencyModal,
-    setShowCurrencyModal,
-  } = useSetupForm();
+  // Estado local para la moneda y modal (reemplazando useSetupForm)
+  const [currency, setCurrency] = React.useState<Currency>(CURRENCY_LIST[0]);
+  const [showCurrencyModal, setShowCurrencyModal] = React.useState(false);
 
   const handleNext = () => {
     // Validación básica: asegurarse de que hay una moneda seleccionada
@@ -137,12 +199,42 @@ export default function SetupCurrencyScreen() {
               </AppText>
             </AppStack>
 
-            {/* Sección de selección de moneda - espaciado consistente */}
+            {/* Sección de selección de moneda - INTEGRADA DIRECTAMENTE */}
             <AppStack style={{ width: "100%", marginBottom: SPACING.xl }} gap="m">
-              <CurrencySection
-                currency={currency}
-                onPressCurrency={() => setShowCurrencyModal(true)}
-              />
+              <AppStack gap="s">
+                <AppStack direction="horizontal" align="center" gap="xs">
+                  <AppText variant="h3" color="accent" style={{ fontSize: 16 }}>
+                    {t("setup.divisa_title", "DIVISA")}
+                  </AppText>
+                </AppStack>
+
+                <AppText variant="caption" color="secondary" style={{ marginBottom: SPACING.xs }}>
+                  {t("setup.divisa_description", "Selecciona la moneda con la que gestionarás tu oxígeno.")}
+                </AppText>
+
+                <AppSelect
+                  value={`${currency.flag} ${currency.code} (${currency.symbol})`}
+                  onPress={() => setShowCurrencyModal(true)}
+                  label={t("setup.mission_currency", "Moneda de la misión")}
+                />
+
+                {currency && (
+                  <AppStack direction="horizontal" gap="xs" style={{ marginTop: SPACING.xs }}>
+                    <AppBadge
+                      label={currency.code}
+                      status="info"
+                      variant="subtle"
+                      style={{ paddingHorizontal: SPACING.xs, paddingVertical: 2 }}
+                    />
+                    <AppBadge
+                      label={currency.symbol}
+                      status="neutral"
+                      variant="subtle"
+                      style={{ paddingHorizontal: SPACING.xs, paddingVertical: 2 }}
+                    />
+                  </AppStack>
+                )}
+              </AppStack>
             </AppStack>
 
             {/* Indicador de progreso - espacio fijo */}
@@ -175,13 +267,43 @@ export default function SetupCurrencyScreen() {
         </View>
       </ScrollView>
 
-      {/* Modal de selección de moneda (componente existente) */}
-      <CurrencyModal
+      {/* Modal de selección de moneda - INTEGRADO DIRECTAMENTE */}
+      <AppModal
         isOpen={showCurrencyModal}
         onClose={() => setShowCurrencyModal(false)}
-        currency={currency}
-        setCurrency={setCurrency}
-      />
+        title={t("setup.currency_modal_title", "Divisa")}
+      >
+        <ScrollView style={{ maxHeight: 400 }}>
+          <AppStack gap="s">
+            {CURRENCY_LIST.map((item) => (
+              <TouchableOpacity
+                key={item.code}
+                onPress={() => {
+                  setCurrency(item);
+                  setShowCurrencyModal(false);
+                }}
+                style={{
+                  padding: SPACING.m,
+                  backgroundColor:
+                    currency.code === item.code
+                      ? `${PALETTE.sunsetOrange}15`
+                      : "transparent",
+                  borderRadius: BORDER_RADIUS.m,
+                  borderWidth: 1,
+                  borderColor:
+                    currency.code === item.code
+                      ? PALETTE.sunsetOrange
+                      : PALETTE.darkBorder,
+                }}
+              >
+                <AppText>
+                  {item.flag} {item.name} ({item.symbol})
+                </AppText>
+              </TouchableOpacity>
+            ))}
+          </AppStack>
+        </ScrollView>
+      </AppModal>
     </AppContainer>
   );
 }

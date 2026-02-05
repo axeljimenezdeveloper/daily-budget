@@ -2,7 +2,7 @@
 import React from "react";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { Alert, ScrollView, View } from "react-native";
+import { Alert, ScrollView, View, TouchableOpacity } from "react-native";
 
 // Componentes atómicos
 import AppContainer from "@/components/atoms/structure/AppContainer";
@@ -15,9 +15,7 @@ import AppInput from "@/components/atoms/action/AppInput";
 import AppSelect from "@/components/atoms/action/AppSelect";
 import AppCard from "@/components/atoms/surface/AppCard";
 import AppBadge from "@/components/atoms/visual/AppBadge";
-
-// Componentes de templates
-import PeriodModal from "@/components/templates/setup/PeriodModal";
+import AppModal from "@/components/atoms/structure/AppModal";
 
 // Store y utilidades
 import { useVaultStore } from "@/store/useVaultStore";
@@ -36,8 +34,18 @@ interface Currency {
   locale: string;
 }
 
-// Opciones de período
-const PERIOD_OPTIONS = [
+// Interfaz para PeriodOption (integrada directamente)
+interface PeriodOption {
+  label: string;
+  value: number;
+  description: string;
+}
+
+// Constantes locales (integradas directamente)
+const MIN_DAYS = 1;
+const MAX_DAYS = 365;
+
+const PERIOD_OPTIONS: PeriodOption[] = [
   { label: "Semanal", value: 7, description: "7 días" },
   { label: "Quincenal", value: 15, description: "15 días" },
   { label: "Mensual", value: 30, description: "30 días" },
@@ -99,9 +107,6 @@ export default function SetupDurationScreen() {
   }, [numericBudget, actualDays]);
 
   // Validación de días personalizados
-  const MIN_DAYS = 1;
-  const MAX_DAYS = 365;
-
   const validateDays = (value: string): boolean => {
     if (selectedPeriod.value !== 0) {
       setError(null);
@@ -200,6 +205,33 @@ export default function SetupDurationScreen() {
     if (error) return "error";
     if (isDaysValid() && customDays) return "success";
     return "neutral";
+  };
+
+  // Función para obtener la opción traducida
+  const getTranslatedOption = (option: { value: number }) => {
+    const translations: Record<number, { label: string; description: string }> = {
+      7: {
+        label: t("setup.period_options.weekly.label", "Semanal"),
+        description: t("setup.period_options.weekly.description", "7 días"),
+      },
+      15: {
+        label: t("setup.period_options.biweekly.label", "Quincenal"),
+        description: t("setup.period_options.biweekly.description", "15 días"),
+      },
+      30: {
+        label: t("setup.period_options.monthly.label", "Mensual"),
+        description: t("setup.period_options.monthly.description", "30 días"),
+      },
+      0: {
+        label: t("setup.period_options.custom.label", "Personalizado"),
+        description: t("setup.period_options.custom.description", "Elige tus días"),
+      },
+    };
+
+    return translations[option.value] || { 
+      label: t("setup.period_custom", "Personalizado"), 
+      description: "" 
+    };
   };
 
   return (
@@ -404,18 +436,49 @@ export default function SetupDurationScreen() {
         </View>
       </ScrollView>
 
-      {/* Modal de selección de período */}
-      <PeriodModal
+      {/* Modal de selección de período - INTEGRADO DIRECTAMENTE */}
+      <AppModal
         isOpen={showPeriodModal}
         onClose={() => setShowPeriodModal(false)}
-        selectedPeriod={selectedPeriod}
-        setSelectedPeriod={(period) => {
-          setSelectedPeriod(period);
-          if (period.value !== 0) {
-            setError(null);
-          }
-        }}
-      />
+        title={t("setup.period_modal_title", "Duración")}
+      >
+        <AppStack gap="s">
+          {PERIOD_OPTIONS.map((opt) => {
+            const translated = getTranslatedOption(opt);
+            
+            return (
+              <TouchableOpacity
+                key={opt.value}
+                onPress={() => {
+                  setSelectedPeriod({
+                    ...opt,
+                    label: translated.label,
+                    description: translated.description
+                  });
+                  setShowPeriodModal(false);
+                }}
+                style={{
+                  padding: SPACING.m,
+                  backgroundColor:
+                    selectedPeriod.value === opt.value
+                      ? `${PALETTE.sunsetOrange}15`
+                      : "transparent",
+                  borderRadius: BORDER_RADIUS.m,
+                  borderWidth: 1,
+                  borderColor:
+                    selectedPeriod.value === opt.value
+                      ? PALETTE.sunsetOrange
+                      : PALETTE.darkBorder,
+                }}
+              >
+                <AppText>
+                  {translated.label} - {translated.description}
+                </AppText>
+              </TouchableOpacity>
+            );
+          })}
+        </AppStack>
+      </AppModal>
     </AppContainer>
   );
 }

@@ -1,129 +1,82 @@
-// app/welcome/onboarding3.tsx (MODIFICADO)
-import React from "react";
-import { useRouter } from "expo-router";
-import { View } from "react-native";
-import { useTranslation } from "react-i18next";
+// ============================================================================
+// TERCERA Y ÚLTIMA PANTALLA DEL ONBOARDING - "Comienza tu misión"
+//
+// Pantalla final del flujo que motiva al usuario a comenzar a usar la aplicación.
+// Utiliza un icono de checkmark para simbolizar finalización y preparación,
+// y un botón de color "accent" como llamado a la acción principal.
+// ============================================================================
 
-// Componentes atómicos
-import AppText from "@/components/atoms/content/AppText";
-import AppContainer from "@/components/atoms/structure/AppContainer";
-import AppStack from "@/components/atoms/structure/AppStack";
-import AppIcon from "@/components/atoms/content/AppIcon";
-import AppButton from "@/components/atoms/action/AppButton";
-import AppProgressDots from "@/components/atoms/visual/AppProgressDots";
+import React from 'react';
+import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
-// Constantes de diseño
-import { SPACING, BORDER_RADIUS } from "@/constants/metrics";
-import { PALETTE } from "@/constants/colors";
+// ----------------------------------------------------------------------------
+// COMPONENTES REUTILIZABLES
+// ----------------------------------------------------------------------------
+// El patrón se mantiene consistente: OnboardingStep para estructura base
+// y AppText para el formateo especial de partes del texto
+import { OnboardingStep } from '@/components/templates/onboarding/components/steps/OnboardingStep';
+import AppText from '@/components/atoms/content/AppText';
 
+// ----------------------------------------------------------------------------
+// COMPONENTE PRINCIPAL - Onboarding3
+// ----------------------------------------------------------------------------
 export default function Onboarding3() {
-  const router = useRouter();
-  const { t } = useTranslation();
+  // HOOKS PARA NAVEGACIÓN E INTERNACIONALIZACIÓN
+  // --------------------------------------------------------------------------
+  const router = useRouter();          // Navegación entre pantallas
+  const { t } = useTranslation();      // Traducciones i18n
 
-  // Manejadores de navegación - Pantalla final - MODIFICADOS
-  const handleFinish = () => router.replace("/(animations)/transition"); // CAMBIADO A TRANSICIÓN
-  const handleSkip = () => router.replace("/(animations)/transition"); // CAMBIADO A TRANSICIÓN
+  // MANEJADORES DE NAVEGACIÓN (PASO FINAL)
+  // --------------------------------------------------------------------------
+  // handleFinish: Finaliza el onboarding y navega a la animación de transición
+  // handleSkip: En este paso final, "saltar" también lleva a la transición
+  // Nota: Ambos handlers hacen lo mismo porque es el último paso
+  const handleFinish = () => router.replace('/(animations)/transition');
+  const handleSkip = () => router.replace('/(animations)/transition');
 
+  // DESCRIPCIÓN CON MÚLTIPLES PARTES DESTACADAS
+  // --------------------------------------------------------------------------
+  // Único paso que usa DOS colores diferentes en el texto:
+  // - Color "success" para enfatizar beneficios positivos
+  // - Color "warning" para destacar precauciones o advertencias
+  // Esto crea un mensaje más rico visualmente y transmite tanto la promesa
+  // como la responsabilidad asociada con el uso de la aplicación
+  const description = (
+    <>
+      {t('onboarding.screen3.description_part1')}{' '}
+      <AppText variant="body" color="success" style={{ fontWeight: '600' }}>
+        {t('onboarding.screen3.description_accent_success')}
+      </AppText>
+      {' '}{t('onboarding.screen3.description_part2')}{' '}
+      <AppText variant="body" color="warning" style={{ fontWeight: '600' }}>
+        {t('onboarding.screen3.description_accent_warning')}
+      </AppText>
+      {t('onboarding.screen3.description_part3')}
+    </>
+  );
+
+  // RENDERIZADO DEL PASO FINAL DE ONBOARDING
+  // --------------------------------------------------------------------------
+  // Configuración específica del tercer y último paso:
+  // - stepNumber: 3 (último de 3 pasos)
+  // - iconName: 'checkmark-done-outline' (símbolo de finalización)
+  // - buttonText: Texto de acción final ("Comenzar Ahora")
+  // - buttonStatus: 'accent' (cambio visual para indicar acción principal)
+  // - description: Texto con dos partes destacadas en colores diferentes
   return (
-    <AppContainer style={{ backgroundColor: PALETTE.deepNight }}>
-      <AppStack
-        flex={1}
-        style={{ paddingVertical: SPACING.l, paddingHorizontal: SPACING.m }}
-      >
-        {/* Header con botón de saltar */}
-        <AppStack direction="horizontal" justify="flex-end">
-          <AppButton
-            onPress={handleSkip}
-            variant="outline"
-            status="neutral"
-            style={{
-              paddingHorizontal: SPACING.m,
-              paddingVertical: SPACING.s,
-            }}
-          >
-            <AppText variant="caption" style={{ fontWeight: "500" }}>
-              {t("onboarding.skip")}
-            </AppText>
-          </AppButton>
-        </AppStack>
-
-        {/* Contenido principal */}
-        <AppStack flex={1} justify="center" align="center" gap="xl">
-          {/* Icono decorativo con temática de finalización */}
-          <View
-            style={{
-              padding: SPACING.xl,
-              borderRadius: BORDER_RADIUS.round,
-              backgroundColor: `${PALETTE.sunsetOrange}15`,
-              borderWidth: 1,
-              borderColor: `${PALETTE.sunsetOrange}30`,
-            }}
-          >
-            <AppIcon
-              name="checkmark-done-outline"
-              library="Ionicons"
-              size="xxxl"
-              color="accent"
-            />
-          </View>
-
-          {/* Título y descripción */}
-          <AppStack align="center" gap="m" style={{ maxWidth: 320 }}>
-            <AppText variant="h1" align="center">
-              {t("onboarding.screen3.title")}
-            </AppText>
-
-            <AppText
-              variant="body"
-              align="center"
-              color="secondary"
-              style={{ lineHeight: 24 }}
-            >
-              {t("onboarding.screen3.description_part1")}{" "}
-              <AppText
-                variant="body"
-                color="success"
-                style={{ fontWeight: "600" }}
-              >
-                {t("onboarding.screen3.description_accent_success")}
-              </AppText>
-              {" "}{t("onboarding.screen3.description_part2")}{" "}
-              <AppText
-                variant="body"
-                color="warning"
-                style={{ fontWeight: "600" }}
-              >
-                {t("onboarding.screen3.description_accent_warning")}
-              </AppText>
-              {t("onboarding.screen3.description_part3")}
-            </AppText>
-          </AppStack>
-
-          {/* Indicador de progreso - Pantalla final */}
-          <AppProgressDots
-            total={3}
-            current={2}
-            size="m"
-            spacing="m"
-            activeColor={PALETTE.sunsetOrange}
-            inactiveColor={PALETTE.slateGray}
-            inactiveOpacity={0.5}
-          />
-
-          {/* Botón de acción principal - Comienza la configuración */}
-          <AppStack style={{ width: "100%" }}>
-            <AppButton
-              onPress={handleFinish}
-              status="accent"
-              style={{ width: "100%" }}
-            >
-              <AppText style={{ fontWeight: "700" }}>
-                {t("onboarding.get_started", "Comenzar Ahora")}
-              </AppText>
-            </AppButton>
-          </AppStack>
-        </AppStack>
-      </AppStack>
-    </AppContainer>
+    <OnboardingStep
+      stepNumber={3}
+      totalSteps={3}
+      title={t('onboarding.screen3.title')}
+      description={description}
+      iconName="checkmark-done-outline"
+      iconLibrary="Ionicons"
+      buttonText={t('onboarding.get_started', 'Comenzar Ahora')}
+      onNext={handleFinish}
+      onSkip={handleSkip}
+      skipButtonText={t('onboarding.skip')}
+      buttonStatus="accent" 
+    />
   );
 }

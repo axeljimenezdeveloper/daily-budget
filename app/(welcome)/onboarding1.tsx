@@ -1,122 +1,76 @@
-// app/welcome/onboarding1.tsx (MODIFICADO)
-import React from "react";
-import { useRouter } from "expo-router";
-import { View } from "react-native";
-import { useTranslation } from "react-i18next";
+// ============================================================================
+// PRIMERA PANTALLA DEL ONBOARDING - "¿Qué es el oxígeno financiero?"
+// 
+// Esta pantalla introduce el concepto central de la aplicación usando una
+// metáfora visual (icono de agua rotado) y texto formatteado para destacar
+// palabras clave.
+// ============================================================================
 
-// Componentes atómicos
-import AppText from "@/components/atoms/content/AppText";
-import AppContainer from "@/components/atoms/structure/AppContainer";
-import AppStack from "@/components/atoms/structure/AppStack";
-import AppIcon from "@/components/atoms/content/AppIcon";
-import AppButton from "@/components/atoms/action/AppButton";
-import AppProgressDots from "@/components/atoms/visual/AppProgressDots";
+import React from 'react';
+import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 
-// Constantes de diseño
-import { SPACING, BORDER_RADIUS } from "@/constants/metrics";
-import { PALETTE } from "@/constants/colors";
+// ----------------------------------------------------------------------------
+// COMPONENTES REUTILIZABLES
+// ----------------------------------------------------------------------------
+// Usamos nuestro componente OnboardingStep que encapsula toda la UI común
+// y AppText para partes específicas del texto con formato especial
+import { OnboardingStep } from '@/components/templates/onboarding/components/steps/OnboardingStep';
+import AppText from '@/components/atoms/content/AppText';
 
+// ----------------------------------------------------------------------------
+// COMPONENTE PRINCIPAL - Onboarding1
+// ----------------------------------------------------------------------------
 export default function Onboarding1() {
-  const router = useRouter();
-  const { t } = useTranslation();
+  // HOOKS PARA NAVEGACIÓN E INTERNACIONALIZACIÓN
+  // --------------------------------------------------------------------------
+  const router = useRouter();          // Navegación entre pantallas
+  const { t } = useTranslation();      // Traducciones i18n
 
-  // Manejadores de navegación - MODIFICADOS
-  const handleNext = () => router.push("/(welcome)/onboarding2");
-  const handleSkip = () => router.replace("/(animations)/transition"); // CAMBIADO A TRANSICIÓN
+  // MANEJADORES DE NAVEGACIÓN
+  // --------------------------------------------------------------------------
+  // handleNext: Avanza al segundo paso del onboarding
+  // handleSkip: Salta todo el flujo y va directamente a la animación de transición
+  const handleNext = () => router.push('/(welcome)/onboarding2');
+  const handleSkip = () => router.replace('/(animations)/transition');
 
+  // CONSTRUCCIÓN DE DESCRIPCIÓN CON FORMATO
+  // --------------------------------------------------------------------------
+  // La descripción combina texto normal con una palabra clave en color acento
+  // para enfatizar el concepto principal. Se usa JSX para el formateo especial.
+  const description = (
+    <>
+      {t('onboarding.screen1.description_part1')}{' '}
+      <AppText variant="body" color="accent" style={{ fontWeight: '600' }}>
+        {t('onboarding.screen1.description_accent')}
+      </AppText>
+      {t('onboarding.screen1.description_part2')}
+    </>
+  );
+
+  // RENDERIZADO DEL PASO DE ONBOARDING
+  // --------------------------------------------------------------------------
+  // OnboardingStep es un componente reutilizable que recibe toda la configuración
+  // específica de este paso como props:
+  // - stepNumber: Posición en el flujo (1 de 3)
+  // - iconName/iconLibrary: Ícono representativo de este paso
+  // - iconRotation: Rotación personalizada de 45° para el ícono de agua
+  // - description: Texto con formato JSX para partes destacadas
+  // - buttonStatus: Tipo de botón (primary, accent, etc.)
   return (
-    <AppContainer style={{ backgroundColor: PALETTE.deepNight }}>
-      <AppStack
-        flex={1}
-        style={{ paddingVertical: SPACING.l, paddingHorizontal: SPACING.m }}
-      >
-        {/* Header con botón de saltar */}
-        <AppStack direction="horizontal" justify="flex-end">
-          <AppButton
-            onPress={handleSkip}
-            variant="outline"
-            status="neutral"
-            style={{
-              paddingHorizontal: SPACING.m,
-              paddingVertical: SPACING.s,
-            }}
-          >
-            <AppText variant="caption" style={{ fontWeight: "500" }}>
-              {t("onboarding.skip")}
-            </AppText>
-          </AppButton>
-        </AppStack>
-
-        {/* Contenido principal */}
-        <AppStack flex={1} justify="center" align="center" gap="xl">
-          {/* Icono decorativo */}
-          <View
-            style={{
-              padding: SPACING.xl,
-              borderRadius: BORDER_RADIUS.round,
-              backgroundColor: `${PALETTE.sunsetOrange}15`,
-              borderWidth: 1,
-              borderColor: `${PALETTE.sunsetOrange}30`,
-            }}
-          >
-            <AppIcon
-              name="water-outline"
-              library="Ionicons"
-              size="xxxl"
-              color="accent"
-              style={{ transform: [{ rotate: "45deg" }] }}
-            />
-          </View>
-
-          {/* Título y descripción */}
-          <AppStack align="center" gap="m" style={{ maxWidth: 320 }}>
-            <AppText variant="h1" align="center">
-              {t("onboarding.screen1.title")}
-            </AppText>
-
-            <AppText
-              variant="body"
-              align="center"
-              color="secondary"
-              style={{ lineHeight: 24 }}
-            >
-              {t("onboarding.screen1.description_part1")}{" "}
-              <AppText
-                variant="body"
-                color="accent"
-                style={{ fontWeight: "600" }}
-              >
-                {t("onboarding.screen1.description_accent")}
-              </AppText>
-              {t("onboarding.screen1.description_part2")}
-            </AppText>
-          </AppStack>
-
-          {/* Indicador de progreso */}
-          <AppProgressDots
-            total={3}
-            current={0}
-            size="m"
-            spacing="m"
-            activeColor={PALETTE.sunsetOrange}
-            inactiveColor={PALETTE.slateGray}
-            inactiveOpacity={0.5}
-          />
-
-          {/* Botón de siguiente */}
-          <AppStack style={{ width: "100%" }}>
-            <AppButton
-              onPress={handleNext}
-              status="primary"
-              style={{ width: "100%" }}
-            >
-              <AppText style={{ fontWeight: "700" }}>
-                {t("onboarding.next")}
-              </AppText>
-            </AppButton>
-          </AppStack>
-        </AppStack>
-      </AppStack>
-    </AppContainer>
+    <OnboardingStep
+      stepNumber={1}
+      totalSteps={3}
+      title={t('onboarding.screen1.title')}
+      description={description}
+      iconName="water-outline"
+      iconLibrary="Ionicons" 
+      buttonText={t('onboarding.next')}
+      onNext={handleNext}
+      onSkip={handleSkip}
+      skipButtonText={t('onboarding.skip')}
+      buttonStatus="primary"
+      iconRotation={45}
+    />
   );
 }

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.30.0](///compare/v1.29.0...v1.30.0) (2026-02-09)
+
+
+### Features
+
+* **setup:** consolidar flujo funcional de configuración y animaciones de transición 5726e2f
+* **setup:** consolidar lógica de configuración y UI base de SURV c11b01f
+* **setup:** finalizar pantalla de configuración y refinar componentes de entrada e30eb58
+
 ## [1.29.0](///compare/v1.28.0-stable...v1.29.0) (2026-01-27)
 
 

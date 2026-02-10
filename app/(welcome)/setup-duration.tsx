@@ -93,8 +93,8 @@ export default function SetupDurationScreen() {
       navigateToSuccess();
     } catch (error) {
       Alert.alert(
-        t("common.error", "Error"),
-        t("setup.vault_config_error", "No pudimos configurar tu bóveda.")
+        t("common.error_occurred", "Algo no salió bien"),
+        t("setup.errors.vault_config_error", "Ups, no pude preparar tu espacio")
       );
       setIsProcessing(false);
     }
@@ -115,14 +115,14 @@ export default function SetupDurationScreen() {
     <>
       {/* Layout principal del paso final de configuración */}
       <SetupStepLayout
-        title={t("setup.days_label", "¿Cuántos días debe durar?")}
+        title={t("setup.duration_screen.title", "¿Para cuántos días lo planeas?")}
         description={t(
-          "setup.resources_description",
-          "Define la duración de tu oxígeno para esta misión."
+          "setup.duration_screen.description",
+          "Define tu plan de tiempo para distribuir el dinero"
         )}
         totalSteps={3}
         currentStep={2}
-        actionButtonText={t("setup.start_mission_confirmation", "Comenzar misión")}
+        actionButtonText={t("setup.duration_screen.final_action", "Empezar con SURV")}
         onActionPress={handleStartMission}
         onBackPress={navigateBack}
         isActionDisabled={!isDaysValid}

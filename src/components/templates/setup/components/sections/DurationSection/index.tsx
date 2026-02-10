@@ -35,10 +35,10 @@ export const DurationSection: React.FC<DurationSectionProps> = ({
     <AppStack style={{ width: "100%", marginBottom: SPACING.xl }} gap="m">
       <AppStack direction="horizontal" align="center" gap="xs">
         <AppText variant="h3" color="accent" style={{ fontSize: 16 }}>
-          {t("setup.period_label", "DURACIÓN")}
+          {t("setup.duration_section.title", "Tu plan")}
         </AppText>
         <AppBadge
-          label={`${actualDays}d`}
+          label={`${actualDays}${t("common.days_short", "d")}`}
           status="info"
           variant="subtle"
           style={{ paddingHorizontal: SPACING.xs, paddingVertical: 2 }}
@@ -46,24 +46,24 @@ export const DurationSection: React.FC<DurationSectionProps> = ({
       </AppStack>
       
       <AppText variant="caption" color="secondary" style={{ marginBottom: SPACING.xs }}>
-        {t("setup.resources_description", "Selecciona por cuánto tiempo quieres que dure tu oxígeno.")}
+        {t("setup.duration_section.description", "¿En cuántos días quieres distribuir tu dinero?")}
       </AppText>
 
       <AppSelect
         value={getPeriodDisplayText()}
         onPress={onOpenModal}
-        label={t("setup.period_label", "Duración del período")}
+        label={t("setup.duration_section.period_label", "Selecciona la duración")}
       />
 
       {selectedPeriod.value === 0 && (
         <AppStack gap="xs">
           <AppInput
-            placeholder={t("setup.custom_days_placeholder", "Cantidad de días")}
+            placeholder={t("setup.duration_section.custom_days_placeholder", "¿Cuántos días?")}
             value={customDays}
             onChangeText={onCustomDaysChange}
             keyboardType="numeric"
             status={getInputStatus()}
-            label={t("setup.custom_days_label", "Días personalizados")}
+            label={t("setup.duration_section.custom_days_label", "Días a tu medida")}
             maxLength={3}
           />
           {error && (
@@ -86,7 +86,7 @@ export const DurationSection: React.FC<DurationSectionProps> = ({
           <AppStack gap="s">
             <AppStack direction="horizontal" justify="space-between" align="center">
               <AppText variant="caption" color="secondary">
-                {t("setup.daily_budget", "Presupuesto diario:")}
+                {t("setup.duration_section.daily_budget_label", "Para cada día:")}
               </AppText>
               <AppText
                 variant="body"
@@ -99,7 +99,7 @@ export const DurationSection: React.FC<DurationSectionProps> = ({
             
             <AppStack direction="horizontal" justify="space-between" align="center">
               <AppText variant="caption" color="secondary">
-                {t("setup.total_for_days", { days: actualDays })}
+                {t("setup.duration_section.total_for_period", { days: actualDays })}
               </AppText>
               <AppText variant="caption" color="secondary">
                 {formatMoney(numericBudget, currency.symbol)}

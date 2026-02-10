@@ -21,28 +21,27 @@ export const PeriodModal: React.FC<PeriodModalProps> = ({
   const { t } = useTranslation();
 
   const getTranslatedOption = (option: PeriodOption) => {
-    const translations: Record<number, { label: string; description: string }> = {
-      7: {
-        label: t("setup.period_options.weekly.label", "Semanal"),
-        description: t("setup.period_options.weekly.description", "7 días"),
-      },
-      15: {
-        label: t("setup.period_options.biweekly.label", "Quincenal"),
-        description: t("setup.period_options.biweekly.description", "15 días"),
-      },
-      30: {
-        label: t("setup.period_options.monthly.label", "Mensual"),
-        description: t("setup.period_options.monthly.description", "30 días"),
-      },
-      0: {
-        label: t("setup.period_options.custom.label", "Personalizado"),
-        description: t("setup.period_options.custom.description", "Elige tus días"),
-      },
-    };
+    let key: string;
+    switch (option.value) {
+      case 7:
+        key = "weekly";
+        break;
+      case 15:
+        key = "biweekly";
+        break;
+      case 30:
+        key = "monthly";
+        break;
+      case 0:
+        key = "custom";
+        break;
+      default:
+        key = "custom";
+    }
 
-    return translations[option.value] || { 
-      label: t("setup.period_custom", "Personalizado"), 
-      description: "" 
+    return {
+      label: t(`setup.period_section.options.${key}.label`, option.label),
+      description: t(`setup.period_section.options.${key}.description`, option.description),
     };
   };
 
@@ -50,7 +49,7 @@ export const PeriodModal: React.FC<PeriodModalProps> = ({
     <AppModal
       isOpen={isOpen}
       onClose={onClose}
-      title={t("setup.period_modal_title", "Duración")}
+      title={t("setup.modals.period.title", "Choose the Duration")}
     >
       <AppStack gap="s">
         {PERIOD_OPTIONS.map((opt) => {

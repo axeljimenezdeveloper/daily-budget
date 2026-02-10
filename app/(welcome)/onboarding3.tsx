@@ -1,5 +1,5 @@
 // ============================================================================
-// TERCERA Y ÚLTIMA PANTALLA DEL ONBOARDING - "Comienza tu misión"
+// TERCERA Y ÚLTIMA PANTALLA DEL ONBOARDING - "Comienza tu gestión"
 //
 // Pantalla final del flujo que motiva al usuario a comenzar a usar la aplicación.
 // Utiliza un icono de checkmark para simbolizar finalización y preparación,
@@ -44,15 +44,15 @@ export default function Onboarding3() {
   // como la responsabilidad asociada con el uso de la aplicación
   const description = (
     <>
-      {t('onboarding.screen3.description_part1')}{' '}
+      {t('onboarding.screen_3.description_part_1')}{' '}
       <AppText variant="body" color="success" style={{ fontWeight: '600' }}>
-        {t('onboarding.screen3.description_accent_success')}
+        {t('onboarding.screen_3.description_essential')}
       </AppText>
-      {' '}{t('onboarding.screen3.description_part2')}{' '}
+      {' '}{t('onboarding.screen_3.description_part_2')}{' '}
       <AppText variant="body" color="warning" style={{ fontWeight: '600' }}>
-        {t('onboarding.screen3.description_accent_warning')}
+        {t('onboarding.screen_3.description_discretionary')}
       </AppText>
-      {t('onboarding.screen3.description_part3')}
+      {t('onboarding.screen_3.description_part_3')}
     </>
   );
 
@@ -68,14 +68,14 @@ export default function Onboarding3() {
     <OnboardingStep
       stepNumber={3}
       totalSteps={3}
-      title={t('onboarding.screen3.title')}
+      title={t('onboarding.screen_3.title')}
       description={description}
-      iconName="checkmark-done-outline"
+      iconName="layers-outline"
       iconLibrary="Ionicons"
-      buttonText={t('onboarding.get_started', 'Comenzar Ahora')}
+      buttonText={t('onboarding.navigation.get_started')}
       onNext={handleFinish}
       onSkip={handleSkip}
-      skipButtonText={t('onboarding.skip')}
+      skipButtonText={t('onboarding.navigation.skip_onboarding')}
       buttonStatus="accent" 
     />
   );

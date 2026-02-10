@@ -1,15 +1,18 @@
 import React, { useEffect } from "react";
 import { View } from "react-native";
 import { useRouter } from "expo-router";
+import { useTranslation } from "react-i18next";
 import AppText from "@/components/atoms/content/AppText";
 import AppStack from "@/components/atoms/structure/AppStack";
 import AppContainer from "@/components/atoms/structure/AppContainer";
 import AppIcon from "@/components/atoms/content/AppIcon";
 import { PALETTE } from "@/constants/colors";
 import { SPACING } from "@/constants/metrics";
+import { getAppInfoForFooter } from "@/utils/version"; 
 
 export default function SuccessAnimation() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -37,8 +40,9 @@ export default function SuccessAnimation() {
           </View>
 
           <AppStack align="center" gap="xs">
+            {/* Título internacionalizado */}
             <AppText variant="h1" style={{ fontSize: 32, textAlign: 'center' }}>
-              ¡Todo listo!
+              {t("animations.success.title")}
             </AppText>
             
             <View style={{ 
@@ -49,17 +53,36 @@ export default function SuccessAnimation() {
               marginVertical: SPACING.s 
             }} />
 
+            {/* Subtítulo internacionalizado */}
             <AppText 
               variant="body" 
               color="secondary" 
               align="center"
               style={{ opacity: 0.9 }}
             >
-              Estamos configurando tu tablero personal...
+              {t("animations.success.subtitle")}
             </AppText>
+            
+            {/* Slogan traducido */}
+            <View style={{ marginTop: SPACING.xl }}>
+              <AppText 
+                variant="label" 
+                color="secondary" 
+                align="center"
+                style={{ opacity: 0.6, letterSpacing: 1 }}
+              >
+                {t("animations.success.app_slogan")}
+              </AppText>
+            </View>
           </AppStack>
         </AppStack>
 
+        {/* Pie de página con función centralizada */}
+        <View style={{ position: "absolute", bottom: SPACING.xxl }}>
+          <AppText variant="label" color="secondary" style={{ opacity: 0.4 }}>
+            {getAppInfoForFooter(true, "Alpha")}
+          </AppText>
+        </View>
       </AppStack>
     </AppContainer>
   );

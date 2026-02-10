@@ -1,9 +1,9 @@
 // ============================================================================
-// SEGUNDO PASO DE CONFIGURACIÓN - "Definir Presupuesto"
+// SEGUNDO PASO DE CONFIGURACIÓN - "Tu presupuesto"
 //
-// Pantalla donde el usuario establece el monto total de su presupuesto (oxígeno)
-// para la misión. Incluye validación en tiempo real y navegación al siguiente
-// paso (duración) una vez que el presupuesto es válido.
+// Pantalla donde el usuario establece el monto total de su presupuesto
+// para comenzar con SURV. Incluye validación en tiempo real y navegación
+// al siguiente paso (duración) una vez que el presupuesto es válido.
 // ============================================================================
 
 import React from "react";
@@ -58,7 +58,7 @@ export default function SetupBudgetScreen() {
     setIsValid(validation.isValid); // Habilita/deshabilita botón siguiente
   };
 
-  // MANEJADOR PARA EL BOTÓN "SIGUIENTE"
+  // MANEJADOR PARA EL BOTÓN "CONTINUAR"
   // --------------------------------------------------------------------------
   // Realiza una validación final antes de navegar al paso de duración.
   // Si es válido, navega pasando la moneda y el presupuesto como parámetros.
@@ -79,18 +79,18 @@ export default function SetupBudgetScreen() {
   // completamente desacopladas de la UI.
   return (
     <SetupStepLayout
-      title={t("setup.budget_label", "¿Cuánto oxígeno tienes?")}
+      title={t("setup.budget_screen.title", "¿Cuánto dinero tienes disponible?")}
       description={t(
-        "setup.resources_description",
-        "Define cuánto oxígeno tienes para esta misión."
+        "setup.budget_screen.description",
+        "Comencemos definiendo tu presupuesto inicial"
       )}
       totalSteps={3}
       currentStep={1}
-      actionButtonText={t("onboarding.next", "Siguiente")}
+      actionButtonText={t("common.continue", "Continuar")}
       onActionPress={handleNext}
       onBackPress={navigateBack}
       isActionDisabled={!isValid || !budget.trim()}
-      iconName="wallet-outline"
+      iconName="calculator-outline" 
     >
       <BudgetSection
         currency={currency}

@@ -13,7 +13,6 @@ import { CurrencyModalProps } from "./index.props";
 import { PALETTE } from "@/constants/colors";
 import { SPACING, BORDER_RADIUS } from "@/constants/metrics";
 
-
 export const CurrencyModal: React.FC<CurrencyModalProps> = ({
   isOpen,
   onClose,
@@ -26,7 +25,7 @@ export const CurrencyModal: React.FC<CurrencyModalProps> = ({
     <AppModal
       isOpen={isOpen}
       onClose={onClose}
-      title={t("setup.currency_modal_title", "Divisa")}
+      title={t("setup.modals.currency.title", "Choose Your Currency")}
     >
       <ScrollView style={{ maxHeight: 400 }}>
         <AppStack gap="s">

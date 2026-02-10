@@ -1,102 +1,169 @@
 {
   "common": {
-    "oxygen_tank": "Oxygen Tank",
-    "vital_supply": "Vital Supply",
-    "leak_luxury": "Leak / Luxury",
-    "extreme_mode": "EXTREME MODE",
-    "life_time": "Life Time",
-    "error": "Error",
-    "back": "Back"
+    "total_budget": "Your Budget",
+    "essential_expenses": "The Essentials",
+    "discretionary_spending": "The Flexible",
+    "saving_mode": "CAREFUL MODE ACTIVATED",
+    "financial_autonomy": "Your Days of Tranquility",
+    "error": "Something went wrong",
+    "back": "Back",
+    "continue": "Continue",
+    "confirm": "Ready, confirm",
+    "skip": "Skip",
+    "days": "days",
+    "daily": "each day",
+    "total": "total",
+    "select": "Choose",
+    "custom": "Customize",
+    "companion": "Your SURV Companion",
+    "processing": "Preparing everything...",
+    "days_short": "d",
+    "error_occurred": "Something went wrong"
   },
-  "setup": {
-    "title": "Mission Start",
-    "subtitle": "Configure your supplies for the period.",
-    "initial_configuration": "INITIAL CONFIGURATION",
-    "budget_label": "How much oxygen do you have?",
-    "days_label": "How many days should it last?",
-    "currency_label": "Mission currency",
-    "resources_title": "RESOURCES",
-    "resources_description": "Define how much oxygen you have and for how long it should last.",
-    "budget_placeholder": "Total budget",
-    "period_label": "Period duration",
-    "custom_days_placeholder": "Number of days",
-    "custom_days_label": "Custom days",
-    "daily_budget": "Daily budget:",
-    "divisa_title": "CURRENCY",
-    "divisa_description": "Select the currency with which you will manage your oxygen.",
-    "mission_currency": "Mission currency",
-    "completion": "Completed",
-    "start_mission": "START MISSION",
-    "complete_configuration": "COMPLETE CONFIGURATION",
-    "confirmation_title": "All set?",
-    "confirmation_message": "You will start with {{amount}} for {{days}} days.",
-    "confirmation_daily": "Daily: {{amount}}",
-    "confirm": "CONFIRM",
-    "currency_modal_title": "Currency",
-    "period_modal_title": "Duration",
-    "period_custom": "Custom",
-    "vault_config_error": "We couldn't configure your vault.",
-    "period_options": {
-      "weekly": {
-        "label": "Weekly",
-        "description": "7 days"
-      },
-      "biweekly": {
-        "label": "Biweekly",
-        "description": "15 days"
-      },
-      "monthly": {
-        "label": "Monthly",
-        "description": "30 days"
-      },
-      "custom": {
-        "label": "Custom",
-        "description": "Choose your days"
-      }
+  "animations": {
+    "loading": {
+      "subtitle": "Loading"
     },
-    "total_for_days": "Total for {{days}} days:",
-    "back_button": "Back",
-    "configuring": "Configuring...",
-    "start_mission_confirmation": "START MISSION"
-  },
-  "dashboard": {
-    "remaining_days": "You have {{count}} days of oxygen left",
-    "safe_status": "SAFE OPERATION",
-    "warning_status": "LEAK DETECTED"
+    "success": {
+      "title": "Everything ready!",
+      "subtitle": "We are setting up your personal dashboard...",
+      "app_slogan": "Your financial companion"
+    },
+    "transition": {
+      "title": "Loading resources",
+      "subtitle": "Preparing the initial setup of your mission..."
+    }
   },
   "onboarding": {
-    "skip": "Skip",
-    "next": "Next",
-    "get_started": "Get Started",
-    "screen1": {
-      "title": "Your money is your oxygen",
-      "description_part1": "At SURV, we turn your savings into",
-      "description_accent": "days of peace",
-      "description_part2": ". You'll know exactly how much you have left to breathe."
+    "screen_1": {
+      "title": "Imagine Your Money as Time",
+      "description_part_1": "In SURV, we turn your savings into",
+      "description_highlight": "days of calm and control",
+      "description_part_2": ". You'll always know how long your funds will cover you."
     },
-    "screen2": {
-      "title": "We'll tell you how many days you have",
-      "description_part1": "You won't see boring balances.",
-      "description_accent": "You'll see remaining days of financial life",
-      "description_part2": "."
+    "screen_2": {
+      "title": "See Your Day-to-Day Clearly",
+      "description_part_1": "Leave behind numbers that don't tell you anything.",
+      "description_highlight": "Here you see the days ahead of you",
+      "description_part_2": "."
     },
-    "screen3": {
-      "title": "Important vs. Whim",
-      "description_part1": "Only two categories: what",
-      "description_accent_success": "keeps you alive",
-      "description_part2": "and what",
-      "description_accent_warning": "makes you happy",
-      "description_part3": "."
+    "screen_3": {
+      "title": "What You Need vs. What You Love",
+      "description_part_1": "Just two buttons: what",
+      "description_essential": "supports you and gives you peace",
+      "description_part_2": "and what",
+      "description_discretionary": "makes you smile",
+      "description_part_3": "."
+    },
+    "navigation": {
+      "next": "Next",
+      "get_started": "Start Now",
+      "skip_onboarding": "Skip"
+    }
+  },
+  "setup": {
+    "titles": {
+      "main": "Let's Get Everything Ready",
+      "subtitle": "Tell me how you'd like me to accompany you",
+      "initial_configuration": "INITIAL CONFIGURATION"
+    },
+    "budget_screen": {
+      "title": "How Much Money Do You Have Available?",
+      "description": "Tell me your budget"
+    },
+    "budget_section": {
+      "title": "YOUR RESOURCES",
+      "description": "How much do you have to start with?",
+      "budget_placeholder": "Write the total amount",
+      "budget_label": "What's your budget?"
+    },
+    "duration_screen": {
+      "title": "How Many Days Are You Planning For?",
+      "description": "Define your time plan to distribute the money",
+      "final_action": "Start"
+    },
+    "duration_section": {
+      "title": "Your Plan",
+      "description": "In how many days do you want to distribute your money?",
+      "period_label": "Select the duration",
+      "custom_days_label": "Days to your measure",
+      "custom_days_placeholder": "How many days?",
+      "daily_budget_label": "For each day:",
+      "total_for_period": "Total for {{days}} days:",
+      "ready_message": "Everything ready to start!"
+    },
+    "period_section": {
+      "title": "YOUR PLAN",
+      "description": "In how many days do you want to distribute your money?",
+      "period_label": "How many days are you planning for?",
+      "custom_days_label": "Days to your measure",
+      "custom_days_placeholder": "How many days?",
+      "options": {
+        "weekly": {
+          "label": "Weekly",
+          "description": "7 days"
+        },
+        "biweekly": {
+          "label": "Biweekly",
+          "description": "15 days"
+        },
+        "monthly": {
+          "label": "Monthly",
+          "description": "30 days"
+        },
+        "custom": {
+          "label": "Custom",
+          "description": "You define the time"
+        }
+      }
+    },
+    "currency_section": {
+      "title": "YOUR CURRENCY",
+      "description": "With which currency do you handle your expenses?",
+      "currency_label": "Choose your currency",
+      "modal_title": "Choose a Currency"
+    },
+    "completion": {
+      "title": "Everything Ready to Start?",
+      "configuration_summary": "You'll start with {{amount}} for {{days}} days",
+      "daily_summary": "For each day: {{amount}}",
+      "start_management": "START",
+      "complete_configuration": "FINISH CONFIGURATION",
+      "configuring": "Preparing everything for you..."
+    },
+    "errors": {
+      "vault_configuration": "Oops, I couldn't set up your space",
+      "vault_config_error": "Oops, I couldn't prepare your space",
+      "configuration_failed": "We couldn't prepare your space"
+    },
+    "modals": {
+      "currency": {
+        "title": "Choose Your Currency"
+      },
+      "period": {
+        "title": "Choose the Duration"
+      }
+    }
+  },
+  "dashboard": {
+    "remaining_autonomy": "You have {{count}} days of tranquility ahead",
+    "status": {
+      "safe": "EVERYTHING IS FINE",
+      "warning": "LET'S REVIEW"
     }
   },
   "validation": {
-    "min_budget": "Minimum {{amount}}",
-    "max_budget": "Maximum {{amount}}",
-    "valid_number": "Enter a valid number",
-    "budget_required": "Enter a budget",
-    "min_days": "Minimum {{count}} day",
-    "min_days_plural": "Minimum {{count}} days",
-    "max_days": "Maximum {{count}} days (1 year)",
-    "days_required": "Enter the number of days"
+    "budget": {
+      "minimum": "You need at least {{amount}}",
+      "maximum": "The maximum is {{amount}}",
+      "valid_number": "Please, write a valid number",
+      "required": "I need to know your budget"
+    },
+    "days": {
+      "minimum": "At least {{count}} day",
+      "minimum_plural": "At least {{count}} days",
+      "maximum": "Maximum {{count}} days (one year)",
+      "required": "I need to know for how many days"
+    }
   }
 }

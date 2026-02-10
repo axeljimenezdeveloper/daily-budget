@@ -7,7 +7,10 @@ export const useSetupValidation = () => {
 
   const validateBudget = (value: string, currencySymbol: string = "$") => {
     if (!value.trim()) {
-      return { isValid: false, error: null };
+      return { 
+        isValid: false, 
+        error: t("validation.budget.required", "Necesito saber tu presupuesto") 
+      };
     }
 
     const numValue = parseFloat(value);
@@ -15,14 +18,14 @@ export const useSetupValidation = () => {
     if (isNaN(numValue)) {
       return { 
         isValid: false, 
-        error: t("validation.valid_number", "Ingresa un número válido") 
+        error: t("validation.budget.valid_number", "Por favor, escribe un número válido") 
       };
     }
 
     if (numValue < MIN_BUDGET) {
       return { 
         isValid: false, 
-        error: t("validation.min_budget", "Mínimo {{amount}}", {
+        error: t("validation.budget.minimum", "Necesitas al menos {{amount}}", {
           amount: `${MIN_BUDGET} ${currencySymbol}`
         }) 
       };
@@ -31,7 +34,7 @@ export const useSetupValidation = () => {
     if (numValue > MAX_BUDGET) {
       return { 
         isValid: false, 
-        error: t("validation.max_budget", "Máximo {{amount}}", {
+        error: t("validation.budget.maximum", "El máximo es {{amount}}", {
           amount: `${MAX_BUDGET.toLocaleString()} ${currencySymbol}`
         }) 
       };
@@ -44,7 +47,7 @@ export const useSetupValidation = () => {
     if (!value.trim()) {
       return { 
         isValid: false, 
-        error: t("validation.days_required", "Ingresa la cantidad de días") 
+        error: t("validation.days.required", "Necesito saber para cuántos días") 
       };
     }
 
@@ -53,14 +56,14 @@ export const useSetupValidation = () => {
     if (isNaN(numValue)) {
       return { 
         isValid: false, 
-        error: t("validation.valid_number", "Ingresa un número válido") 
+        error: t("validation.budget.valid_number", "Por favor, escribe un número válido") 
       };
     }
 
     if (numValue < MIN_DAYS) {
       return { 
         isValid: false, 
-        error: t("validation.min_days", "Mínimo {{count}} día", {
+        error: t("validation.days.minimum", "Al menos {{count}} día", {
           count: MIN_DAYS
         }) 
       };
@@ -69,7 +72,7 @@ export const useSetupValidation = () => {
     if (numValue > MAX_DAYS) {
       return { 
         isValid: false, 
-        error: t("validation.max_days", "Máximo {{count}} días (1 año)", {
+        error: t("validation.days.maximum", "Máximo {{count}} días (un año)", {
           count: MAX_DAYS
         }) 
       };

@@ -21,18 +21,18 @@ export const CurrencySection: React.FC<CurrencySectionProps> = ({
       <AppStack gap="s">
         <AppStack direction="horizontal" align="center" gap="xs">
           <AppText variant="h3" color="accent" style={{ fontSize: 16 }}>
-            {t("setup.divisa_title", "DIVISA")}
+            {t("setup.currency_section.title", "TU MONEDA")}
           </AppText>
         </AppStack>
 
         <AppText variant="caption" color="secondary" style={{ marginBottom: SPACING.xs }}>
-          {t("setup.divisa_description", "Selecciona la moneda con la que gestionarás tu oxígeno.")}
+          {t("setup.currency_section.description", "¿Con qué moneda manejas tus gastos?")}
         </AppText>
 
         <AppSelect
           value={`${currency.flag} ${currency.code} (${currency.symbol})`}
           onPress={onOpenModal}
-          label={t("setup.mission_currency", "Moneda de la misión")}
+          label={t("setup.currency_section.currency_label", "Elige tu moneda")}
         />
 
         {currency && (

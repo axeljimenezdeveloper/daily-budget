@@ -1,22 +1,22 @@
 // ============================================================================
-// PRIMERA PANTALLA DEL ONBOARDING - "¿Qué es el oxígeno financiero?"
-// 
+// PRIMERA PANTALLA DEL ONBOARDING - "Tu dinero como medida de tiempo"
+//
 // Esta pantalla introduce el concepto central de la aplicación usando una
-// metáfora visual (icono de agua rotado) y texto formatteado para destacar
+// metáfora visual (icono de agua rotado) y texto formateado para destacar
 // palabras clave.
 // ============================================================================
 
-import React from 'react';
-import { useRouter } from 'expo-router';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { useRouter } from "expo-router";
+import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------------
 // COMPONENTES REUTILIZABLES
 // ----------------------------------------------------------------------------
 // Usamos nuestro componente OnboardingStep que encapsula toda la UI común
 // y AppText para partes específicas del texto con formato especial
-import { OnboardingStep } from '@/components/templates/onboarding/components/steps/OnboardingStep';
-import AppText from '@/components/atoms/content/AppText';
+import { OnboardingStep } from "@/components/templates/onboarding/components/steps/OnboardingStep";
+import AppText from "@/components/atoms/content/AppText";
 
 // ----------------------------------------------------------------------------
 // COMPONENTE PRINCIPAL - Onboarding1
@@ -24,15 +24,15 @@ import AppText from '@/components/atoms/content/AppText';
 export default function Onboarding1() {
   // HOOKS PARA NAVEGACIÓN E INTERNACIONALIZACIÓN
   // --------------------------------------------------------------------------
-  const router = useRouter();          // Navegación entre pantallas
-  const { t } = useTranslation();      // Traducciones i18n
+  const router = useRouter(); // Navegación entre pantallas
+  const { t } = useTranslation(); // Traducciones i18n
 
   // MANEJADORES DE NAVEGACIÓN
   // --------------------------------------------------------------------------
   // handleNext: Avanza al segundo paso del onboarding
   // handleSkip: Salta todo el flujo y va directamente a la animación de transición
-  const handleNext = () => router.push('/(welcome)/onboarding2');
-  const handleSkip = () => router.replace('/(animations)/transition');
+  const handleNext = () => router.push("/(welcome)/onboarding2");
+  const handleSkip = () => router.replace("/(animations)/transition");
 
   // CONSTRUCCIÓN DE DESCRIPCIÓN CON FORMATO
   // --------------------------------------------------------------------------
@@ -40,11 +40,11 @@ export default function Onboarding1() {
   // para enfatizar el concepto principal. Se usa JSX para el formateo especial.
   const description = (
     <>
-      {t('onboarding.screen1.description_part1')}{' '}
-      <AppText variant="body" color="accent" style={{ fontWeight: '600' }}>
-        {t('onboarding.screen1.description_accent')}
+      {t("onboarding.screen_1.description_part_1")}{" "}
+      <AppText variant="body" color="accent" style={{ fontWeight: "600" }}>
+        {t("onboarding.screen_1.description_highlight")}
       </AppText>
-      {t('onboarding.screen1.description_part2')}
+      {"."}
     </>
   );
 
@@ -61,14 +61,14 @@ export default function Onboarding1() {
     <OnboardingStep
       stepNumber={1}
       totalSteps={3}
-      title={t('onboarding.screen1.title')}
+      title={t("onboarding.screen_1.title")}
       description={description}
-      iconName="water-outline"
-      iconLibrary="Ionicons" 
-      buttonText={t('onboarding.next')}
+      iconName="hourglass-outline"
+      iconLibrary="Ionicons"
+      buttonText={t("onboarding.navigation.next")}
       onNext={handleNext}
       onSkip={handleSkip}
-      skipButtonText={t('onboarding.skip')}
+      skipButtonText={t("onboarding.navigation.skip_onboarding")}
       buttonStatus="primary"
       iconRotation={45}
     />

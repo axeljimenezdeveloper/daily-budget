@@ -31,7 +31,7 @@ export const BudgetSection: React.FC<BudgetSectionProps> = ({
       {/* Encabezado de sección con badge */}
       <AppStack direction="horizontal" align="center" gap="xs">
         <AppText variant="h3" color="accent" style={{ fontSize: 16 }}>
-          {t("setup.resources_title", "RECURSOS")}
+          {t("setup.budget_section.title", "Tus recursos")}
         </AppText>
         <AppBadge
           label={currency.code}
@@ -42,16 +42,16 @@ export const BudgetSection: React.FC<BudgetSectionProps> = ({
       </AppStack>
       
       <AppText variant="caption" color="secondary" style={{ marginBottom: SPACING.xs }}>
-        {t("setup.resources_description", "Define cuánto oxígeno tienes y para cuánto tiempo debe durar.")}
+        {t("setup.budget_section.description", "¿De cuánto dispones y para cuánto tiempo quieres que te alcance?")}
       </AppText>
 
       <AppNumberInput
         value={budget}
         onChange={onBudgetChange}
-        placeholder={t("setup.budget_placeholder", "Presupuesto total")}
+        placeholder={t("setup.budget_section.budget_placeholder", "Escribe el monto total")}
         currencySymbol={currency.symbol}
         status={getInputStatus()}
-        label={t("setup.budget_label", "¿Cuánto oxígeno tienes?")}
+        label={t("setup.budget_section.budget_label", "¿Cuál es tu presupuesto?")}
         showStepper={true}
         min={MIN_BUDGET}
         max={MAX_BUDGET}

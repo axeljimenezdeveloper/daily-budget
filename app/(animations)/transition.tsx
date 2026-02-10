@@ -1,14 +1,17 @@
 import React, { useEffect } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { useRouter } from "expo-router";
+import { useTranslation } from "react-i18next";
 import AppText from "@/components/atoms/content/AppText";
 import AppStack from "@/components/atoms/structure/AppStack";
 import AppContainer from "@/components/atoms/structure/AppContainer";
 import { PALETTE } from "@/constants/colors";
 import { SPACING } from "@/constants/metrics";
+import { getAppInfoForFooter } from "@/utils/version"; // Importar función centralizada
 
 export default function TransitionAnimation() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -40,6 +43,7 @@ export default function TransitionAnimation() {
 
           {/* Contenido textual */}
           <AppStack align="center" gap="xs">
+            {/* Título internacionalizado */}
             <AppText 
               variant="h1" 
               style={{ 
@@ -48,7 +52,7 @@ export default function TransitionAnimation() {
                 textAlign: 'center'
               }}
             >
-              Cargando recursos
+              {t("animations.transition.title")}
             </AppText>
             
             <View
@@ -61,6 +65,7 @@ export default function TransitionAnimation() {
               }}
             />
             
+            {/* Subtítulo internacionalizado */}
             <AppText
               variant="body"
               color="secondary"
@@ -71,15 +76,15 @@ export default function TransitionAnimation() {
                 opacity: 0.9
               }}
             >
-              Preparando la configuración inicial de tu misión...
+              {t("animations.transition.subtitle")}
             </AppText>
           </AppStack>
         </AppStack>
 
-        {/* Indicador de versión */}
+        {/* Pie de página con función centralizada */}
         <View style={{ position: "absolute", bottom: SPACING.xxl }}>
           <AppText variant="label" color="secondary" style={{ opacity: 0.4 }}>
-            SURV • v1.29.0
+            {getAppInfoForFooter(true, "Alpha")}
           </AppText>
         </View>
       </AppStack>

@@ -40,11 +40,11 @@ export default function Onboarding2() {
   // que enfatizan el concepto de gestión temporal y planificación
   const description = (
     <>
-      {t('onboarding.screen2.description_part1')}{' '}
+      {t('onboarding.screen_2.description_part_1')}{' '}
       <AppText variant="body" color="accent" style={{ fontWeight: '600' }}>
-        {t('onboarding.screen2.description_accent')}
+        {t('onboarding.screen_2.description_highlight')}
       </AppText>
-      {t('onboarding.screen2.description_part2')}
+      {t('onboarding.screen_2.description_part_2')}
     </>
   );
 
@@ -60,14 +60,14 @@ export default function Onboarding2() {
     <OnboardingStep
       stepNumber={2}
       totalSteps={3}
-      title={t('onboarding.screen2.title')}
+      title={t('onboarding.screen_2.title')}
       description={description}
-      iconName="calendar-outline"
+      iconName="eye-outline"
       iconLibrary="Ionicons"
-      buttonText={t('onboarding.next')}
+      buttonText={t('onboarding.navigation.next')}
       onNext={handleNext}
       onSkip={handleSkip}
-      skipButtonText={t('onboarding.skip')}
+      skipButtonText={t('onboarding.navigation.skip_onboarding')}
       buttonStatus="primary"
     />
   );

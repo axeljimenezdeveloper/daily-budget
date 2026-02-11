@@ -1,7 +1,25 @@
+// ============================================================================
+// LAYOUT BASE PARA TODAS LAS PANTALLAS DE CONFIGURACIÓN (SetupStepLayout)
+//
+// Este componente proporciona la estructura visual común a los pasos de:
+// - Selección de moneda (setup-currency)
+// - Ingreso de presupuesto (setup-budget)
+// - Selección de duración (setup-duration)
+//
+// Incluye: botón de retroceso, ícono decorativo, título, descripción,
+// área de contenido dinámico (children), indicador de progreso y botón de acción.
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// DEPENDENCIAS EXTERNAS
+// ----------------------------------------------------------------------------
 import React from "react";
 import { ScrollView, View } from "react-native";
 import { useTranslation } from "react-i18next";
 
+// ----------------------------------------------------------------------------
+// COMPONENTES ATÓMICOS REUTILIZABLES
+// ----------------------------------------------------------------------------
 import AppContainer from "@/components/atoms/structure/AppContainer";
 import AppStack from "@/components/atoms/structure/AppStack";
 import AppText from "@/components/atoms/content/AppText";
@@ -9,11 +27,23 @@ import AppIcon from "@/components/atoms/content/AppIcon";
 import AppButton from "@/components/atoms/action/AppButton";
 import AppProgressDots from "@/components/atoms/visual/AppProgressDots";
 
+// ----------------------------------------------------------------------------
+// PROPS Y CONSTANTES GLOBALES
+// ----------------------------------------------------------------------------
 import { SetupStepLayoutProps } from "./index.props";
-
 import { PALETTE } from "@/constants/colors";
 import { SPACING, BORDER_RADIUS } from "@/constants/metrics";
 
+// ----------------------------------------------------------------------------
+// COMPONENTE PRINCIPAL
+// ----------------------------------------------------------------------------
+
+/**
+ * SetupStepLayout – Estructura base para pantallas del flujo de configuración.
+ *
+ * @param props - Ver SetupStepLayoutProps en index.props.ts
+ * @returns Componente con layout completo de paso de configuración.
+ */
 export const SetupStepLayout: React.FC<SetupStepLayoutProps> = ({
   title,
   description,
@@ -32,8 +62,15 @@ export const SetupStepLayout: React.FC<SetupStepLayoutProps> = ({
 }) => {
   const { t } = useTranslation();
 
+  // RENDERIZADO
+  // --------------------------------------------------------------------------
   return (
     <AppContainer style={{ backgroundColor }}>
+      {/* ----------------------------------------------------------------
+        BOTÓN DE RETROCESO (opcional)
+        Se muestra solo si showBackButton es true. El botón tiene estilo
+        outline y texto traducido "common.back".
+      ---------------------------------------------------------------- */}
       {showBackButton && (
         <AppStack 
           direction="horizontal" 
@@ -74,6 +111,11 @@ export const SetupStepLayout: React.FC<SetupStepLayoutProps> = ({
             gap="l"
             style={{ width: "100%", maxWidth: 400 }}
           >
+            {/* ------------------------------------------------------------
+              CÍRCULO DECORATIVO CON ÍCONO
+              Fondo semitransparente basado en accentColor, borde del mismo
+              color. El ícono se personaliza mediante iconName.
+            ------------------------------------------------------------ */}
             <View
               style={{
                 padding: SPACING.l,
@@ -92,6 +134,11 @@ export const SetupStepLayout: React.FC<SetupStepLayoutProps> = ({
               />
             </View>
 
+            {/* ------------------------------------------------------------
+              ENCABEZADO DE TEXTO: TÍTULO Y DESCRIPCIÓN
+              Título con variant h1, descripción con color secundario.
+              La descripción es opcional.
+            ------------------------------------------------------------ */}
             <AppStack align="center" gap="xs" style={{ width: "100%", marginBottom: SPACING.l }}>
               <AppText 
                 variant="h1" 
@@ -113,8 +160,18 @@ export const SetupStepLayout: React.FC<SetupStepLayoutProps> = ({
               )}
             </AppStack>
 
+            {/* ------------------------------------------------------------
+              CONTENIDO DINÁMICO DEL PASO
+              Se inyecta mediante children (BudgetSection, CurrencySection,
+              DurationSection, etc.)
+            ------------------------------------------------------------ */}
             {children}
 
+            {/* ------------------------------------------------------------
+              INDICADOR DE PROGRESO
+              Muestra el paso actual respecto al total de pasos del flujo.
+              El color activo se toma de accentColor.
+            ------------------------------------------------------------ */}
             <View style={{ marginBottom: SPACING.xl }}>
               <AppProgressDots
                 total={totalSteps}
@@ -127,6 +184,12 @@ export const SetupStepLayout: React.FC<SetupStepLayoutProps> = ({
               />
             </View>
 
+            {/* ------------------------------------------------------------
+              BOTÓN DE ACCIÓN PRINCIPAL
+              Texto configurable (actionButtonText). Se deshabilita cuando
+              isActionDisabled o isProcessing es true. Muestra "Procesando..."
+              durante el estado de carga.
+            ------------------------------------------------------------ */}
             <AppStack style={{ width: "100%" }}>
               <AppButton
                 onPress={onActionPress}

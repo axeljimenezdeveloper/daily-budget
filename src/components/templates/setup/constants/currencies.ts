@@ -1,5 +1,36 @@
+// ============================================================================
+// CONSTANTES DE MONEDAS DISPONIBLES PARA CONFIGURACIÓN
+//
+// Lista predefinida de monedas que el usuario puede seleccionar durante el
+// flujo de configuración (setup-currency). Incluye símbolo, código ISO,
+// nombre, bandera y locale para formateo numérico.
+//
+// La primera moneda (USD) se establece como selección por defecto.
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// IMPORTACIÓN DE TIPOS
+// ----------------------------------------------------------------------------
 import { Currency } from '../types';
 
+// ----------------------------------------------------------------------------
+// LISTA DE MONEDAS
+// ----------------------------------------------------------------------------
+/**
+ * Array de monedas disponibles para el usuario.
+ * 
+ * Cada objeto cumple con la interfaz Currency y contiene:
+ * - symbol: Símbolo monetario visible.
+ * - name: Nombre completo en español.
+ * - code: Código ISO 4217 (usado como identificador único).
+ * - flag: Emoji de la bandera del país o región.
+ * - locale: Locale para formateo de cantidades (ej. "en-US", "es-ES").
+ * 
+ * La lista incluye monedas de América Latina, Estados Unidos, Europa y Reino Unido,
+ * cubriendo los casos de uso más frecuentes del público objetivo de SURV.
+ * 
+ * @default USD es la moneda preseleccionada por defecto.
+ */
 export const CURRENCY_LIST: Currency[] = [
   {
     symbol: "$",
@@ -50,7 +81,13 @@ export const CURRENCY_LIST: Currency[] = [
     flag: "🇧🇷",
     locale: "pt-BR",
   },
-  { symbol: "€", name: "Euro", code: "EUR", flag: "🇪🇺", locale: "es-ES" },
+  {
+    symbol: "€",
+    name: "Euro",
+    code: "EUR",
+    flag: "🇪🇺",
+    locale: "es-ES",
+  },
   {
     symbol: "£",
     name: "Libra Esterlina",

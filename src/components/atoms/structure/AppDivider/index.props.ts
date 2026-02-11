@@ -1,13 +1,17 @@
-import { SPACING } from "@/constants/metrics"; // Standardized spacing system
+import { ViewStyle } from "react-native";
+import { PALETTE } from "@/constants/colors";
+import { SPACING } from "@/constants/metrics";
 
-// Restricted selection of colors that make sense for a divider
-export type DividerColor = "darkBorder" | "slateGray" | "nightBlue";
+export type DividerColor = "darkBorder" | "slateGray" | "nightBlue" | keyof typeof PALETTE | string;
 
-// Predefined thickness levels to avoid arbitrary pixel values
-export type DividerThickness = 0.5 | 1 | 2;
+export type DividerThickness = 0.5 | 1 | 2 | number;
 
 export interface AppDividerProps {
-  color?: DividerColor; // Controlled color selection
-  thickness?: DividerThickness; // Restricted line weight
-  marginVertical?: keyof typeof SPACING; // Vertical margin from the metrics scale
+  color?: DividerColor;
+  thickness?: DividerThickness;
+  marginVertical?: keyof typeof SPACING;
+  width?: number | string;
+  borderRadius?: number;
+  alignSelf?: ViewStyle["alignSelf"];
+  marginHorizontal?: keyof typeof SPACING;
 }

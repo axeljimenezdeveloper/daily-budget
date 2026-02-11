@@ -8,8 +8,6 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "release": "standard-version",
-    "prerelease": "node scripts/sync-version.js",
-    "postrelease": "git add src/constants/app.ts && git commit --amend --no-edit",
     "make:logs": "node -e \"require('fs').mkdirSync('logs', { recursive: true })\"",
     "log": "npm run make:logs && git log --oneline > logs/historial.txt",
     "diff": "npm run make:logs && git diff HEAD > logs/diff.patch"

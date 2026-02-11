@@ -1,7 +1,8 @@
-import { StyleSheet } from "react-native"; // Native styling engine
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   base: {
-    width: "100%", // Ensures the divider spans the full width of its container
+    // width ahora es dinámico, se maneja en el componente
+    // borderRadius ahora es dinámico
   },
 });

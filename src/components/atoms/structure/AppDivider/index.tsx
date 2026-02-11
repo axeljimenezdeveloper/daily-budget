@@ -1,21 +1,41 @@
-import React from "react"; // Core React library for component logic
-import { View } from "react-native"; // Fundamental UI component
-import { PALETTE } from "@/constants/colors"; // Application color constants
-import { SPACING } from "@/constants/metrics"; // Design system spacing metrics
-import { AppDividerProps } from "./index.props"; // Component properties interface
-import { styles } from "./index.styles"; // Static styles
+import React from "react";
+import { View } from "react-native";
+import { PALETTE } from "@/constants/colors";
+import { SPACING } from "@/constants/metrics";
+import { AppDividerProps } from "./index.props";
+import { styles } from "./index.styles";
 
 export default function AppDivider({
-  color = "darkBorder", // Default subtle divider color
-  thickness = 1, // Standard thin weight
-  marginVertical = "m", // Default 16px spacing
+  color = "darkBorder",
+  thickness = 1,
+  marginVertical = "m",
+  width = "100%",
+  borderRadius = 0,
+  alignSelf = "center",
+  marginHorizontal,
 }: AppDividerProps) {
   
-  // Dynamic styles constrained by the defined types
+  const getColor = () => {
+    // Si es una clave predefinida de DividerColor original
+    if (color === "darkBorder" || color === "slateGray" || color === "nightBlue") {
+      return PALETTE[color];
+    }
+    // Si es una clave de PALETTE
+    if (color in PALETTE) {
+      return PALETTE[color as keyof typeof PALETTE];
+    }
+    // Si es un string de color directo (hex, rgb, etc.)
+    return color;
+  };
+
   const dynamicStyle = {
-    backgroundColor: PALETTE[color], // Sets color from the restricted palette
-    height: thickness, // Sets the restricted thickness
-    marginVertical: SPACING[marginVertical], // Applies the standardized vertical gap
+    backgroundColor: getColor(),
+    height: thickness,
+    marginVertical: SPACING[marginVertical],
+    width: typeof width === "number" ? width : width,
+    borderRadius,
+    alignSelf,
+    ...(marginHorizontal && { marginHorizontal: SPACING[marginHorizontal] }),
   };
 
   return <View style={[styles.base, dynamicStyle]} />;

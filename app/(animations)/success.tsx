@@ -1,89 +1,24 @@
-import React, { useEffect } from "react";
-import { View } from "react-native";
-import { useRouter } from "expo-router";
-import { useTranslation } from "react-i18next";
-import AppText from "@/components/atoms/content/AppText";
-import AppStack from "@/components/atoms/structure/AppStack";
-import AppContainer from "@/components/atoms/structure/AppContainer";
-import AppIcon from "@/components/atoms/content/AppIcon";
-import { PALETTE } from "@/constants/colors";
-import { SPACING } from "@/constants/metrics";
-import { getAppInfoForFooter } from "@/utils/version"; 
+// ============================================================================
+// PANTALLA DE ÉXITO - "Configuración completada"
+//
+// Esta pantalla se muestra inmediatamente después de que el usuario finaliza
+// el flujo de configuración (paso de duración). Confirma visualmente que todo
+// está listo y redirige automáticamente a la sección principal de la app
+// después de 1800ms. Utiliza un icono de checkmark y colores de éxito.
+// ============================================================================
 
+import React from 'react';
+import AnimationStep from '@/components/templates/animations/components/steps/AnimationStep';
+
+// ----------------------------------------------------------------------------
+// COMPONENTE PRINCIPAL - SuccessAnimation
+// ----------------------------------------------------------------------------
 export default function SuccessAnimation() {
-  const router = useRouter();
-  const { t } = useTranslation();
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      router.replace("/(main)");
-    }, 1800);
-    return () => clearTimeout(timer);
-  }, []);
-
-  return (
-    <AppContainer style={{ backgroundColor: PALETTE.deepNight }}>
-      <AppStack flex={1} justify="center" align="center" style={{ padding: SPACING.xl }}>
-        
-        <AppStack align="center" gap="xl">
-          <View style={{ 
-            padding: SPACING.xl, 
-            borderRadius: 100, 
-            backgroundColor: 'rgba(72, 187, 120, 0.1)' 
-          }}>
-            <AppIcon 
-              name="checkmark-circle" 
-              library="Ionicons" 
-              size="xxl" 
-              color="success" 
-            />
-          </View>
-
-          <AppStack align="center" gap="xs">
-            {/* Título internacionalizado */}
-            <AppText variant="h1" style={{ fontSize: 32, textAlign: 'center' }}>
-              {t("animations.success.title")}
-            </AppText>
-            
-            <View style={{ 
-              height: 2, 
-              width: 60, 
-              backgroundColor: PALETTE.successGreen, 
-              borderRadius: 1,
-              marginVertical: SPACING.s 
-            }} />
-
-            {/* Subtítulo internacionalizado */}
-            <AppText 
-              variant="body" 
-              color="secondary" 
-              align="center"
-              style={{ opacity: 0.9 }}
-            >
-              {t("animations.success.subtitle")}
-            </AppText>
-            
-            {/* Slogan traducido */}
-            <View style={{ marginTop: SPACING.xl }}>
-              <AppText 
-                variant="label" 
-                color="secondary" 
-                align="center"
-                style={{ opacity: 0.6, letterSpacing: 1 }}
-              >
-                {t("animations.success.app_slogan")}
-              </AppText>
-            </View>
-          </AppStack>
-        </AppStack>
-
-        {/* Pie de página con función centralizada */}
-        <View style={{ position: "absolute", bottom: SPACING.xxl }}>
-          <AppText variant="label" color="secondary" style={{ opacity: 0.4 }}>
-            {getAppInfoForFooter(true, "Alpha")}
-          </AppText>
-        </View>
-      </AppStack>
-    </AppContainer>
-  );
+  // RENDERIZADO DEL PASO DE ANIMACIÓN
+  // --------------------------------------------------------------------------
+  // Usamos AnimationStep con la variante "success".
+  // No es necesario pasar props adicionales; los textos, colores, duración
+  // y ruta de redirección se obtienen automáticamente de la configuración
+  // de variantes y de los archivos de internacionalización.
+  return <AnimationStep variant="success" />;
 }

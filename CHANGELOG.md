@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.31.0](///compare/v1.30.4...v1.31.0) (2026-02-13)
+
+
+### Features
+
+* **notifications:** implementar lógica de preferencias y disparadores automáticos 2aa43ce
+
 ### [1.30.4](///compare/v1.30.3-stable...v1.30.4) (2026-02-12)
 
 ### [1.30.3](///compare/v1.30.2...v1.30.3) (2026-02-11)

@@ -5,6 +5,7 @@
 //   - Cálculo de días transcurridos
 //   - Detección de "modo cuidado" (extreme mode)
 //   - Formateo de cantidades monetarias
+//   - Manejo de fechas y horas para notificaciones
 //
 // Estas funciones son independientes del store y pueden ser probadas
 // unitariamente sin necesidad de estado global.
@@ -86,4 +87,74 @@ export const formatMoney = (amount: number, currency: string): string => {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`;
+};
+
+// ============================================================================
+// UTILIDADES DE FECHAS Y HORAS (PARA NOTIFICACIONES)
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// FORMATEO DE HORA
+// ----------------------------------------------------------------------------
+
+/**
+ * Convierte una hora en formato HH:mm a un objeto Date para el día actual.
+ * Útil para programar notificaciones con expo-notifications.
+ *
+ * @param timeString - Hora en formato "HH:mm" (24h).
+ * @returns Objeto Date con la hora especificada en el día de hoy.
+ *
+ * @example
+ * getDateFromTimeString("20:00") // => 2025-04-08T20:00:00.000Z (hora local)
+ */
+export const getDateFromTimeString = (timeString: string): Date => {
+  const [hours, minutes] = timeString.split(':').map(Number);
+  const date = new Date();
+  date.setHours(hours, minutes, 0, 0);
+  return date;
+};
+
+/**
+ * Formatea un objeto Date a string HH:mm.
+ * Útil para mostrar la hora en la UI o persistir en el store.
+ *
+ * @param date - Objeto Date.
+ * @returns Hora en formato "HH:mm" (24h).
+ *
+ * @example
+ * formatTimeToHHMM(new Date()) // => "20:00"
+ */
+export const formatTimeToHHMM = (date: Date): string => {
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
+};
+
+// ----------------------------------------------------------------------------
+// COMPARACIÓN DE FECHAS
+// ----------------------------------------------------------------------------
+
+/**
+ * Verifica si dos fechas corresponden al mismo día calendario.
+ *
+ * @param date1 - Primera fecha (Date o string ISO).
+ * @param date2 - Segunda fecha (Date o string ISO). Por defecto, la fecha actual.
+ * @returns true si ambas fechas tienen el mismo año, mes y día.
+ */
+export const isSameDay = (date1: Date | string, date2: Date | string = new Date()): boolean => {
+  const d1 = typeof date1 === 'string' ? new Date(date1) : date1;
+  const d2 = typeof date2 === 'string' ? new Date(date2) : date2;
+  return (
+    d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate()
+  );
+};
+
+/**
+ * Retorna la fecha actual en formato YYYY-MM-DD.
+ * Útil para comparar con notificationsScheduledForDate.
+ */
+export const getTodayISO = (): string => {
+  return new Date().toISOString().split('T')[0];
 };

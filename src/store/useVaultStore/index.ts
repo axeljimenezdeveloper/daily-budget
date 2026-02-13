@@ -23,7 +23,7 @@ import i18next from "i18next";
 // ----------------------------------------------------------------------------
 // TIPOS Y UTILIDADES LOCALES
 // ----------------------------------------------------------------------------
-import { VaultState, Transaction } from "./index.types";
+import { VaultState, Transaction, NotificationPreferences } from "./index.types";
 import { calculateDaysPassed, checkExtremeMode } from "./index.utils";
 
 // ----------------------------------------------------------------------------
@@ -43,6 +43,19 @@ export const useVaultStore = create<VaultState>()(
       isExtremeMode: false,
       currency: "$",
       language: "es",
+
+      // --- Flag de rehidratación ---
+      _hasHydrated: false,
+
+      // --- Estado inicial de notificaciones ---
+      notificationPreferences: {
+        dailyReminder: true,
+        extremeModeAlert: true,
+        budgetExceededAlert: true,
+        reminderTime: "20:00",
+      },
+      notificationsScheduledForDate: null,
+      hasRequestedPermissions: false,
 
       // --- Acciones ---
 
@@ -110,6 +123,7 @@ export const useVaultStore = create<VaultState>()(
        * Reinicia completamente la bóveda al estado inicial.
        * - Fuerza el idioma a español (i18next y store).
        * - Limpia presupuesto, transacciones y fechas.
+       * - Restaura las preferencias de notificación a sus valores por defecto.
        *
        * @note Esta acción es utilizada actualmente en test-store.tsx y debug-reset.tsx
        */
@@ -124,6 +138,16 @@ export const useVaultStore = create<VaultState>()(
           isConfigured: false,
           isExtremeMode: false,
           language: "es",
+          _hasHydrated: true, // Se mantiene en true tras reset, ya fue hidratado
+          // Reiniciar estado de notificaciones
+          notificationPreferences: {
+            dailyReminder: true,
+            extremeModeAlert: true,
+            budgetExceededAlert: true,
+            reminderTime: "20:00",
+          },
+          notificationsScheduledForDate: null,
+          hasRequestedPermissions: false,
         });
       },
 
@@ -166,6 +190,44 @@ export const useVaultStore = create<VaultState>()(
         i18next.changeLanguage(lang);
         set({ language: lang });
       },
+
+      // --- Acciones de Notificaciones ---
+
+      /**
+       * Actualiza parcialmente las preferencias de notificación.
+       * Conserva las claves no especificadas.
+       */
+      setNotificationPreferences: (prefs) =>
+        set((state) => ({
+          notificationPreferences: {
+            ...state.notificationPreferences,
+            ...prefs,
+          },
+        })),
+
+      /**
+       * Marca que ya se solicitaron permisos de notificaciones.
+       * No ejecuta la solicitud real (eso se hace desde los hooks).
+       */
+      requestNotificationPermissions: () =>
+        set({ hasRequestedPermissions: true }),
+
+      /**
+       * Establece la fecha de hoy como la última vez que se programó
+       * el recordatorio diario. El formato es YYYY-MM-DD.
+       */
+      setNotificationsScheduledForToday: () => {
+        const today = new Date().toISOString().split('T')[0];
+        set({ notificationsScheduledForDate: today });
+      },
+
+      /**
+       * Limpia el flag de programación diaria.
+       * Útil cuando el usuario cambia la hora del recordatorio
+       * o cuando se resetea la bóveda.
+       */
+      clearNotificationsScheduledFlag: () =>
+        set({ notificationsScheduledForDate: null }),
     }),
     {
       // ------------------------------------------------------------------------
@@ -175,19 +237,28 @@ export const useVaultStore = create<VaultState>()(
       storage: createJSONStorage(() => AsyncStorage),
 
       /**
-       * Hook que se ejecuta después de rehidratar el estado desde el almacenamiento.
-       * Sincroniza el idioma guardado con i18next para que la UI refleje la preferencia persistida.
+       * Hook que se ejecuta durante la rehidratación.
+       * - Se llama antes de la rehidratación (función externa)
+       * - Luego, después de rehidratar, se ejecuta el callback interno
        *
-       * @note Actualmente, i18n.ts inicializa i18next con el idioma del dispositivo,
-       *       y luego este callback lo sobrescribe con el idioma guardado.
-       *       Esto es intencional para que el usuario pueda cambiar el idioma
-       *       y mantenerlo entre sesiones, pero puede generar un breve destello
-       *       del idioma del dispositivo antes de aplicar el persistido.
+       * @note Se utiliza para:
+       *       1. Manejar errores de rehidratación.
+       *       2. Sincronizar el idioma persistido con i18next.
+       *       3. Marcar que el store ya fue hidratado (_hasHydrated = true).
        */
       onRehydrateStorage: (state) => {
-        return (rehydratedState) => {
-          if (rehydratedState?.language) {
-            i18next.changeLanguage(rehydratedState.language);
+        // Esta función se ejecuta ANTES de rehidratar
+        return (rehydratedState, error) => {
+          if (error) {
+            console.warn('[SURV] Error al rehidratar store:', error);
+          }
+          if (rehydratedState) {
+            // Aplicamos el idioma persistido (ya existente)
+            if (rehydratedState.language) {
+              i18next.changeLanguage(rehydratedState.language);
+            }
+            // ✅ Marcamos que la rehidratación terminó
+            useVaultStore.setState({ _hasHydrated: true });
           }
         };
       },

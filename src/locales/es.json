@@ -18,7 +18,13 @@
     "companion": "Tu compañero SURV",
     "processing": "Preparando todo...",
     "days_short": "d",
-    "error_occurred": "Algo no salió bien"
+    "error_occurred": "Algo no salió bien",
+    "time_picker": {
+      "title": "Seleccionar hora",
+      "cancel": "Cancelar",
+      "confirm": "Confirmar",
+      "placeholder": "Selecciona una hora"
+    }
   },
   "animations": {
     "loading": {
@@ -143,6 +149,12 @@
       "period": {
         "title": "Elige la duración"
       }
+    },
+    "notifications_modal": {
+      "title": "¿Te gustaría recibir recordatorios diarios?",
+      "description": "Te recordaremos cada día registrar tus gastos.",
+      "accept": "Activar",
+      "decline": "Ahora no"
     }
   },
   "dashboard": {
@@ -151,6 +163,31 @@
       "safe": "TODO ESTÁ BIEN",
       "warning": "VAMOS A REVISAR"
     }
+  },
+  "notifications": {
+    "daily_reminder": {
+      "title": "Recordatorio diario",
+      "body": "No olvides registrar tus gastos de hoy."
+    },
+    "extreme_mode_alert": {
+      "title": "Modo cuidado activado",
+      "body": "Estás gastando más rápido de lo recomendado."
+    },
+    "budget_exceeded_alert": {
+      "title": "Presupuesto excedido",
+      "body": "Has superado tu presupuesto total."
+    }
+  },
+  "settings": {
+    "title": "Ajustes",
+    "notifications_section": "Notificaciones",
+    "daily_reminder_title": "Recordatorio diario",
+    "daily_reminder_description": "Recibe un recordatorio diario para registrar tus gastos.",
+    "extreme_alert_title": "Modo cuidado",
+    "extreme_alert_description": "Alerta cuando el gasto diario supere el 120% de lo recomendado.",
+    "budget_exceeded_title": "Presupuesto excedido",
+    "budget_exceeded_description": "Notificación cuando el presupuesto restante sea negativo.",
+    "test_button": "Enviar notificación de prueba"
   },
   "validation": {
     "budget": {

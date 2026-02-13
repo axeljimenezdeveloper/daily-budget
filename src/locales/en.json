@@ -18,7 +18,13 @@
     "companion": "Your SURV Companion",
     "processing": "Preparing everything...",
     "days_short": "d",
-    "error_occurred": "Something went wrong"
+    "error_occurred": "Something went wrong",
+    "time_picker": {
+      "title": "Select time",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "placeholder": "Select time"
+    }
   },
   "animations": {
     "loading": {
@@ -143,6 +149,12 @@
       "period": {
         "title": "Choose the Duration"
       }
+    },
+    "notifications_modal": {
+      "title": "Would you like daily reminders?",
+      "description": "We'll remind you each day to log your expenses.",
+      "accept": "Enable",
+      "decline": "Not now"
     }
   },
   "dashboard": {
@@ -151,6 +163,31 @@
       "safe": "EVERYTHING IS FINE",
       "warning": "LET'S REVIEW"
     }
+  },
+  "notifications": {
+    "daily_reminder": {
+      "title": "Daily reminder",
+      "body": "Don't forget to log today's expenses."
+    },
+    "extreme_mode_alert": {
+      "title": "Careful mode activated",
+      "body": "You're spending faster than recommended."
+    },
+    "budget_exceeded_alert": {
+      "title": "Budget exceeded",
+      "body": "You have exceeded your total budget."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "notifications_section": "Notifications",
+    "daily_reminder_title": "Daily reminder",
+    "daily_reminder_description": "Receive a daily reminder to log your expenses.",
+    "extreme_alert_title": "Careful mode",
+    "extreme_alert_description": "Alert when daily spending exceeds 120% of recommended.",
+    "budget_exceeded_title": "Budget exceeded",
+    "budget_exceeded_description": "Notification when remaining budget is negative.",
+    "test_button": "Send test notification"
   },
   "validation": {
     "budget": {

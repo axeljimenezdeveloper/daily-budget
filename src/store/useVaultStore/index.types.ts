@@ -42,6 +42,29 @@ export interface VaultSummary {
 }
 
 // ----------------------------------------------------------------------------
+// PREFERENCIAS DE NOTIFICACIÓN
+// ----------------------------------------------------------------------------
+
+/**
+ * Configuración de notificaciones locales del usuario.
+ * Se almacena en el store persistido y se utiliza para programar
+ * recordatorios y alertas relacionadas con el control de gasto.
+ */
+export interface NotificationPreferences {
+  /** Activa el recordatorio diario para registrar gastos */
+  dailyReminder: boolean;
+  /** Activa la alerta cuando se activa el modo cuidado (extreme mode) */
+  extremeModeAlert: boolean;
+  /** Activa la alerta cuando el presupuesto restante es negativo */
+  budgetExceededAlert: boolean;
+  /**
+   * Hora del recordatorio diario en formato HH:mm (24h).
+   * @default "20:00"
+   */
+  reminderTime: string;
+}
+
+// ----------------------------------------------------------------------------
 // ESTADO GLOBAL Y ACCIONES
 // ----------------------------------------------------------------------------
 
@@ -76,6 +99,24 @@ export interface VaultState {
   /** Código de idioma activo ('es' | 'en') */
   language: string;
 
+  /** 
+   * Indica si el store ya fue rehidratado desde AsyncStorage.
+   * Se usa para evitar ejecutar efectos antes de que las preferencias
+   * persistidas estén disponibles.
+   */
+  _hasHydrated: boolean;
+
+  // --- Notificaciones ---
+  /** Preferencias actuales de notificaciones del usuario */
+  notificationPreferences: NotificationPreferences;
+  /**
+   * Fecha (YYYY-MM-DD) de la última vez que se programó el recordatorio diario.
+   * Se usa para evitar reprogramaciones innecesarias.
+   */
+  notificationsScheduledForDate: string | null;
+  /** Indica si ya se solicitó permiso de notificaciones en esta sesión/instalación */
+  hasRequestedPermissions: boolean;
+
   // --- Acciones ---
   /** Marca el onboarding como completado (se ejecuta al finalizar setup) */
   setFinishedOnboarding: () => void;
@@ -106,4 +147,29 @@ export interface VaultState {
    * @param lang - Código de idioma ('es' | 'en')
    */
   setLanguage: (lang: string) => void;
+
+  // --- Acciones de Notificaciones ---
+  /**
+   * Actualiza parcialmente las preferencias de notificación.
+   * Las claves no provistas conservan su valor actual.
+   * @param prefs - Objeto parcial con las preferencias a modificar.
+   */
+  setNotificationPreferences: (prefs: Partial<NotificationPreferences>) => void;
+
+  /**
+   * Marca que ya se solicitaron permisos de notificaciones.
+   * No ejecuta la solicitud real; solo actualiza el flag del store.
+   */
+  requestNotificationPermissions: () => void;
+
+  /**
+   * Registra la fecha actual como la última vez que se programó
+   * el recordatorio diario. Útil para evitar reprogramar en el mismo día.
+   */
+  setNotificationsScheduledForToday: () => void;
+
+  /**
+   * Reinicia el flag de programación diaria (útil al cambiar la hora o al resetear).
+   */
+  clearNotificationsScheduledFlag: () => void;
 }

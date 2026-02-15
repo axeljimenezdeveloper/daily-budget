@@ -5,7 +5,7 @@ import { SPACING } from "@/constants/metrics";
 
 export interface AppListItemProps {
   label: string;
-  onPress: () => void; // Obligatorio para coincidir con AppPressable
+  onPress?: () => void; // 👈 opcional
   subLabel?: string;
   icon?: string; 
   rightContent?: ReactNode; 

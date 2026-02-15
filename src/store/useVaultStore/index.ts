@@ -124,6 +124,7 @@ export const useVaultStore = create<VaultState>()(
        * - Fuerza el idioma a español (i18next y store).
        * - Limpia presupuesto, transacciones y fechas.
        * - Restaura las preferencias de notificación a sus valores por defecto.
+       * - Establece hasFinishedOnboarding a false para que el usuario vuelva al onboarding.
        *
        * @note Esta acción es utilizada actualmente en test-store.tsx y debug-reset.tsx
        */
@@ -137,8 +138,10 @@ export const useVaultStore = create<VaultState>()(
           startDate: null,
           isConfigured: false,
           isExtremeMode: false,
+          hasFinishedOnboarding: false,   // ← AHORA SE REINICIA CORRECTAMENTE
           language: "es",
-          _hasHydrated: true, // Se mantiene en true tras reset, ya fue hidratado
+          currency: "$",                   // ← Moneda por defecto
+          _hasHydrated: true,              // Se mantiene en true tras reset, ya fue hidratado
           // Reiniciar estado de notificaciones
           notificationPreferences: {
             dailyReminder: true,

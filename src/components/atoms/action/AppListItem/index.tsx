@@ -22,39 +22,44 @@ export default function AppListItem({
   style,
 }: AppListItemProps) {
   
-  const { currentBackground, iconColor, textColor } = getStyleHelpers({
+  const { currentBackground, iconColor } = getStyleHelpers({
     isActive,
     background,
     activeBackground,
   });
 
+  const content = (
+    <AppBox
+      direction="row"
+      align="center"
+      padding={padding}
+      background={currentBackground}
+      radius="m"
+      gap="m"
+      style={style}
+    >
+      {icon && <AppIcon name={icon} color={iconColor} />}
+      <AppBox flex={1} gap="xs">
+        <AppText variant="body" color="primary">
+          {label}
+        </AppText>
+        {subLabel && (
+          <AppText variant="caption" color="secondary">
+            {subLabel}
+          </AppText>
+        )}
+      </AppBox>
+      {rightContent && <AppBox>{rightContent}</AppBox>}
+    </AppBox>
+  );
+
+  if (!onPress) {
+    return content;
+  }
+
   return (
     <AppPressable onPress={onPress} disabled={disabled}>
-      <AppBox
-        direction="row"
-        align="center"
-        padding={padding}
-        background={currentBackground}
-        radius="m"
-        gap="m"
-        style={style}
-      >
-        {icon && <AppIcon name={icon} color={iconColor} />}
-
-        <AppBox flex={1} gap="xs">
-          <AppText variant="body" color={textColor}>
-            {label}
-          </AppText>
-          
-          {subLabel && (
-            <AppText variant="caption" color="secondary">
-              {subLabel}
-            </AppText>
-          )}
-        </AppBox>
-
-        {rightContent && <AppBox>{rightContent}</AppBox>}
-      </AppBox>
+      {content}
     </AppPressable>
   );
 }

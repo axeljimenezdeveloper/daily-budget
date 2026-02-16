@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Text, View, ScrollView, Alert } from 'react-native';
+import { View, ScrollView, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useVaultStore } from '@/store/useVaultStore';
 import { formatMoney } from '@/store/useVaultStore/index.utils';
+import { useExportCSV } from '@/store/hooks/useExportCSV';
 
 // Átomos
 import AppContainer from '@/components/atoms/structure/AppContainer';
@@ -12,6 +13,7 @@ import AppButton from '@/components/atoms/action/AppButton';
 import AppCard from '@/components/atoms/surface/AppCard';
 import AppDivider from '@/components/atoms/structure/AppDivider';
 import AppText from '@/components/atoms/content/AppText';
+import AppSpinner from '@/components/atoms/visual/AppSpinner';
 
 export default function TestStoreScreen() {
   const { t } = useTranslation();
@@ -20,9 +22,7 @@ export default function TestStoreScreen() {
   // STORE – Estado completo y acciones
   // --------------------------------------------------------------------------
   const state = useVaultStore();
-
   const {
-    // Estado financiero
     totalBudget,
     remainingBudget,
     isExtremeMode,
@@ -32,23 +32,23 @@ export default function TestStoreScreen() {
     isConfigured,
     hasFinishedOnboarding,
     currency,
-    language,
-
-    // Notificaciones
-    notificationPreferences,
-    notificationsScheduledForDate,
-    hasRequestedPermissions,
-
-    // Flags internos
-    _hasHydrated,
-
-    // Acciones
     initVault,
     addTransaction,
     resetVault,
-    setLanguage,
     getSummary,
   } = state;
+
+  // --------------------------------------------------------------------------
+  // HOOK DE EXPORTACIÓN CSV
+  // --------------------------------------------------------------------------
+  const { exportCSV, isExporting, error: exportError } = useExportCSV();
+
+  // Mostrar error de exportación si ocurre
+  React.useEffect(() => {
+    if (exportError) {
+      Alert.alert(t('common.error'), exportError);
+    }
+  }, [exportError, t]);
 
   // --------------------------------------------------------------------------
   // Estado local para inputs
@@ -56,26 +56,8 @@ export default function TestStoreScreen() {
   const [amountInput, setAmountInput] = useState('');
   const [daysInput, setDaysInput] = useState('7');
   const [currencyInput, setCurrencyInput] = useState(currency || '$');
-
-  // --------------------------------------------------------------------------
-  // Manejadores
-  // --------------------------------------------------------------------------
-  const handleInit = () => {
-    const amt = parseFloat(amountInput);
-    const dys = parseInt(daysInput);
-    if (isNaN(amt) || isNaN(dys) || !currencyInput) {
-      return Alert.alert('Error', 'Completa los parámetros de la misión');
-    }
-    initVault(amt, dys, currencyInput);
-    setAmountInput('');
-  };
-
-  const handleQuickSpend = (val: number, isVital: boolean) => {
-    const category = isVital
-      ? t('common.vital_supply', 'Vital')
-      : t('common.leak_luxury', 'Lujo');
-    addTransaction(val, category, 'Gasto de prueba');
-  };
+  const [quickAmount, setQuickAmount] = useState('50');
+  const [batchSize, setBatchSize] = useState('10');
 
   // --------------------------------------------------------------------------
   // Resumen calculado
@@ -87,57 +69,88 @@ export default function TestStoreScreen() {
     dailyAverage: 0,
   };
 
+  // --------------------------------------------------------------------------
+  // Manejadores
+  // --------------------------------------------------------------------------
+  const handleInit = () => {
+    const amt = parseFloat(amountInput);
+    const dys = parseInt(daysInput);
+    if (isNaN(amt) || amt <= 0 || isNaN(dys) || dys <= 0 || !currencyInput) {
+      return Alert.alert('Error', 'Parámetros inválidos');
+    }
+    initVault(amt, dys, currencyInput);
+    setAmountInput('');
+  };
+
+  const handleQuickSpend = (isVital: boolean) => {
+    const val = parseFloat(quickAmount);
+    if (isNaN(val) || val <= 0) {
+      return Alert.alert('Error', 'Monto inválido');
+    }
+    const category = isVital ? 'Vital' : 'Lujo';
+    addTransaction(val, category, 'Gasto rápido');
+  };
+
+  const handleGenerateBatch = () => {
+    const count = parseInt(batchSize);
+    if (isNaN(count) || count <= 0 || count > 500) {
+      return Alert.alert('Error', 'Cantidad inválida (máx 500)');
+    }
+
+    const categories = ['Vital', 'Lujo', 'Alimentación', 'Transporte', 'Ocio', 'Salud', 'Educación'];
+    for (let i = 0; i < count; i++) {
+      const amount = Math.floor(Math.random() * 200) + 10; // 10-210
+      const category = categories[Math.floor(Math.random() * categories.length)];
+      const note = `Aleatorio #${i+1}`;
+      addTransaction(amount, category, note);
+    }
+    Alert.alert('Éxito', `${count} transacciones generadas`);
+  };
+
+  const handleExport = async () => {
+    await exportCSV();
+    // Sin mensaje de éxito, solo se abre el diálogo
+  };
+
+  const handleReset = () => {
+    Alert.alert(
+      'Confirmar',
+      '¿Estás seguro de reiniciar toda la bóveda?',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        { 
+          text: 'Reiniciar', 
+          style: 'destructive',
+          onPress: () => resetVault()
+        }
+      ]
+    );
+  };
+
+  // --------------------------------------------------------------------------
+  // Render
+  // --------------------------------------------------------------------------
   return (
     <AppContainer>
       <ScrollView
         contentContainerStyle={{ paddingBottom: 60 }}
         showsVerticalScrollIndicator={false}
       >
-        <AppStack gap="l">
+        <AppStack gap="l" style={{ paddingHorizontal: 16 }}>
           {/* ====================================================================
                CABECERA
           ==================================================================== */}
-          <AppText
-            variant="h2"
-            color="primary"
-            style={{ marginTop: 20, textTransform: 'uppercase' }}
-          >
-            🧪 Survival Console
+          <AppText variant="h2" color="primary" style={{ marginTop: 20 }}>
+            🧪 Laboratorio de Pruebas
           </AppText>
-
-          {/* ====================================================================
-               SELECTOR DE IDIOMA (funcional)
-          ==================================================================== */}
-          <AppStack gap="s">
-            <AppText variant="label" color="secondary">
-              SISTEMA DE LENGUAJE
-            </AppText>
-            <View style={{ flexDirection: 'row', gap: 10 }}>
-              <View style={{ flex: 1 }}>
-                <AppButton
-                  status={language === 'es' ? 'info' : 'neutral'}
-                  variant={language === 'es' ? 'filled' : 'outline'}
-                  onPress={() => setLanguage('es')}
-                >
-                  Español 🇪🇸
-                </AppButton>
-              </View>
-              <View style={{ flex: 1 }}>
-                <AppButton
-                  status={language === 'en' ? 'info' : 'neutral'}
-                  variant={language === 'en' ? 'filled' : 'outline'}
-                  onPress={() => setLanguage('en')}
-                >
-                  English 🇺🇸
-                </AppButton>
-              </View>
-            </View>
-          </AppStack>
+          <AppText variant="caption" color="secondary">
+            Herramienta para generar datos y probar exportación CSV
+          </AppText>
 
           <AppDivider />
 
           {/* ====================================================================
-               MONITOR DEL TANQUE DE OXÍGENO (resumen visual)
+               MONITOR PRINCIPAL
           ==================================================================== */}
           <AppCard
             style={{
@@ -152,17 +165,10 @@ export default function TestStoreScreen() {
                 color={isExtremeMode ? 'error' : 'secondary'}
                 style={{ letterSpacing: 1.5 }}
               >
-                STATUS:{' '}
-                {isExtremeMode
-                  ? t('common.extreme_mode', 'MODO CUIDADO').toUpperCase()
-                  : 'ESTABLE'}
+                STATUS: {isExtremeMode ? '⚠️ MODO CUIDADO' : '✅ ESTABLE'}
               </AppText>
 
-              <AppText
-                variant="h1"
-                color="primary"
-                style={{ marginVertical: 8 }}
-              >
+              <AppText variant="h1" color="primary" style={{ marginVertical: 8 }}>
                 {formatMoney(remainingBudget, currency)}
               </AppText>
 
@@ -187,10 +193,8 @@ export default function TestStoreScreen() {
               </View>
 
               <AppText variant="caption" color="secondary" style={{ marginTop: 8 }}>
-                {t('common.oxygen_tank', 'Tanque')}:{' '}
-                <AppText variant="caption" color="primary">
-                  {formatMoney(totalBudget, currency)}
-                </AppText>
+                Total: {formatMoney(totalBudget, currency)} · Días: {daysDuration} · 
+                Transcurridos: {summary.daysPassed} · Gastado: {formatMoney(summary.totalSpent, currency)}
               </AppText>
             </AppStack>
           </AppCard>
@@ -199,97 +203,139 @@ export default function TestStoreScreen() {
                CONFIGURACIÓN DE MISIÓN
           ==================================================================== */}
           <AppStack gap="m">
-            <AppText variant="h3" color="primary">
-              {t('setup.titles.main', 'Configurar misión')}
-            </AppText>
+            <AppText variant="h3" color="primary">⚙️ Configurar misión</AppText>
             <AppInput
-              label={t('setup.currency_section.currency_label', 'Moneda')}
-              placeholder="Ej: Bs, $, ARS"
+              label="Moneda (símbolo)"
+              placeholder="Ej: $, Bs, €"
               value={currencyInput}
               onChangeText={setCurrencyInput}
             />
             <AppInput
-              label={t('setup.budget_section.budget_label', 'Presupuesto')}
+              label="Presupuesto total"
               keyboardType="numeric"
               value={amountInput}
               onChangeText={setAmountInput}
+              placeholder="Ej: 1000"
             />
             <AppInput
-              label={t('setup.duration_section.custom_days_label', 'Días')}
+              label="Días"
               keyboardType="numeric"
               value={daysInput}
               onChangeText={setDaysInput}
+              placeholder="Ej: 30"
             />
             <AppButton status="success" onPress={handleInit}>
-              {t('setup.completion.start_management', 'Cargar Suministros')}
+              Inicializar bóveda
             </AppButton>
           </AppStack>
 
+          <AppDivider />
+
           {/* ====================================================================
-               SIMULACIÓN DE GASTOS BINARIOS
+               GENERACIÓN DE DATOS DE PRUEBA
           ==================================================================== */}
           <AppStack gap="m">
-            <AppText variant="h3" color="primary">
-              Simular Fuga
-            </AppText>
+            <AppText variant="h3" color="primary">🧪 Generar datos de prueba</AppText>
+
+            {/* Gasto rápido con monto configurable */}
+            <AppInput
+              label="Monto para gasto rápido"
+              keyboardType="numeric"
+              value={quickAmount}
+              onChangeText={setQuickAmount}
+            />
             <View style={{ flexDirection: 'row', gap: 10 }}>
               <View style={{ flex: 1 }}>
                 <AppButton
                   status="info"
                   variant="outline"
-                  onPress={() => handleQuickSpend(50, true)}
+                  onPress={() => handleQuickSpend(true)}
                 >
-                  Vital -50
+                  + Vital ({quickAmount})
                 </AppButton>
               </View>
               <View style={{ flex: 1 }}>
                 <AppButton
                   status="error"
                   variant="outline"
-                  onPress={() => handleQuickSpend(150, false)}
+                  onPress={() => handleQuickSpend(false)}
                 >
-                  Lujo -150
+                  + Lujo ({quickAmount})
                 </AppButton>
               </View>
             </View>
+
+            {/* Generación por lotes */}
+            <AppInput
+              label="Cantidad de transacciones aleatorias (máx 500)"
+              keyboardType="numeric"
+              value={batchSize}
+              onChangeText={setBatchSize}
+            />
+            <AppButton status="warning" variant="filled" onPress={handleGenerateBatch}>
+              Generar lote aleatorio
+            </AppButton>
+
+            <AppText variant="caption" color="secondary">
+              Las transacciones se crean con montos entre 10 y 210, y categorías variadas.
+            </AppText>
           </AppStack>
 
-          <AppButton status="neutral" variant="outline" onPress={resetVault}>
-            {t('setup.errors.vault_config_error', 'Abortar Misión (Reset)')}
-          </AppButton>
+          <AppDivider />
 
           {/* ====================================================================
-               HISTORIAL DE GASTOS
+               ACCIONES DE EXPORTACIÓN Y RESET
+          ==================================================================== */}
+          <View style={{ flexDirection: 'row', gap: 10 }}>
+            <View style={{ flex: 1 }}>
+              <AppButton
+                variant="outline"
+                onPress={handleReset}
+                disabled={isExporting}
+              >
+                Reiniciar todo
+              </AppButton>
+            </View>
+            <View style={{ flex: 1 }}>
+              <AppButton
+                status="info"
+                variant="filled"
+                onPress={handleExport}
+                disabled={isExporting || transactions.length === 0}
+              >
+                {isExporting ? <AppSpinner size="s" color="primary" /> : 'Exportar CSV'}
+              </AppButton>
+            </View>
+          </View>
+
+          <AppDivider />
+
+          {/* ====================================================================
+               HISTORIAL RECIENTE (últimas 5)
           ==================================================================== */}
           <AppStack gap="s">
             <AppText variant="h3" color="primary">
-              Registros del Tanque
+              📋 Últimas transacciones ({transactions.length})
             </AppText>
             {transactions.length === 0 ? (
               <AppText variant="body" color="secondary" style={{ fontStyle: 'italic' }}>
-                No hay movimientos en esta misión.
+                No hay movimientos aún.
               </AppText>
             ) : (
-              transactions.map((t) => (
+              transactions.slice(0, 5).map((t) => (
                 <AppCard key={t.id} style={{ padding: 12 }}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}
-                  >
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View>
                       <AppText variant="body" color="primary" style={{ fontWeight: 'bold' }}>
                         {t.category}
                       </AppText>
                       <AppText variant="caption" color="secondary">
-                        {new Date(t.date).toLocaleTimeString()}
+                        {new Date(t.date).toLocaleString()} · {t.note}
                       </AppText>
                     </View>
                     <AppText
                       variant="body"
-                      color={t.category.includes('Vital') ? 'success' : 'error'}
+                      color={t.category === 'Vital' ? 'success' : 'error'}
                       style={{ fontWeight: 'bold' }}
                     >
                       -{formatMoney(t.amount, currency)}
@@ -298,143 +344,50 @@ export default function TestStoreScreen() {
                 </AppCard>
               ))
             )}
+            {transactions.length > 5 && (
+              <AppText variant="caption" color="secondary" style={{ textAlign: 'center' }}>
+                ... y {transactions.length - 5} más
+              </AppText>
+            )}
           </AppStack>
 
           <AppDivider />
 
           {/* ====================================================================
-               ESTADO COMPLETO DEL STORE (DEBUG)
+               DEBUG: ESTADO COMPLETO (resumido)
           ==================================================================== */}
-          <AppStack gap="m">
-            <AppText variant="h3" color="primary">
-              📦 Estado completo del store
-            </AppText>
-
+          <AppStack gap="s">
+            <AppText variant="h3" color="primary">📊 Estado interno</AppText>
             <AppCard style={{ padding: 16, backgroundColor: '#0a0f1c' }}>
-              <AppStack gap="s">
-                {/* --- Flags de aplicación --- */}
-                <AppText variant="label" color="secondary">
-                  🧭 FLUJO
-                </AppText>
+              <AppStack gap="xs">
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
+                  <View style={{ width: '50%' }}>
                     <AppText variant="caption" color="secondary">hasFinishedOnboarding:</AppText>
                     <AppText variant="caption" color="primary">{String(hasFinishedOnboarding)}</AppText>
                   </View>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
+                  <View style={{ width: '50%' }}>
                     <AppText variant="caption" color="secondary">isConfigured:</AppText>
                     <AppText variant="caption" color="primary">{String(isConfigured)}</AppText>
                   </View>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
-                    <AppText variant="caption" color="secondary">_hasHydrated:</AppText>
-                    <AppText variant="caption" color="primary">{String(_hasHydrated)}</AppText>
+                  <View style={{ width: '50%' }}>
+                    <AppText variant="caption" color="secondary">startDate:</AppText>
+                    <AppText variant="caption" color="primary">{startDate ? new Date(startDate).toLocaleDateString() : 'null'}</AppText>
                   </View>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
-                    <AppText variant="caption" color="secondary">language:</AppText>
-                    <AppText variant="caption" color="primary">{language}</AppText>
-                  </View>
-                </View>
-
-                {/* --- Finanzas --- */}
-                <AppText variant="label" color="secondary" style={{ marginTop: 8 }}>
-                  💰 FINANZAS
-                </AppText>
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
-                    <AppText variant="caption" color="secondary">totalBudget:</AppText>
-                    <AppText variant="caption" color="primary">{totalBudget} {currency}</AppText>
-                  </View>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
-                    <AppText variant="caption" color="secondary">remainingBudget:</AppText>
-                    <AppText variant="caption" color="primary">{remainingBudget} {currency}</AppText>
-                  </View>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
+                  <View style={{ width: '50%' }}>
                     <AppText variant="caption" color="secondary">daysDuration:</AppText>
                     <AppText variant="caption" color="primary">{daysDuration}</AppText>
                   </View>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
-                    <AppText variant="caption" color="secondary">isExtremeMode:</AppText>
-                    <AppText variant="caption" color="primary">{String(isExtremeMode)}</AppText>
+                  <View style={{ width: '50%' }}>
+                    <AppText variant="caption" color="secondary">totalBudget:</AppText>
+                    <AppText variant="caption" color="primary">{formatMoney(totalBudget, currency)}</AppText>
                   </View>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
-                    <AppText variant="caption" color="secondary">startDate:</AppText>
-                    <AppText variant="caption" color="primary">{startDate || 'null'}</AppText>
-                  </View>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
-                    <AppText variant="caption" color="secondary">currency:</AppText>
-                    <AppText variant="caption" color="primary">{currency}</AppText>
-                  </View>
-                </View>
-
-                {/* --- Resumen calculado --- */}
-                <AppText variant="label" color="secondary" style={{ marginTop: 8 }}>
-                  📊 RESUMEN (getSummary)
-                </AppText>
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
-                    <AppText variant="caption" color="secondary">totalSpent:</AppText>
-                    <AppText variant="caption" color="primary">{summary.totalSpent} {currency}</AppText>
-                  </View>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
-                    <AppText variant="caption" color="secondary">daysPassed:</AppText>
-                    <AppText variant="caption" color="primary">{summary.daysPassed}</AppText>
-                  </View>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
-                    <AppText variant="caption" color="secondary">isOverBudget:</AppText>
-                    <AppText variant="caption" color="primary">{String(summary.isOverBudget)}</AppText>
-                  </View>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
-                    <AppText variant="caption" color="secondary">dailyAverage:</AppText>
-                    <AppText variant="caption" color="primary">{summary.dailyAverage.toFixed(2)} {currency}</AppText>
-                  </View>
-                </View>
-
-                {/* --- Notificaciones --- */}
-                <AppText variant="label" color="secondary" style={{ marginTop: 8 }}>
-                  🔔 NOTIFICACIONES
-                </AppText>
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
-                    <AppText variant="caption" color="secondary">dailyReminder:</AppText>
-                    <AppText variant="caption" color="primary">{String(notificationPreferences?.dailyReminder)}</AppText>
-                  </View>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
-                    <AppText variant="caption" color="secondary">extremeModeAlert:</AppText>
-                    <AppText variant="caption" color="primary">{String(notificationPreferences?.extremeModeAlert)}</AppText>
-                  </View>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
-                    <AppText variant="caption" color="secondary">budgetExceededAlert:</AppText>
-                    <AppText variant="caption" color="primary">{String(notificationPreferences?.budgetExceededAlert)}</AppText>
-                  </View>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
-                    <AppText variant="caption" color="secondary">reminderTime:</AppText>
-                    <AppText variant="caption" color="primary">{notificationPreferences?.reminderTime || '20:00'}</AppText>
-                  </View>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
-                    <AppText variant="caption" color="secondary">notificationsScheduledForDate:</AppText>
-                    <AppText variant="caption" color="primary">{notificationsScheduledForDate || 'null'}</AppText>
-                  </View>
-                  <View style={{ width: '50%', marginBottom: 4 }}>
-                    <AppText variant="caption" color="secondary">hasRequestedPermissions:</AppText>
-                    <AppText variant="caption" color="primary">{String(hasRequestedPermissions)}</AppText>
-                  </View>
-                </View>
-
-                {/* --- Transacciones (solo conteo) --- */}
-                <AppText variant="label" color="secondary" style={{ marginTop: 8 }}>
-                  🧾 TRANSACCIONES
-                </AppText>
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                  <View style={{ width: '100%', marginBottom: 4 }}>
-                    <AppText variant="caption" color="secondary">cantidad:</AppText>
-                    <AppText variant="caption" color="primary">{transactions.length}</AppText>
+                  <View style={{ width: '50%' }}>
+                    <AppText variant="caption" color="secondary">remainingBudget:</AppText>
+                    <AppText variant="caption" color="primary">{formatMoney(remainingBudget, currency)}</AppText>
                   </View>
                 </View>
               </AppStack>
             </AppCard>
-            <AppText variant="caption" color="secondary" style={{ alignSelf: 'center' }}>
-              Última actualización: {new Date().toLocaleTimeString()}
-            </AppText>
           </AppStack>
         </AppStack>
       </ScrollView>

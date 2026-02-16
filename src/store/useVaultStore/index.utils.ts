@@ -12,6 +12,11 @@
 // ============================================================================
 
 // ----------------------------------------------------------------------------
+// IMPORTACIONES DE TIPOS
+// ----------------------------------------------------------------------------
+import { Transaction, VaultSummary } from './index.types';
+
+// ----------------------------------------------------------------------------
 // FECHAS Y TIEMPO
 // ----------------------------------------------------------------------------
 
@@ -157,4 +162,92 @@ export const isSameDay = (date1: Date | string, date2: Date | string = new Date(
  */
 export const getTodayISO = (): string => {
   return new Date().toISOString().split('T')[0];
+};
+
+// ============================================================================
+// UTILIDAD DE EXPORTACIÓN A CSV
+// ============================================================================
+
+/**
+ * Escapa un campo CSV si contiene caracteres especiales (comillas, punto y coma, saltos de línea).
+ * Envuelve el campo entre comillas dobles y duplica las comillas internas.
+ *
+ * @param field - Cadena a escapar
+ * @returns Campo listo para insertar en CSV
+ */
+const escapeCSVField = (field: string): string => {
+  if (field.includes('"') || field.includes(';') || field.includes('\n')) {
+    // Duplicar comillas dobles
+    const escaped = field.replace(/"/g, '""');
+    return `"${escaped}"`;
+  }
+  return field;
+};
+
+/**
+ * Genera una cadena CSV con las transacciones y un resumen del período.
+ *
+ * Formato:
+ * - Cabeceras: "Fecha";"Concepto";"Monto"
+ * - Por cada transacción:
+ *     Fecha en formato DD/MM/YYYY
+ *     Concepto: categoría + (nota) si existe
+ *     Monto: con símbolo de moneda y dos decimales
+ * - Al final, tres filas de resumen:
+ *     "Total gastado";;{totalSpent}
+ *     "Días transcurridos";;{daysPassed}
+ *     "Promedio diario";;{dailyAverage}
+ *
+ * @param transactions - Lista de transacciones (ordenadas por fecha descendente)
+ * @param summary - Resumen obtenido de getSummary()
+ * @param currency - Símbolo de moneda (ej. "$")
+ * @returns String con el contenido CSV
+ */
+export const generateCSV = (
+  transactions: Transaction[],
+  summary: VaultSummary,
+  currency: string
+): string => {
+  const rows: string[] = [];
+
+  // Cabeceras
+  rows.push(escapeCSVField('Fecha') + ';' + escapeCSVField('Concepto') + ';' + escapeCSVField('Monto'));
+
+  // Transacciones
+  transactions.forEach((t) => {
+    // Formatear fecha a DD/MM/YYYY
+    const date = new Date(t.date);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    const formattedDate = `${day}/${month}/${year}`;
+
+    // Construir concepto: categoría + nota entre paréntesis (si existe)
+    let concept = t.category;
+    if (t.note) {
+      concept += ` (${t.note})`;
+    }
+
+    // Formatear monto con moneda y dos decimales
+    const formattedAmount = formatMoney(t.amount, currency);
+
+    rows.push(
+      escapeCSVField(formattedDate) + ';' +
+      escapeCSVField(concept) + ';' +
+      escapeCSVField(formattedAmount)
+    );
+  });
+
+  // Línea en blanco opcional antes del resumen
+  rows.push('');
+
+  // Resumen
+  const totalSpentFormatted = formatMoney(summary.totalSpent, currency);
+  const dailyAverageFormatted = formatMoney(summary.dailyAverage, currency);
+
+  rows.push(escapeCSVField('Total gastado') + ';;' + escapeCSVField(totalSpentFormatted));
+  rows.push(escapeCSVField('Días transcurridos') + ';;' + summary.daysPassed.toString());
+  rows.push(escapeCSVField('Promedio diario') + ';;' + escapeCSVField(dailyAverageFormatted));
+
+  return rows.join('\n');
 };

@@ -187,7 +187,11 @@
     "extreme_alert_description": "Alert when daily spending exceeds 120% of recommended.",
     "budget_exceeded_title": "Budget exceeded",
     "budget_exceeded_description": "Notification when remaining budget is negative.",
-    "test_button": "Send test notification"
+    "test_button": "Send test notification",
+    "export_csv": "Export to CSV",
+    "export_success": "Data exported successfully",
+    "export_error": "Export error: {{message}}",
+    "export_loading": "Generating file..."
   },
   "validation": {
     "budget": {

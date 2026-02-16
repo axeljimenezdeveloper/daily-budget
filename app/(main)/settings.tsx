@@ -1,11 +1,15 @@
 // ============================================================================
-// PANTALLA DE AJUSTES - settings.tsx (FASE 4: MONEDA READ-ONLY + RESET REAL)
+// PANTALLA DE AJUSTES - settings.tsx
+//
+// Contiene todas las preferencias de la aplicación: notificaciones, idioma,
+// plan actual, moneda (solo lectura), exportación de datos y zona de peligro.
+// Integra el hook useExportCSV para la generación y compartición de archivos CSV.
 // ============================================================================
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ScrollView, FlatList, Alert, StyleSheet } from "react-native";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "expo-router"; // Para navegación
+import { useRouter } from "expo-router";
 
 import { PALETTE } from "@/constants/colors";
 import { SPACING, BORDER_RADIUS } from "@/constants/metrics";
@@ -31,7 +35,13 @@ import {
   calculateDaysPassed,
   formatMoney,
 } from "@/store/useVaultStore/index.utils";
+// ----------------------------------------------------------------------------
+// HOOK DE EXPORTACIÓN CSV
+// ----------------------------------------------------------------------------
+import { useExportCSV } from "@/store/hooks/useExportCSV"; 
+import AppSpinner from "@/components/atoms/visual/AppSpinner";
 
+// (El tipo Currency se mantiene por si se necesita en el futuro)
 type Currency = {
   code: string;
   symbol: string;
@@ -39,7 +49,6 @@ type Currency = {
   flag: string;
 };
 
-// NOTA: Mantenemos CURRENCIES por si en el futuro se habilita la edición, pero por ahora no se usa.
 const CURRENCIES: Currency[] = [
   { code: "USD", symbol: "$", name: "Dólar estadounidense", flag: "🇺🇸" },
   { code: "EUR", symbol: "€", name: "Euro", flag: "🇪🇺" },
@@ -75,10 +84,32 @@ export default function SettingsScreen() {
   const remainingDays = Math.max(0, daysDuration - daysPassed);
   const formattedTotalBudget = formatMoney(totalBudget, currency);
 
-  // --- ESTADOS LOCALES (SOLO PARA MODALES) ---
+  // --- ESTADOS LOCALES (MODALES) ---
   const [showLanguageModal, setShowLanguageModal] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
-  // Eliminamos estados de moneda porque ahora es solo lectura
+
+  // --------------------------------------------------------------------------
+  // HOOK DE EXPORTACIÓN CSV
+  // --------------------------------------------------------------------------
+  const { exportCSV, isExporting, error: exportError } = useExportCSV();
+
+  // Efecto para mostrar errores de exportación al usuario
+  useEffect(() => {
+    if (exportError) {
+      Alert.alert(
+        t("common.error"),
+        exportError,
+        [{ text: t("common.ok", "OK") }]
+      );
+    }
+  }, [exportError, t]);
+
+  // --- MANEJADOR DE EXPORTACIÓN ---
+  const handleExportCSV = async () => {
+    await exportCSV();
+    // No mostramos mensaje de éxito porque el usuario ya ve el diálogo de compartir.
+    // Si ocurre un error, se mostrará automáticamente por el useEffect(exportError).
+  };
 
   // --- MANEJADOR PARA NOTIFICACIÓN DE PRUEBA ---
   const handleTestNotification = async () => {
@@ -86,7 +117,7 @@ export default function SettingsScreen() {
     if (!granted) {
       Alert.alert(
         t("common.error"),
-        t("notifications.permission_denied") || "Permiso denegado",
+        t("notifications.permission_denied") || "Permiso denegado"
       );
       return;
     }
@@ -95,11 +126,11 @@ export default function SettingsScreen() {
       1,
       t("notifications.test.title") || "Prueba",
       t("notifications.test.body") || "Esta es una notificación de prueba",
-      NOTIFICATION_CHANNELS.REMINDERS.id,
+      NOTIFICATION_CHANNELS.REMINDERS.id
     );
     Alert.alert(
       t("common.success"),
-      t("notifications.test.sent") || "Notificación enviada",
+      t("notifications.test.sent") || "Notificación enviada"
     );
   };
 
@@ -276,14 +307,14 @@ export default function SettingsScreen() {
                 onPress={() =>
                   Alert.alert(
                     t("settings.edit_plan"),
-                    t("settings.coming_soon", "Funcionalidad próxima"),
+                    t("settings.coming_soon", "Funcionalidad próxima")
                   )
                 }
               />
             </AppBox>
           </AppBox>
 
-          {/* ===== SECCIÓN MONEDA (AHORA SOLO LECTURA) ===== */}
+          {/* ===== SECCIÓN MONEDA (SOLO LECTURA) ===== */}
           <AppBox marginBottom="xl">
             <AppText
               variant="h3"
@@ -293,12 +324,43 @@ export default function SettingsScreen() {
               {t("settings.currency_section", "Moneda")}
             </AppText>
             <AppBox>
-              {/* Eliminado onPress y rightContent para hacerlo no interactivo */}
               <AppListItem
                 label={t("settings.currency", "Moneda")}
-                subLabel={`${currency}`} // Mostramos solo el símbolo, o podríamos buscar el nombre, pero por ahora solo símbolo
+                subLabel={currency}
                 icon="cash-outline"
-                // Sin onPress ni rightContent
+              />
+            </AppBox>
+          </AppBox>
+
+          {/* ===== SECCIÓN EXPORTAR DATOS ===== */}
+          <AppBox marginBottom="xl">
+            <AppText
+              variant="h3"
+              color="accent"
+              style={{ marginBottom: SPACING.s }}
+            >
+              {t("settings.export_section", "Exportar datos")}
+            </AppText>
+            <AppBox>
+              <AppListItem
+                label={t("settings.export_csv")}
+                subLabel={isExporting ? t("settings.export_loading") : undefined}
+                icon="download-outline"
+                onPress={handleExportCSV}
+                disabled={isExporting}
+                isActive={!isExporting}
+                rightContent={
+                  isExporting ? (
+                    <AppSpinner size="s" color="accent" />
+                  ) : (
+                    <AppIcon
+                      name="chevron-forward"
+                      library="Ionicons"
+                      size="m"
+                      color="secondary"
+                    />
+                  )
+                }
               />
             </AppBox>
           </AppBox>
@@ -387,7 +449,7 @@ export default function SettingsScreen() {
         </AppBox>
       </AppModal>
 
-      {/* ===== MODAL DE REINICIO (AHORA CON ACCIÓN REAL) ===== */}
+      {/* ===== MODAL DE REINICIO ===== */}
       <AppModal
         isOpen={showResetModal}
         onClose={() => setShowResetModal(false)}
@@ -400,7 +462,7 @@ export default function SettingsScreen() {
           <AppText variant="body" color="secondary" align="center">
             {t(
               "settings.reset_confirmation",
-              "¿Estás seguro? Se perderán todos tus datos de presupuesto y gastos.",
+              "¿Estás seguro? Se perderán todos tus datos de presupuesto y gastos."
             )}
           </AppText>
           <AppBox direction="row" justify="space-around" gap="m">

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.32.0](///compare/v1.31.0...v1.32.0) (2026-02-16)
+
+
+### Features
+
+* **settings:** implementar exportación a CSV y generador de datos de prueba 135a952
+* **settings:** implementar funcionalidad de reinicio y rediseñar interfaz de ajustes adc31a2
+
 ## [1.31.0](///compare/v1.30.4...v1.31.0) (2026-02-13)
 
 

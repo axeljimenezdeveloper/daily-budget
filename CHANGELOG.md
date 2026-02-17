@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.33.0](///compare/v1.32.0...v1.33.0) (2026-02-17)
+
+
+### Features
+
+* **biometrics:** implementar autenticación biométrica por huella dactilar 57a824b
+
 ## [1.32.0](///compare/v1.31.0...v1.32.0) (2026-02-16)
 
 

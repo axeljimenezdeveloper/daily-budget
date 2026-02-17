@@ -191,7 +191,18 @@
     "export_csv": "Exportar a CSV",
     "export_success": "Datos exportados correctamente",
     "export_error": "Error al exportar: {{message}}",
-    "export_loading": "Generando archivo..."
+    "export_loading": "Generando archivo...",
+    "security_section": "Seguridad",
+    "biometric_title": "Bloqueo biométrico",
+    "biometric_description": "Requiere huella dactilar para abrir la app",
+    "biometric_prompt_message": "Autentícate para activar el bloqueo biométrico",
+    "biometric_not_available": "La autenticación biométrica no está disponible en este dispositivo",
+    "biometric_not_enrolled": "No hay huellas registradas en los ajustes del sistema",
+    "biometric_weak_security": "El sensor biométrico de tu dispositivo tiene un nivel de seguridad bajo",
+    "biometric_error": "Error de autenticación",
+    "biometric_success": "Configuración biométrica completada",
+    "biometric_lockout": "Demasiados intentos. Intenta más tarde.",
+    "biometric_fallback": "Usa PIN/contraseña en su lugar"
   },
   "validation": {
     "budget": {
@@ -205,6 +216,16 @@
       "minimum_plural": "Al menos {{count}} días",
       "maximum": "Máximo {{count}} días (un año)",
       "required": "Necesito saber para cuántos días"
+    }
+  },
+  "auth": {
+    "biometric": {
+      "title": "Autenticación requerida",
+      "message": "Usa tu huella para continuar",
+      "not_available": "La autenticación biométrica ya no está disponible. Se desactivará.",
+      "disable_and_continue": "Desactivar y continuar",
+      "retry": "Reintentar",
+      "error": "Error de autenticación"
     }
   }
 }

@@ -191,7 +191,18 @@
     "export_csv": "Export to CSV",
     "export_success": "Data exported successfully",
     "export_error": "Export error: {{message}}",
-    "export_loading": "Generating file..."
+    "export_loading": "Generating file...",
+    "security_section": "Security",
+    "biometric_title": "Biometric Lock",
+    "biometric_description": "Require fingerprint to open the app",
+    "biometric_prompt_message": "Authenticate to enable biometric lock",
+    "biometric_not_available": "Biometric authentication is not available on this device",
+    "biometric_not_enrolled": "No fingerprints registered in system settings",
+    "biometric_weak_security": "Your device's biometric sensor has low security level",
+    "biometric_error": "Authentication error",
+    "biometric_success": "Biometric setup completed",
+    "biometric_lockout": "Too many attempts. Try again later.",
+    "biometric_fallback": "Use PIN/Password instead"
   },
   "validation": {
     "budget": {
@@ -205,6 +216,16 @@
       "minimum_plural": "At least {{count}} days",
       "maximum": "Maximum {{count}} days (one year)",
       "required": "I need to know for how many days"
+    }
+  },
+  "auth": {
+    "biometric": {
+      "title": "Authentication required",
+      "message": "Use your fingerprint to continue",
+      "not_available": "Biometric authentication is no longer available. It will be disabled.",
+      "disable_and_continue": "Disable and continue",
+      "retry": "Try again",
+      "error": "Authentication failed"
     }
   }
 }

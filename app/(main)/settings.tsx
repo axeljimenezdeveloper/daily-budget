@@ -7,7 +7,7 @@
 // ============================================================================
 
 import React, { useState, useEffect } from "react";
-import { ScrollView, FlatList, Alert, StyleSheet } from "react-native";
+import { ScrollView, Alert, StyleSheet } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
 
@@ -38,25 +38,13 @@ import {
 // ----------------------------------------------------------------------------
 // HOOK DE EXPORTACIÓN CSV
 // ----------------------------------------------------------------------------
-import { useExportCSV } from "@/store/hooks/useExportCSV"; 
+import { useExportCSV } from "@/store/hooks/useExportCSV";
 import AppSpinner from "@/components/atoms/visual/AppSpinner";
 
-// (El tipo Currency se mantiene por si se necesita en el futuro)
-type Currency = {
-  code: string;
-  symbol: string;
-  name: string;
-  flag: string;
-};
-
-const CURRENCIES: Currency[] = [
-  { code: "USD", symbol: "$", name: "Dólar estadounidense", flag: "🇺🇸" },
-  { code: "EUR", symbol: "€", name: "Euro", flag: "🇪🇺" },
-  { code: "GBP", symbol: "£", name: "Libra esterlina", flag: "🇬🇧" },
-  { code: "JPY", symbol: "¥", name: "Yen japonés", flag: "🇯🇵" },
-  { code: "MXN", symbol: "$", name: "Peso mexicano", flag: "🇲🇽" },
-  { code: "VES", symbol: "Bs", name: "Bolívar", flag: "🇻🇪" },
-];
+// ----------------------------------------------------------------------------
+// HOOK DE BIOMETRÍA
+// ----------------------------------------------------------------------------
+import { useBiometricAuth } from "@/features/biometrics/hooks/useBiometricAuth";
 
 export default function SettingsScreen() {
   const { t } = useTranslation();
@@ -77,7 +65,21 @@ export default function SettingsScreen() {
     isExtremeMode,
     currency,
     resetVault,
+    isBiometricEnabled,
+    setBiometricEnabled,
   } = useVaultStore();
+
+  // --- HOOK DE BIOMETRÍA ---
+  const {
+    hasHardware,
+    isEnrolled,
+    loading: biometricAvailabilityLoading,
+    authLoading,
+    authenticate,
+  } = useBiometricAuth();
+
+  // --- ESTADO LOCAL PARA CONTROLAR EL SPINNER DURANTE LA ACTIVACIÓN ---
+  const [biometricToggleLoading, setBiometricToggleLoading] = useState(false);
 
   // --- CÁLCULOS DERIVADOS DEL PLAN ---
   const daysPassed = calculateDaysPassed(startDate);
@@ -108,7 +110,6 @@ export default function SettingsScreen() {
   const handleExportCSV = async () => {
     await exportCSV();
     // No mostramos mensaje de éxito porque el usuario ya ve el diálogo de compartir.
-    // Si ocurre un error, se mostrará automáticamente por el useEffect(exportError).
   };
 
   // --- MANEJADOR PARA NOTIFICACIÓN DE PRUEBA ---
@@ -139,6 +140,36 @@ export default function SettingsScreen() {
     resetVault();
     setShowResetModal(false);
     router.replace("/(welcome)/onboarding1");
+  };
+
+  // --------------------------------------------------------------------------
+  // MANEJADOR DEL TOGGLE BIOMÉTRICO (SIN ALERTS)
+  // --------------------------------------------------------------------------
+  const handleBiometricToggle = async (newValue: boolean) => {
+    // Desactivación: directa
+    if (!newValue) {
+      setBiometricEnabled(false);
+      return;
+    }
+
+    // Activación: solo si hay hardware y huellas registradas
+    if (!hasHardware || !isEnrolled) {
+      // Silenciosamente no se activa
+      return;
+    }
+
+    setBiometricToggleLoading(true);
+    const result = await authenticate({
+      promptMessage: t("settings.biometric_prompt_message"),
+      disableDeviceFallback: false,
+    });
+    setBiometricToggleLoading(false);
+
+    if (result.success) {
+      setBiometricEnabled(true);
+      // Éxito silencioso
+    }
+    // Si falla, no se activa (sin alerta)
   };
 
   return (
@@ -261,6 +292,35 @@ export default function SettingsScreen() {
             </AppBox>
           </AppBox>
 
+          {/* ===== SECCIÓN SEGURIDAD ===== */}
+          <AppBox marginBottom="xl">
+            <AppText
+              variant="h3"
+              color="accent"
+              style={{ marginBottom: SPACING.s }}
+            >
+              {t("settings.security_section")}
+            </AppText>
+            <AppBox>
+              <AppListItem
+                label={t("settings.biometric_title")}
+                subLabel={t("settings.biometric_description")}
+                icon="finger-print-outline"
+                rightContent={
+                  biometricToggleLoading || authLoading ? (
+                    <AppSpinner size="s" color="accent" />
+                  ) : (
+                    <AppSwitch
+                      value={isBiometricEnabled}
+                      onValueChange={handleBiometricToggle}
+                      disabled={biometricAvailabilityLoading}
+                    />
+                  )
+                }
+              />
+            </AppBox>
+          </AppBox>
+
           {/* ===== SECCIÓN PLAN ACTUAL ===== */}
           <AppBox marginBottom="xl">
             <AppText
@@ -375,34 +435,21 @@ export default function SettingsScreen() {
               {t("settings.danger_zone", "Zona de peligro")}
             </AppText>
             <AppBox>
-              <AppPressable
-                style={styles.dangerRow}
+              <AppListItem
+                label={t("settings.reset_vault", "Reiniciar bóveda")}
+                icon="trash-outline"
+                iconColor="error"
                 onPress={() => setShowResetModal(true)}
-              >
-                <AppBox align="center" justify="center" style={{ width: 32 }}>
+                isActive
+                rightContent={
                   <AppIcon
-                    name="trash-outline"
+                    name="chevron-forward"
                     library="Ionicons"
-                    size="l"
+                    size="m"
                     color="error"
                   />
-                </AppBox>
-                <AppBox flex={1} marginLeft="s">
-                  <AppText
-                    variant="body"
-                    color="error"
-                    style={{ fontWeight: "600" }}
-                  >
-                    {t("settings.reset_vault", "Reiniciar bóveda")}
-                  </AppText>
-                </AppBox>
-                <AppIcon
-                  name="chevron-forward"
-                  library="Ionicons"
-                  size="m"
-                  color="error"
-                />
-              </AppPressable>
+                }
+              />
             </AppBox>
           </AppBox>
         </ScrollView>
@@ -521,16 +568,5 @@ const styles = StyleSheet.create({
   },
   modalButtonDanger: {
     backgroundColor: PALETTE.errorRed,
-  },
-  dangerRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: SPACING.s,
-    paddingHorizontal: SPACING.xs,
-    backgroundColor: `${PALETTE.errorRed}08`,
-    borderWidth: 1,
-    borderColor: `${PALETTE.errorRed}40`,
-    borderRadius: BORDER_RADIUS.m,
-    marginTop: SPACING.xs,
   },
 });

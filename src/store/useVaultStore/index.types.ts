@@ -106,6 +106,14 @@ export interface VaultState {
    */
   _hasHydrated: boolean;
 
+  // --- Preferencias de seguridad ---
+  /**
+   * Indica si el usuario ha activado la autenticación biométrica (huella dactilar)
+   * para proteger el acceso a la aplicación.
+   * @default false
+   */
+  isBiometricEnabled: boolean;
+
   // --- Notificaciones ---
   /** Preferencias actuales de notificaciones del usuario */
   notificationPreferences: NotificationPreferences;
@@ -172,4 +180,11 @@ export interface VaultState {
    * Reinicia el flag de programación diaria (útil al cambiar la hora o al resetear).
    */
   clearNotificationsScheduledFlag: () => void;
+
+  // --- Acciones de Seguridad ---
+  /**
+   * Activa o desactiva la preferencia de bloqueo biométrico.
+   * @param enabled - true para activar, false para desactivar
+   */
+  setBiometricEnabled: (enabled: boolean) => void;
 }

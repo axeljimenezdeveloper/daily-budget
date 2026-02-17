@@ -47,6 +47,9 @@ export const useVaultStore = create<VaultState>()(
       // --- Flag de rehidratación ---
       _hasHydrated: false,
 
+      // --- Preferencias de seguridad ---
+      isBiometricEnabled: false,   // ← por defecto desactivado
+
       // --- Estado inicial de notificaciones ---
       notificationPreferences: {
         dailyReminder: true,
@@ -142,6 +145,7 @@ export const useVaultStore = create<VaultState>()(
           language: "es",
           currency: "$",                   // ← Moneda por defecto
           _hasHydrated: true,              // Se mantiene en true tras reset, ya fue hidratado
+          isBiometricEnabled: false,       // ← también se reinicia
           // Reiniciar estado de notificaciones
           notificationPreferences: {
             dailyReminder: true,
@@ -231,6 +235,13 @@ export const useVaultStore = create<VaultState>()(
        */
       clearNotificationsScheduledFlag: () =>
         set({ notificationsScheduledForDate: null }),
+
+      // --- Acciones de Seguridad ---
+      /**
+       * Activa o desactiva la preferencia de bloqueo biométrico.
+       * @param enabled - true para activar, false para desactivar
+       */
+      setBiometricEnabled: (enabled) => set({ isBiometricEnabled: enabled }),
     }),
     {
       // ------------------------------------------------------------------------

@@ -6,19 +6,27 @@ import LoadingAnimation from "./(animations)/loading";
 export default function HomeScreen() {
   const router = useRouter();
   const hasFinishedOnboarding = useVaultStore((state) => state.hasFinishedOnboarding);
+  const isBiometricEnabled = useVaultStore((state) => state.isBiometricEnabled);
+  
   console.log('HomeScreen - hasFinishedOnboarding:', hasFinishedOnboarding);
+  console.log('HomeScreen - isBiometricEnabled:', isBiometricEnabled);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!hasFinishedOnboarding) {
         router.replace("/(welcome)/onboarding1");
       } else {
-        router.replace("/(main)");
+        // Si ya completó onboarding, evaluamos si requiere biometría
+        if (isBiometricEnabled) {
+          router.replace("/(auth)/biometric");
+        } else {
+          router.replace("/(main)");
+        }
       }
     }, 200); // Pequeño retraso para asegurar que el store esté listo
 
     return () => clearTimeout(timer);
-  }, [hasFinishedOnboarding, router]);
+  }, [hasFinishedOnboarding, isBiometricEnabled, router]);
 
   return (
     <LoadingAnimation />

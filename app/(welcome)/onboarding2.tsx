@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 // para el formateo específico de texto
 import { OnboardingStep } from '@/components/templates/onboarding/components/steps/OnboardingStep';
 import AppText from '@/components/atoms/content/AppText';
+import { ROUTES } from '@/constants/navigation'; // ✅ Importación correcta
 
 // ----------------------------------------------------------------------------
 // COMPONENTE PRINCIPAL - Onboarding2
@@ -31,8 +32,8 @@ export default function Onboarding2() {
   // --------------------------------------------------------------------------
   // handleNext: Avanza al tercer y último paso del onboarding
   // handleSkip: Salta al final del flujo (animación de transición)
-  const handleNext = () => router.push('/(welcome)/onboarding3');
-  const handleSkip = () => router.replace('/(animations)/transition');
+  const handleNext = () => router.push(ROUTES.WELCOME.ONBOARDING3); 
+  const handleSkip = () => router.replace(ROUTES.ANIMATIONS.TRANSITION); 
 
   // CONSTRUCCIÓN DE DESCRIPCIÓN CON FORMATO
   // --------------------------------------------------------------------------
@@ -52,7 +53,7 @@ export default function Onboarding2() {
   // --------------------------------------------------------------------------
   // OnboardingStep recibe la configuración específica del segundo paso:
   // - stepNumber: Posición 2 de 3 en el flujo de onboarding
-  // - iconName: 'calendar-outline' representa la gestión temporal
+  // - iconName: 'eye-outline' representa la claridad visual
   // - iconLibrary: 'Ionicons' (consistente con el sistema de iconos)
   // - buttonStatus: 'primary' mantiene consistencia visual con el paso 1
   // Nota: No necesita iconRotation (valor por defecto 0)

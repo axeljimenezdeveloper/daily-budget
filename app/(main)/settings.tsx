@@ -6,7 +6,7 @@
 // Integra el hook useExportCSV para la generación y compartición de archivos CSV.
 // ============================================================================
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { ScrollView, Alert, StyleSheet } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "expo-router";
@@ -35,27 +35,178 @@ import {
   calculateDaysPassed,
   formatMoney,
 } from "@/store/useVaultStore/index.utils";
-// ----------------------------------------------------------------------------
-// HOOK DE EXPORTACIÓN CSV
-// ----------------------------------------------------------------------------
 import { useExportCSV } from "@/store/hooks/useExportCSV";
 import AppSpinner from "@/components/atoms/visual/AppSpinner";
+import { useBiometricAuth } from "@/features/biometrics/hooks/useBiometricAuth";
+import { ROUTES } from "@/constants/navigation"; 
 
 // ----------------------------------------------------------------------------
-// HOOK DE BIOMETRÍA
+// COMPONENTES MEMOIZADOS CON SELECTORES FINOS (SOLO NOTIFICACIONES)
 // ----------------------------------------------------------------------------
-import { useBiometricAuth } from "@/features/biometrics/hooks/useBiometricAuth";
+
+const DailyReminderItem = memo(() => {
+  const { t } = useTranslation();
+  const { dailyReminder, updatePreferences, isSaving } = useNotificationPreferences();
+
+  // Contenedor con dimensiones fijas para evitar saltos visuales al alternar entre spinner y switch
+  const rightContent = (
+    <AppBox
+      style={{ width: 50, height: 32 }} // Ancho y alto fijos a través de style
+      align="center"
+      justify="center"
+    >
+      {isSaving ? (
+        <AppSpinner size="s" color="accent" />
+      ) : (
+        <AppSwitch
+          value={dailyReminder}
+          onValueChange={(val) => updatePreferences({ dailyReminder: val })}
+          disabled={isSaving}
+        />
+      )}
+    </AppBox>
+  );
+
+  return (
+    <>
+      <AppListItem
+        label={t("settings.daily_reminder_title")}
+        subLabel={t("settings.daily_reminder_description")}
+        icon="notifications-outline"
+        rightContent={rightContent}
+      />
+      <AppDivider color="darkBorder" thickness={1} marginVertical="s" />
+    </>
+  );
+});
+
+const ExtremeAlertItem = memo(() => {
+  const { t } = useTranslation();
+  const { extremeModeAlert, updatePreferences } = useNotificationPreferences();
+
+  return (
+    <>
+      <AppListItem
+        label={t("settings.extreme_alert_title")}
+        subLabel={t("settings.extreme_alert_description")}
+        icon="alert-circle-outline"
+        rightContent={
+          <AppSwitch
+            value={extremeModeAlert}
+            onValueChange={(val) => updatePreferences({ extremeModeAlert: val })}
+          />
+        }
+      />
+      <AppDivider color="darkBorder" thickness={1} marginVertical="s" />
+    </>
+  );
+});
+
+const BudgetExceededItem = memo(() => {
+  const { t } = useTranslation();
+  const { budgetExceededAlert, updatePreferences } = useNotificationPreferences();
+
+  return (
+    <>
+      <AppListItem
+        label={t("settings.budget_exceeded_title")}
+        subLabel={t("settings.budget_exceeded_description")}
+        icon="warning-outline"
+        rightContent={
+          <AppSwitch
+            value={budgetExceededAlert}
+            onValueChange={(val) => updatePreferences({ budgetExceededAlert: val })}
+          />
+        }
+      />
+      <AppDivider color="darkBorder" thickness={1} marginVertical="s" />
+    </>
+  );
+});
+
+const ReminderTimeItem = memo(() => {
+  const { t } = useTranslation();
+  const { reminderTime, updatePreferences, isSaving } = useNotificationPreferences();
+
+  return (
+    <>
+      <AppBox
+        style={{
+          backgroundColor: PALETTE.nightBlue,
+          borderRadius: BORDER_RADIUS.m,
+          paddingHorizontal: SPACING.xs,
+          paddingVertical: SPACING.xs,
+          borderWidth: 1,
+          borderColor: PALETTE.darkBorder,
+        }}
+      >
+        <AppTimePicker
+          value={reminderTime}
+          onChange={(newTime) => updatePreferences({ reminderTime: newTime })}
+          label={t("settings.daily_reminder_title")}
+          placeholder={t("common.time_picker.placeholder")}
+          style={{ width: "100%" }}
+          disabled={isSaving}
+        />
+      </AppBox>
+      <AppDivider color="darkBorder" thickness={1} marginVertical="s" />
+    </>
+  );
+});
+
+const TestNotificationItem = memo(() => {
+  const { t } = useTranslation();
+  const { requestPermissions, scheduleOneTimeNotification } = useNotificationScheduler();
+
+  const handleTestNotification = async () => {
+    try {
+      const granted = await requestPermissions();
+      if (!granted) {
+        Alert.alert(
+          t("common.error"),
+          t("notifications.permission_denied") || "Permiso denegado"
+        );
+        return;
+      }
+      await scheduleOneTimeNotification(
+        "test-notification",
+        1,
+        t("notifications.test.title") || "Prueba",
+        t("notifications.test.body") || "Esta es una notificación de prueba",
+        NOTIFICATION_CHANNELS.REMINDERS.id
+      );
+      Alert.alert(
+        t("common.success"),
+        t("notifications.test.sent") || "Notificación enviada"
+      );
+    } catch (error) {
+      console.error("[SURV] Error sending test notification:", error);
+      Alert.alert(
+        t("common.error"),
+        t("notifications.test.error") || "Error al enviar notificación de prueba"
+      );
+    }
+  };
+
+  return (
+    <AppListItem
+      label={t("settings.test_button")}
+      icon="send-outline"
+      onPress={handleTestNotification}
+      isActive
+    />
+  );
+});
+
+// ----------------------------------------------------------------------------
+// COMPONENTE PRINCIPAL
+// ----------------------------------------------------------------------------
 
 export default function SettingsScreen() {
   const { t } = useTranslation();
   const router = useRouter();
 
-  // --- HOOKS DE NOTIFICACIONES ---
-  const { preferences, updatePreferences } = useNotificationPreferences();
-  const { scheduleOneTimeNotification, requestPermissions } =
-    useNotificationScheduler();
-
-  // --- ESTADO DEL STORE ---
+  // --- ESTADO DEL STORE (SELECCIONES GLOBALES) ---
   const {
     language,
     setLanguage,
@@ -90,9 +241,7 @@ export default function SettingsScreen() {
   const [showLanguageModal, setShowLanguageModal] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
 
-  // --------------------------------------------------------------------------
-  // HOOK DE EXPORTACIÓN CSV
-  // --------------------------------------------------------------------------
+  // --- HOOK DE EXPORTACIÓN CSV ---
   const { exportCSV, isExporting, error: exportError } = useExportCSV();
 
   // Efecto para mostrar errores de exportación al usuario
@@ -109,44 +258,18 @@ export default function SettingsScreen() {
   // --- MANEJADOR DE EXPORTACIÓN ---
   const handleExportCSV = async () => {
     await exportCSV();
-    // No mostramos mensaje de éxito porque el usuario ya ve el diálogo de compartir.
-  };
-
-  // --- MANEJADOR PARA NOTIFICACIÓN DE PRUEBA ---
-  const handleTestNotification = async () => {
-    const granted = await requestPermissions();
-    if (!granted) {
-      Alert.alert(
-        t("common.error"),
-        t("notifications.permission_denied") || "Permiso denegado"
-      );
-      return;
-    }
-    await scheduleOneTimeNotification(
-      "test-notification",
-      1,
-      t("notifications.test.title") || "Prueba",
-      t("notifications.test.body") || "Esta es una notificación de prueba",
-      NOTIFICATION_CHANNELS.REMINDERS.id
-    );
-    Alert.alert(
-      t("common.success"),
-      t("notifications.test.sent") || "Notificación enviada"
-    );
   };
 
   // --- MANEJADOR DE REINICIO ---
   const handleResetConfirm = () => {
     resetVault();
     setShowResetModal(false);
-    router.replace("/(welcome)/onboarding1");
+    router.replace(ROUTES.WELCOME.ONBOARDING1); // ✅ Corregido
   };
 
-  // --------------------------------------------------------------------------
-  // MANEJADOR DEL TOGGLE BIOMÉTRICO (SIN ALERTS)
-  // --------------------------------------------------------------------------
+  // --- MANEJADOR DEL TOGGLE BIOMÉTRICO ---
   const handleBiometricToggle = async (newValue: boolean) => {
-    // Desactivación: directa
+    // Desactivación directa
     if (!newValue) {
       setBiometricEnabled(false);
       return;
@@ -154,7 +277,6 @@ export default function SettingsScreen() {
 
     // Activación: solo si hay hardware y huellas registradas
     if (!hasHardware || !isEnrolled) {
-      // Silenciosamente no se activa
       return;
     }
 
@@ -167,9 +289,7 @@ export default function SettingsScreen() {
 
     if (result.success) {
       setBiometricEnabled(true);
-      // Éxito silencioso
     }
-    // Si falla, no se activa (sin alerta)
   };
 
   return (
@@ -189,79 +309,11 @@ export default function SettingsScreen() {
               {t("settings.notifications_section")}
             </AppText>
             <AppBox>
-              <AppListItem
-                label={t("settings.daily_reminder_title")}
-                subLabel={t("settings.daily_reminder_description")}
-                icon="notifications-outline"
-                rightContent={
-                  <AppSwitch
-                    value={preferences.dailyReminder}
-                    onValueChange={(val) =>
-                      updatePreferences({ dailyReminder: val })
-                    }
-                  />
-                }
-              />
-              <AppDivider color="darkBorder" thickness={1} marginVertical="s" />
-
-              <AppListItem
-                label={t("settings.extreme_alert_title")}
-                subLabel={t("settings.extreme_alert_description")}
-                icon="alert-circle-outline"
-                rightContent={
-                  <AppSwitch
-                    value={preferences.extremeModeAlert}
-                    onValueChange={(val) =>
-                      updatePreferences({ extremeModeAlert: val })
-                    }
-                  />
-                }
-              />
-              <AppDivider color="darkBorder" thickness={1} marginVertical="s" />
-
-              <AppListItem
-                label={t("settings.budget_exceeded_title")}
-                subLabel={t("settings.budget_exceeded_description")}
-                icon="warning-outline"
-                rightContent={
-                  <AppSwitch
-                    value={preferences.budgetExceededAlert}
-                    onValueChange={(val) =>
-                      updatePreferences({ budgetExceededAlert: val })
-                    }
-                  />
-                }
-              />
-              <AppDivider color="darkBorder" thickness={1} marginVertical="s" />
-
-              <AppBox
-                style={{
-                  backgroundColor: PALETTE.nightBlue,
-                  borderRadius: BORDER_RADIUS.m,
-                  paddingHorizontal: SPACING.xs,
-                  paddingVertical: SPACING.xs,
-                  borderWidth: 1,
-                  borderColor: PALETTE.darkBorder,
-                }}
-              >
-                <AppTimePicker
-                  value={preferences.reminderTime}
-                  onChange={(newTime) =>
-                    updatePreferences({ reminderTime: newTime })
-                  }
-                  label={t("settings.daily_reminder_title")}
-                  placeholder={t("common.time_picker.placeholder")}
-                  style={{ width: "100%" }}
-                />
-              </AppBox>
-              <AppDivider color="darkBorder" thickness={1} marginVertical="s" />
-
-              <AppListItem
-                label={t("settings.test_button")}
-                icon="send-outline"
-                onPress={handleTestNotification}
-                isActive
-              />
+              <DailyReminderItem />
+              <ExtremeAlertItem />
+              <BudgetExceededItem />
+              <ReminderTimeItem />
+              <TestNotificationItem />
             </AppBox>
           </AppBox>
 

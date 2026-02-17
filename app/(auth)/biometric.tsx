@@ -35,10 +35,11 @@ import { useBiometricAuth } from '@/features/biometrics/hooks/useBiometricAuth';
 import { useVaultStore } from '@/store/useVaultStore';
 
 // ----------------------------------------------------------------------------
-// CONSTANTES DE DISEÑO
+// CONSTANTES DE DISEÑO Y RUTAS
 // ----------------------------------------------------------------------------
 import { SPACING } from '@/constants/metrics';
 import { PALETTE } from '@/constants/colors';
+import { ROUTES } from '@/constants/navigation'; 
 
 export default function BiometricScreen() {
   const { t } = useTranslation();
@@ -79,7 +80,7 @@ export default function BiometricScreen() {
         disableDeviceFallback: false, // Permitir PIN/patrón como respaldo
       }).then((result) => {
         if (result.success) {
-          router.replace('/(main)');
+          router.replace(ROUTES.MAIN.INDEX); // ✅ Corregido
         } else {
           // Guardamos el error para mostrarlo, pero distinguimos cancelación
           if (result.code === 'user_cancel') {
@@ -106,7 +107,7 @@ export default function BiometricScreen() {
       disableDeviceFallback: false,
     });
     if (result.success) {
-      router.replace('/(main)');
+      router.replace(ROUTES.MAIN.INDEX); // ✅ Corregido
     } else if (result.code !== 'user_cancel') {
       setAuthError(result.error || t('auth.biometric.error'));
     } else {
@@ -117,7 +118,7 @@ export default function BiometricScreen() {
   /** Desactiva la biometría y continúa a main */
   const handleDisableAndContinue = () => {
     setBiometricEnabled(false);
-    router.replace('/(main)');
+    router.replace(ROUTES.MAIN.INDEX); // ✅ Corregido
   };
 
   // --------------------------------------------------------------------------

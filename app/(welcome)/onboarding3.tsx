@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 // y AppText para el formateo especial de partes del texto
 import { OnboardingStep } from '@/components/templates/onboarding/components/steps/OnboardingStep';
 import AppText from '@/components/atoms/content/AppText';
+import { ROUTES } from '@/constants/navigation'; 
 
 // ----------------------------------------------------------------------------
 // COMPONENTE PRINCIPAL - Onboarding3
@@ -32,8 +33,8 @@ export default function Onboarding3() {
   // handleFinish: Finaliza el onboarding y navega a la animación de transición
   // handleSkip: En este paso final, "saltar" también lleva a la transición
   // Nota: Ambos handlers hacen lo mismo porque es el último paso
-  const handleFinish = () => router.replace('/(animations)/transition');
-  const handleSkip = () => router.replace('/(animations)/transition');
+  const handleFinish = () => router.replace(ROUTES.ANIMATIONS.TRANSITION); // ✅ Corregido
+  const handleSkip = () => router.replace(ROUTES.ANIMATIONS.TRANSITION);   // ✅ Corregido
 
   // DESCRIPCIÓN CON MÚLTIPLES PARTES DESTACADAS
   // --------------------------------------------------------------------------
@@ -60,7 +61,7 @@ export default function Onboarding3() {
   // --------------------------------------------------------------------------
   // Configuración específica del tercer y último paso:
   // - stepNumber: 3 (último de 3 pasos)
-  // - iconName: 'checkmark-done-outline' (símbolo de finalización)
+  // - iconName: 'layers-outline' (símbolo de finalización)
   // - buttonText: Texto de acción final ("Comenzar Ahora")
   // - buttonStatus: 'accent' (cambio visual para indicar acción principal)
   // - description: Texto con dos partes destacadas en colores diferentes

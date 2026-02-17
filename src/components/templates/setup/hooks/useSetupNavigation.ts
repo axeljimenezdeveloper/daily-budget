@@ -17,6 +17,7 @@ import { useRouter } from 'expo-router';
 // TIPOS LOCALES
 // ----------------------------------------------------------------------------
 import { Currency } from '../types';
+import { ROUTES } from '@/constants/navigation'; 
 
 // ----------------------------------------------------------------------------
 // HOOK PRINCIPAL
@@ -48,7 +49,7 @@ export const useSetupNavigation = () => {
    */
   const navigateToBudget = (currency: Currency) => {
     router.push({
-      pathname: "/(welcome)/setup-budget",
+      pathname: ROUTES.WELCOME.SETUP_BUDGET, 
       params: {
         currencyJSON: JSON.stringify(currency),
       },
@@ -64,7 +65,7 @@ export const useSetupNavigation = () => {
    */
   const navigateToDuration = (currency: Currency, budget: string) => {
     router.push({
-      pathname: "/(welcome)/setup-duration",
+      pathname: ROUTES.WELCOME.SETUP_DURATION, 
       params: {
         currencyJSON: JSON.stringify(currency),
         budget: budget,
@@ -90,7 +91,7 @@ export const useSetupNavigation = () => {
    * y no hay pantalla anterior en el stack (viene desde onboarding3).
    */
   const navigateToOnboarding = () => {
-    router.replace("/(welcome)/onboarding1");
+    router.replace(ROUTES.WELCOME.ONBOARDING1); 
   };
 
   /**
@@ -99,7 +100,7 @@ export const useSetupNavigation = () => {
    * el onboarding como completado.
    */
   const navigateToSuccess = () => {
-    router.replace("/(animations)/success");
+    router.replace(ROUTES.ANIMATIONS.SUCCESS); 
   };
 
   // --------------------------------------------------------------------------

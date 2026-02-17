@@ -6,20 +6,25 @@
 // - Mostrar pantalla de carga (LoadingAnimation) mientras la app no está lista.
 // - Proveer el tema oscuro personalizado a través de ThemeProvider.
 // - Configurar el manejador global de notificaciones en primer plano.
+// - Crear los canales de notificación en Android (garantiza su existencia).
+// - Escuchar respuestas a notificaciones para navegación profunda (deep linking).
+// - Manejar la apertura de la app desde una notificación cuando estaba cerrada.
 // - Definir el Stack Navigator raíz con las rutas principales.
 // ============================================================================
 
 import "@/locales/i18n";
-import { useEffect, useState } from "react";
-import { View } from "react-native";
-import { Stack } from "expo-router";
+import { useEffect, useState, useRef } from "react";
+import { View, Platform } from "react-native";
+import { Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import { DarkTheme, ThemeProvider } from "@react-navigation/native";
-import * as Notifications from "expo-notifications"; // ✅ Manejador global
+import * as Notifications from "expo-notifications";
 import { PALETTE } from "@/constants/colors";
 import LoadingAnimation from "./(animations)/loading";
+import { NOTIFICATION_CHANNELS } from "@/features/notifications/constants";
+import { ROUTES } from "@/constants/navigation"; 
 
 const CustomDarkTheme = {
   ...DarkTheme,
@@ -32,7 +37,12 @@ const CustomDarkTheme = {
 };
 
 export default function RootLayout() {
+  const router = useRouter();
   const [appIsReady, setAppIsReady] = useState(false);
+
+  // Referencias para los listeners de notificaciones (inicializadas con null)
+  const notificationListener = useRef<Notifications.EventSubscription>(null);
+  const responseListener = useRef<Notifications.EventSubscription>(null);
 
   // --------------------------------------------------------------------------
   // CARGA DE RECURSOS INICIALES
@@ -54,20 +64,79 @@ export default function RootLayout() {
   // --------------------------------------------------------------------------
   // CONFIGURACIÓN GLOBAL DE NOTIFICACIONES (Primer plano)
   // --------------------------------------------------------------------------
-  // Establece cómo se comportan las notificaciones cuando la app está abierta.
-  // Sin este handler, las notificaciones entrantes no se muestran visualmente.
-  // Se ejecuta una única vez al montar el layout raíz.
   useEffect(() => {
     Notifications.setNotificationHandler({
       handleNotification: async () => ({
-        shouldShowAlert: true,      // Banner en la parte superior
-        shouldPlaySound: true,      // Sonido asociado
-        shouldSetBadge: false,     // Sin badge en el ícono
-        shouldShowBanner: true,    // Aparece en el Centro de Notificaciones
-        shouldShowList: true,      // Aparece en la lista del sistema (Android)
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+        shouldShowBanner: true,
+        shouldShowList: true,
       }),
     });
   }, []);
+
+  // --------------------------------------------------------------------------
+  // CREACIÓN DE CANALES DE NOTIFICACIÓN (Android)
+  // --------------------------------------------------------------------------
+  useEffect(() => {
+    if (Platform.OS === "android") {
+      Object.values(NOTIFICATION_CHANNELS).forEach((channel) => {
+        Notifications.setNotificationChannelAsync(channel.id, {
+          name: channel.name,
+          description: channel.description,
+          importance: channel.importance,
+          sound: "default",
+        });
+      });
+    }
+  }, []);
+
+  // --------------------------------------------------------------------------
+  // MANEJO DE NAVEGACIÓN DESDE NOTIFICACIONES
+  // --------------------------------------------------------------------------
+  useEffect(() => {
+    // Listener para cuando la app está abierta y se recibe una respuesta (toque)
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        const { data } = response.notification.request.content;
+        if (data?.screen) {
+          // Navegar a la pantalla indicada en los datos
+          router.push(data.screen as string);
+        } else {
+          // ✅ Corregido: usar ROUTES.MAIN.INDEX en lugar de string literal
+          router.push(ROUTES.MAIN.INDEX);
+        }
+      });
+
+    // Listener opcional para cuando se recibe una notificación en primer plano
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        // Podríamos actualizar algún estado global si es necesario
+      });
+
+    // Limpiar listeners al desmontar usando .remove()
+    return () => {
+      notificationListener.current?.remove();
+      responseListener.current?.remove();
+    };
+  }, [router]);
+
+  // --------------------------------------------------------------------------
+  // MANEJO DE APERTURA DESDE NOTIFICACIÓN (APP CERRADA)
+  // --------------------------------------------------------------------------
+  useEffect(() => {
+    // getLastNotificationResponse es síncrono, no una Promise
+    const response = Notifications.getLastNotificationResponse();
+    // Usar optional chaining para acceder de forma segura a los datos
+    const data = response?.notification?.request?.content?.data;
+    if (data?.screen) {
+      // Pequeño retraso para asegurar que la navegación esté lista
+      setTimeout(() => {
+        router.push(data.screen as string);
+      }, 500);
+    }
+  }, [router]);
 
   if (!appIsReady) {
     return (

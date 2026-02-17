@@ -1,6 +1,6 @@
 import React from "react";
 
-import AppBox from "../../structure/AppBox"; 
+import AppBox from "../../structure/AppBox";
 import AppText from "../../content/AppText";
 import AppIcon from "../../content/AppIcon";
 import AppPressable from "../AppPressable";
@@ -13,6 +13,7 @@ export default function AppListItem({
   onPress,
   subLabel,
   icon,
+  iconColor: customIconColor,
   rightContent,
   isActive = false,
   disabled = false,
@@ -26,6 +27,7 @@ export default function AppListItem({
     isActive,
     background,
     activeBackground,
+    iconColor: customIconColor,
   });
 
   const content = (

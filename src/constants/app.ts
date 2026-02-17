@@ -21,7 +21,7 @@ export const APP_INFO = {
   // NAME: Nombre oficial de la aplicación, utilizado en branding y UI
   // VERSION: Versión actual de la aplicación en formato semántico (MAJOR.MINOR.PATCH)
   NAME: 'SURV' as const,
-  VERSION: '1.30.0' as const,
+  VERSION: '1.33.0' as const,
   
   // --------------------------------------------------------------------------
   // PARA USO FUTURO - DESCOMENTAR SEGÚN NECESIDAD

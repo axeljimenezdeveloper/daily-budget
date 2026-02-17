@@ -176,6 +176,13 @@
     "budget_exceeded_alert": {
       "title": "Presupuesto excedido",
       "body": "Has superado tu presupuesto total."
+    },
+    "permission_denied": "Permiso denegado. Activa las notificaciones en Ajustes.",
+    "test": {
+      "title": "Notificación de prueba",
+      "body": "Esta es una notificación de prueba",
+      "sent": "Notificación de prueba enviada",
+      "error": "Error al enviar notificación de prueba"
     }
   },
   "settings": {

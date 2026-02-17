@@ -1,3 +1,7 @@
+// ============================================================================
+// HOOK PERSONALIZADO: useNotificationScheduler (ACTUALIZADO)
+// ============================================================================
+
 import { useEffect, useRef, useCallback } from 'react';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
@@ -34,13 +38,16 @@ export const useNotificationScheduler = () => {
     return status === 'granted';
   }, []);
 
+  // --------------------------------------------------------------------------
+  // PROGRAMAR RECORDATORIO DIARIO (con datos de navegación)
+  // --------------------------------------------------------------------------
   const scheduleDailyReminder = useCallback(
     async (
       hour: number,
       minute: number,
       title: string,
       body: string,
-      options?: { channelId?: string }
+      options?: { channelId?: string; data?: Record<string, unknown> }
     ) => {
       await Notifications.cancelScheduledNotificationAsync(NOTIFICATION_IDS.DAILY_REMINDER);
 
@@ -50,6 +57,7 @@ export const useNotificationScheduler = () => {
           title,
           body,
           sound: 'default',
+          data: options?.data, // ← NUEVO: datos de navegación
           ...(options?.channelId && Platform.OS === 'android' ? { channelId: options.channelId } : {}),
         },
         trigger: {
@@ -62,6 +70,9 @@ export const useNotificationScheduler = () => {
     []
   );
 
+  // --------------------------------------------------------------------------
+  // PROGRAMAR NOTIFICACIÓN DE UNA SOLA VEZ (con datos de navegación)
+  // --------------------------------------------------------------------------
   const scheduleOneTimeNotification = useCallback(
     async (
       identifier: string,
@@ -69,7 +80,7 @@ export const useNotificationScheduler = () => {
       title: string,
       body: string,
       channelId?: string,
-      data?: Record<string, unknown>
+      data?: Record<string, unknown> // ← ya existía, lo mantenemos
     ) => {
       const lastTime = lastNotificationTimesRef.current.get(identifier) ?? 0;
       const now = Date.now();

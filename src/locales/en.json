@@ -176,6 +176,13 @@
     "budget_exceeded_alert": {
       "title": "Budget exceeded",
       "body": "You have exceeded your total budget."
+    },
+    "permission_denied": "Permission denied. Please enable notifications in settings.",
+    "test": {
+      "title": "Test notification",
+      "body": "This is a test notification",
+      "sent": "Test notification sent",
+      "error": "Error sending test notification"
     }
   },
   "settings": {

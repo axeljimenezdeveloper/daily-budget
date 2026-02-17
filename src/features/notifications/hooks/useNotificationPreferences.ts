@@ -1,5 +1,10 @@
+// ============================================================================
+// HOOK PERSONALIZADO: useNotificationPreferences (CON DEEP LINKING)
+// ============================================================================
+
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Alert, Platform } from "react-native";
 import { useVaultStore } from "@/store/useVaultStore";
 import {
   getDateFromTimeString,
@@ -7,93 +12,166 @@ import {
 } from "@/store/useVaultStore/index.utils";
 import { useNotificationScheduler } from "./useNotificationScheduler";
 import { NOTIFICATION_CHANNELS, NOTIFICATION_IDS } from "../constants";
+import { ROUTES } from "@/constants/navigation"; // <-- NUEVA IMPORTACIÓN
 
 export const useNotificationPreferences = () => {
   const { t } = useTranslation();
   const [isSaving, setIsSaving] = useState(false);
 
-  const preferences = useVaultStore((state) => state.notificationPreferences);
+  // --- Selectores individuales (suscripción fina) ---
+  const dailyReminder = useVaultStore(
+    (state) => state.notificationPreferences.dailyReminder
+  );
+  const extremeModeAlert = useVaultStore(
+    (state) => state.notificationPreferences.extremeModeAlert
+  );
+  const budgetExceededAlert = useVaultStore(
+    (state) => state.notificationPreferences.budgetExceededAlert
+  );
+  const reminderTime = useVaultStore(
+    (state) => state.notificationPreferences.reminderTime
+  );
+
+  // --- Otros estados del store (para compatibilidad y efectos) ---
   const scheduledDate = useVaultStore(
-    (state) => state.notificationsScheduledForDate,
+    (state) => state.notificationsScheduledForDate
   );
   const setPrefs = useVaultStore((state) => state.setNotificationPreferences);
   const setScheduledToday = useVaultStore(
-    (state) => state.setNotificationsScheduledForToday,
+    (state) => state.setNotificationsScheduledForToday
   );
   const requestStorePermissions = useVaultStore(
-    (state) => state.requestNotificationPermissions,
+    (state) => state.requestNotificationPermissions
   );
-  const hasHydrated = useVaultStore((state) => state._hasHydrated); // ✅ Flag de rehidratación
+  const hasHydrated = useVaultStore((state) => state._hasHydrated);
 
+  // --- Hook de programación ---
   const { scheduleDailyReminder, requestPermissions, cancelNotificationById } =
     useNotificationScheduler();
 
+  // --- Función interna handleReschedule (igual) ---
   const handleReschedule = useCallback(
-    async (targetPrefs: typeof preferences) => {
-      if (!targetPrefs.dailyReminder) return;
+    async (targetPrefs: { dailyReminder: boolean; reminderTime: string }): Promise<boolean> => {
+      if (!targetPrefs.dailyReminder) return false;
 
       setIsSaving(true);
       try {
         const granted = await requestPermissions();
-        if (granted) {
-          requestStorePermissions();
-
-          const date = getDateFromTimeString(targetPrefs.reminderTime);
-          await scheduleDailyReminder(
-            date.getHours(),
-            date.getMinutes(),
-            t("notifications.daily_reminder.title"),
-            t("notifications.daily_reminder.body"),
-            { channelId: NOTIFICATION_CHANNELS.REMINDERS.id },
-          );
-          setScheduledToday();
+        if (!granted) {
+          if (Platform.OS === 'android') {
+            Alert.alert(
+              t('common.error'),
+              t('notifications.permission_denied') || 
+                'Para recibir recordatorios, activa los permisos en Ajustes.'
+            );
+          }
+          return false;
         }
+
+        requestStorePermissions();
+
+        const date = getDateFromTimeString(targetPrefs.reminderTime);
+        await scheduleDailyReminder(
+          date.getHours(),
+          date.getMinutes(),
+          t("notifications.daily_reminder.title"),
+          t("notifications.daily_reminder.body"),
+          {
+            channelId: NOTIFICATION_CHANNELS.REMINDERS.id,
+            data: { // <-- NUEVO: datos de navegación
+              screen: ROUTES.ADD_EXPENSE,
+              from: 'daily_reminder',
+            },
+          }
+        );
+
+        setScheduledToday();
+        return true;
       } catch (e) {
         console.error("[SURV] Error en scheduler:", e);
+        return false;
       } finally {
         setIsSaving(false);
       }
     },
     [
       requestPermissions,
-      scheduleDailyReminder,
-      t,
-      setScheduledToday,
       requestStorePermissions,
+      scheduleDailyReminder,
+      setScheduledToday,
+      t,
     ],
   );
 
+  // --- updatePreferences (adaptada para usar valores individuales) ---
   const updatePreferences = useCallback(
-    async (partialPrefs: Partial<typeof preferences>) => {
-      const newFullPrefs = { ...preferences, ...partialPrefs };
+    async (partialPrefs: Partial<{
+      dailyReminder: boolean;
+      extremeModeAlert: boolean;
+      budgetExceededAlert: boolean;
+      reminderTime: string;
+    }>) => {
+      // Guardar valores anteriores (necesitamos acceder a los actuales)
+      const prevDaily = dailyReminder;
+      const prevTime = reminderTime;
 
+      // Aplicar cambio optimista
       setPrefs(partialPrefs);
 
+      // Si se desactiva dailyReminder
       if (partialPrefs.dailyReminder === false) {
         await cancelNotificationById(NOTIFICATION_IDS.DAILY_REMINDER);
-      } else {
-        await handleReschedule(newFullPrefs);
+        return;
+      }
+
+      // Si se activa o cambia la hora
+      if (partialPrefs.dailyReminder === true || partialPrefs.reminderTime) {
+        const newDaily = partialPrefs.dailyReminder ?? prevDaily;
+        const newTime = partialPrefs.reminderTime ?? prevTime;
+        const success = await handleReschedule({
+          dailyReminder: newDaily,
+          reminderTime: newTime,
+        });
+
+        if (!success && partialPrefs.dailyReminder === true) {
+          // Revertir solo dailyReminder
+          setPrefs({ dailyReminder: false });
+          if (partialPrefs.reminderTime) {
+            setPrefs({ reminderTime: prevTime });
+          }
+        }
       }
     },
-    [preferences, setPrefs, cancelNotificationById, handleReschedule],
+    [dailyReminder, reminderTime, setPrefs, cancelNotificationById, handleReschedule],
   );
 
-  // ⚠️ Programación automática al montar: solo si ya hay hidratación y no está programado hoy
+  // --- Efecto de reprogramación al iniciar (dependencias ajustadas) ---
   useEffect(() => {
     if (!hasHydrated) return;
-
     const today = getTodayISO();
     if (scheduledDate === today) return;
-    if (preferences.dailyReminder) {
-      handleReschedule(preferences);
+    if (dailyReminder) {
+      handleReschedule({ dailyReminder, reminderTime });
     }
-  }, [hasHydrated]);
-  // }, [hasHydrated, preferences.dailyReminder, scheduledDate, handleReschedule]);
+  }, [hasHydrated, dailyReminder, reminderTime, scheduledDate, handleReschedule]);
 
+  // --- API pública: devolvemos tanto el objeto completo (para compatibilidad) como valores individuales ---
   return {
-    preferences,
+    // Objeto completo (mantenido por si hay código legacy)
+    preferences: {
+      dailyReminder,
+      extremeModeAlert,
+      budgetExceededAlert,
+      reminderTime,
+    },
+    // Valores individuales (recomendados para componentes memoizados)
+    dailyReminder,
+    extremeModeAlert,
+    budgetExceededAlert,
+    reminderTime,
+    // Funciones y estados
     updatePreferences,
     isSaving,
-    rescheduleDailyReminder: () => handleReschedule(preferences),
+    rescheduleDailyReminder: () => handleReschedule({ dailyReminder, reminderTime }),
   };
 };

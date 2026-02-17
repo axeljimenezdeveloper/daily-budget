@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 // y AppText para partes específicas del texto con formato especial
 import { OnboardingStep } from "@/components/templates/onboarding/components/steps/OnboardingStep";
 import AppText from "@/components/atoms/content/AppText";
+import { ROUTES } from "@/constants/navigation"; 
 
 // ----------------------------------------------------------------------------
 // COMPONENTE PRINCIPAL - Onboarding1
@@ -31,8 +32,8 @@ export default function Onboarding1() {
   // --------------------------------------------------------------------------
   // handleNext: Avanza al segundo paso del onboarding
   // handleSkip: Salta todo el flujo y va directamente a la animación de transición
-  const handleNext = () => router.push("/(welcome)/onboarding2");
-  const handleSkip = () => router.replace("/(animations)/transition");
+  const handleNext = () => router.push(ROUTES.WELCOME.ONBOARDING2);
+  const handleSkip = () => router.replace(ROUTES.ANIMATIONS.TRANSITION); 
 
   // CONSTRUCCIÓN DE DESCRIPCIÓN CON FORMATO
   // --------------------------------------------------------------------------

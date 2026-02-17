@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useRouter } from "expo-router";
 import { useVaultStore } from "@/store/useVaultStore";
 import LoadingAnimation from "./(animations)/loading";
+import { ROUTES } from "@/constants/navigation"; 
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -14,13 +15,13 @@ export default function HomeScreen() {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!hasFinishedOnboarding) {
-        router.replace("/(welcome)/onboarding1");
+        router.replace(ROUTES.WELCOME.ONBOARDING1);
       } else {
         // Si ya completó onboarding, evaluamos si requiere biometría
         if (isBiometricEnabled) {
-          router.replace("/(auth)/biometric");
+          router.replace(ROUTES.AUTH.BIOMETRIC);
         } else {
-          router.replace("/(main)");
+          router.replace(ROUTES.MAIN.INDEX);
         }
       }
     }, 200); // Pequeño retraso para asegurar que el store esté listo

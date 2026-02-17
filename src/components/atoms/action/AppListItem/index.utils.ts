@@ -3,19 +3,20 @@ import { AppListItemProps } from "./index.props";
 
 export interface StyleHelpers {
   currentBackground?: keyof typeof PALETTE;
-  iconColor: "accent" | "secondary";
+  iconColor: "primary" | "secondary" | "accent" | "success" | "error" | "info";
 }
 
 export function getStyleHelpers({
   isActive = false,
   background,
   activeBackground = "nightBlue",
+  iconColor: customIconColor,
 }: Pick<
   AppListItemProps,
-  "isActive" | "background" | "activeBackground"
+  "isActive" | "background" | "activeBackground" | "iconColor"
 >): StyleHelpers {
   return {
     currentBackground: isActive ? activeBackground : background,
-    iconColor: isActive ? "accent" : "secondary",
+    iconColor: customIconColor ?? (isActive ? "accent" : "secondary"),
   };
 }

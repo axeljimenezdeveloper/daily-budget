@@ -1,7 +1,17 @@
-import React from "react"; // React core for component logic
-import { Switch, View } from "react-native"; // Native switch and container components
-import { SWITCH_COLORS } from "./index.styles"; // Local style constants
-import { AppSwitchProps } from "./index.props"; // Property interfaces
+// ============================================================================
+// SWITCH PERSONALIZADO CON ANIMACIÓN - AppSwitch
+//
+// Reemplaza el Switch nativo de React Native con una implementación propia
+// que permite animaciones suaves y consistentes con el sistema de diseño.
+// Utiliza el hook useToggleAnimation para manejar la transición entre estados.
+// ============================================================================
+
+import React from 'react';
+import { Animated } from 'react-native';
+import AppPressable from '../AppPressable';
+import { useToggleAnimation } from '@/hooks/useToggleAnimation';
+import { AppSwitchProps } from './index.props';
+import { styles, SWITCH_COLORS, SWITCH_SIZES } from './index.styles';
 
 export default function AppSwitch({
   value,
@@ -9,19 +19,70 @@ export default function AppSwitch({
   disabled = false,
   style,
 }: AppSwitchProps) {
+  // --------------------------------------------------------------------------
+  // HOOK DE ANIMACIÓN
+  // --------------------------------------------------------------------------
+  // Se configura useNativeDriver: false para permitir animación de color
+  // (backgroundColor) junto con transform. Al finalizar la animación,
+  // se notifica el cambio mediante onValueChange.
+  const { animatedValue, toggle } = useToggleAnimation({
+    value,
+    onAnimated: onValueChange,
+    useNativeDriver: false,
+  });
+
+  // --------------------------------------------------------------------------
+  // INTERPOLACIONES
+  // --------------------------------------------------------------------------
+  // Color de fondo del track: transiciona entre inactivo (0) y activo (1)
+  const trackBackground = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [SWITCH_COLORS.inactiveTrack, SWITCH_COLORS.activeTrack],
+  });
+
+  // Desplazamiento horizontal del thumb:
+  // desde 0 (posición inicial) hasta el ancho disponible dentro del track
+  const thumbTranslateX = animatedValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [
+      0,
+      SWITCH_SIZES.trackWidth - SWITCH_SIZES.thumbSize - 2 * SWITCH_SIZES.thumbMargin,
+    ],
+  });
+
+  // Color del thumb: cambia si el componente está deshabilitado
+  const thumbColor = disabled ? SWITCH_COLORS.disabledThumb : SWITCH_COLORS.thumb;
+
+  // --------------------------------------------------------------------------
+  // MANEJADOR DE PRESIÓN
+  // --------------------------------------------------------------------------
+  const handlePress = () => {
+    if (!disabled) {
+      toggle(); // Invierte el valor actual (false → true, true → false)
+    }
+  };
+
   return (
-    <View style={style}>
-      <Switch
-        value={value} // Current controlled value
-        onValueChange={onValueChange} // Triggered on user interaction
-        disabled={disabled} // Disables the toggle if needed
-        trackColor={{
-          false: SWITCH_COLORS.inactiveTrack, // Background for OFF state
-          true: SWITCH_COLORS.activeTrack, // Background for ON state
-        }}
-        thumbColor={disabled ? SWITCH_COLORS.disabledThumb : SWITCH_COLORS.thumb} // Dynamic handle color
-        ios_backgroundColor={SWITCH_COLORS.inactiveTrack} // Consistent background for iOS devices
-      />
-    </View>
+    <AppPressable onPress={handlePress} disabled={disabled} style={style}>
+      <Animated.View
+        style={[
+          styles.track,
+          {
+            backgroundColor: trackBackground,
+            opacity: disabled ? 0.5 : 1,
+          },
+        ]}
+      >
+        <Animated.View
+          style={[
+            styles.thumb,
+            {
+              backgroundColor: thumbColor,
+              transform: [{ translateX: thumbTranslateX }],
+            },
+          ]}
+        />
+      </Animated.View>
+    </AppPressable>
   );
 }

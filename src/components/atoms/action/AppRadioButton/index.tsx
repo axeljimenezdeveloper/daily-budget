@@ -1,42 +1,53 @@
-import React from "react"; // React core for component logic
-import { View } from "react-native"; // Standard layout components
-import { PALETTE } from "@/constants/colors"; // Color constants
-import { STATE_COLORS } from "./index.utils"; // Semantic color mapping
-import AppPressable from "../AppPressable"; // Interaction atom with scale effect
-import AppText from "../../content/AppText"; // Typography atom
-import { AppRadioButtonProps } from "./index.props"; // Component properties
-import { styles } from "./index.styles"; // Static style definitions
+// ============================================================================
+// RADIO BUTTON REUTILIZABLE - AppRadioButton
+//
+// Componente de radio button con etiqueta opcional. Utiliza AppPressable como base
+// para garantizar feedback táctil consistente. Soporta modo fullWidth para
+// que el área presionable ocupe todo el ancho del contenedor.
+// ============================================================================
+
+import React from "react";
+import { View, StyleProp, ViewStyle } from "react-native";
+import { PALETTE } from "@/constants/colors";
+import { STATE_COLORS } from "./index.utils";
+import AppPressable from "../AppPressable";
+import AppText from "../../content/AppText";
+import { AppRadioButtonProps } from "./index.props";
+import { styles } from "./index.styles";
 
 export default function AppRadioButton({
   selected,
   onSelect,
   label,
-  status = "info", // Defaults to infoBlue for standard selection
+  status = "info",
   disabled = false,
   style,
+  fullWidth = false,
 }: AppRadioButtonProps) {
-  // Logic to handle selection if not disabled
   const handlePress = () => !disabled && onSelect();
 
-  // Dynamic colors based on selection and status
-  const activeColor = STATE_COLORS[status]; // Semantic color from palette
-  const borderColor = selected ? activeColor : PALETTE.darkBorder; // Border color logic
+  const activeColor = STATE_COLORS[status];
+  const borderColor = selected ? activeColor : PALETTE.darkBorder;
+
+  // Construcción de estilos con tipado explícito
+  const containerStyle: StyleProp<ViewStyle> = [
+    styles.container,
+    ...(fullWidth ? [{ width: "100%" as const }] : []),
+    style,
+    { opacity: disabled ? 0.5 : 1 },
+  ];
 
   return (
-    <AppPressable 
-      onPress={handlePress} 
-      disabled={disabled} 
-      style={[styles.container, style, { opacity: disabled ? 0.5 : 1 }]}
-    >
+    <AppPressable onPress={handlePress} disabled={disabled} style={containerStyle}>
       <View style={[styles.outerCircle, { borderColor }]}>
         {selected && (
           <View style={[styles.innerDot, { backgroundColor: activeColor }]} />
         )}
       </View>
-      
+
       {label && (
-        <AppText 
-          variant="body" 
+        <AppText
+          variant="body"
           color={disabled ? "secondary" : "primary"}
           style={styles.label}
         >

@@ -1,11 +1,19 @@
-import React from "react"; // React core library
-import { View } from "react-native"; // Standard layout components
-import { PALETTE } from "@/constants/colors"; // Application color tokens
-import AppPressable from "../AppPressable"; // Custom interaction atom
-import AppIcon from "../../content/AppIcon"; // Vector icon atom
-import AppText from "../../content/AppText"; // Standard typography atom
-import { AppCheckBoxProps } from "./index.props"; // Property interfaces
-import { styles } from "./index.styles"; // Static style definitions
+// ============================================================================
+// CHECKBOX REUTILIZABLE - AppCheckBox
+//
+// Componente de checkbox con etiqueta opcional. Utiliza AppPressable como base
+// para garantizar feedback táctil consistente. Soporta modo fullWidth para
+// que el área presionable ocupe todo el ancho del contenedor.
+// ============================================================================
+
+import React from "react";
+import { View, StyleProp, ViewStyle } from "react-native";
+import { PALETTE } from "@/constants/colors";
+import AppPressable from "../AppPressable";
+import AppIcon from "../../content/AppIcon";
+import AppText from "../../content/AppText";
+import { AppCheckBoxProps } from "./index.props";
+import { styles } from "./index.styles";
 
 export default function AppCheckBox({
   value,
@@ -13,39 +21,39 @@ export default function AppCheckBox({
   label,
   disabled = false,
   style,
+  fullWidth = false,
 }: AppCheckBoxProps) {
-  // Logic to handle the press event if not disabled
   const handlePress = () => !disabled && onValueChange(!value);
 
-  // Dynamic colors based on checked and disabled states
-  const activeColor = PALETTE.sunsetOrange; // Accent color for active state
-  const borderColor = value ? activeColor : PALETTE.darkBorder; // Border color logic
-  const backgroundColor = value ? activeColor : "transparent"; // Fill color logic
+  const activeColor = PALETTE.sunsetOrange;
+  const borderColor = value ? activeColor : PALETTE.darkBorder;
+  const backgroundColor = value ? activeColor : "transparent";
+
+  // Construcción de estilos con tipado explícito
+  const containerStyle: StyleProp<ViewStyle> = [
+    styles.container,
+    ...(fullWidth ? [{ width: "100%" as const }] : []),
+    style,
+  ];
 
   return (
-    <AppPressable 
-      onPress={handlePress} 
-      disabled={disabled} 
-      style={[styles.container, style]}
+    <AppPressable
+      onPress={handlePress}
+      disabled={disabled}
+      style={containerStyle}
     >
-      <View 
+      <View
         style={[
-          styles.box, 
-          { borderColor, backgroundColor, opacity: disabled ? 0.5 : 1 }
+          styles.box,
+          { borderColor, backgroundColor, opacity: disabled ? 0.5 : 1 },
         ]}
       >
-        {value && (
-          <AppIcon 
-            name="checkmark" 
-            size="s" 
-            color="primary" // Renders white checkmark on orange background
-          />
-        )}
+        {value && <AppIcon name="checkmark" size="s" color="primary" />}
       </View>
-      
+
       {label && (
-        <AppText 
-          variant="body" 
+        <AppText
+          variant="body"
           color={disabled ? "secondary" : "primary"}
           style={styles.label}
         >

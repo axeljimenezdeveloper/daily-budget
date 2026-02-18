@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import {
   TextInput,
   View,
-  TouchableOpacity,
   Keyboard,
 } from "react-native";
 import { PALETTE } from "@/constants/colors";
@@ -22,6 +21,7 @@ import {
 import AppText from "../../content/AppText";
 import AppStack from "../../structure/AppStack";
 import AppIcon from "../../content/AppIcon";
+import AppPressable from "../AppPressable"; 
 
 import { AppNumberInputProps } from "./index.props"; 
 import { styles } from "./index.styles";
@@ -172,7 +172,7 @@ export default function AppNumberInput({
         <View style={styles.inputContainer}>
           {currencySymbol && (
             <AppText 
-              variant="body" // Usar variante fija para el símbolo de moneda
+              variant="body"
               color="secondary" 
               style={[styles.currencySymbol, { fontSize: typographyStyle.fontSize }]}
             >
@@ -194,26 +194,24 @@ export default function AppNumberInput({
           />
         </View>
 
-        {/* Steppers (opcional) */}
+        {/* Steppers (opcional) - AHORA CON AppPressable */}
         {showStepper && !disabled && (
           <View style={styles.stepperContainer}>
-            <TouchableOpacity
-              style={styles.stepperButton}
+            <AppPressable
               onPress={handleDecrement}
-              activeOpacity={0.7}
+              style={styles.stepperButton}
             >
               <AppIcon name="remove" size="m" color="secondary" />
-            </TouchableOpacity>
+            </AppPressable>
             
             <View style={styles.stepperDivider} />
             
-            <TouchableOpacity
-              style={styles.stepperButton}
+            <AppPressable
               onPress={handleIncrement}
-              activeOpacity={0.7}
+              style={styles.stepperButton}
             >
               <AppIcon name="add" size="m" color="secondary" />
-            </TouchableOpacity>
+            </AppPressable>
           </View>
         )}
       </View>

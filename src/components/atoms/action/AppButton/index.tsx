@@ -1,5 +1,15 @@
+// ============================================================================
+// BOTÓN REUTILIZABLE - AppButton
+//
+// Componente de botón con dos variantes (filled, outline) y múltiples estados
+// semánticos. Utiliza AppPressable como base para feedback táctil y AppText
+// para la tipografía, manteniendo la consistencia del sistema de diseño.
+// ============================================================================
+
 import React from "react";
-import { Pressable, Text, ViewStyle, TextStyle } from "react-native";
+import { ViewStyle } from "react-native";
+import AppPressable from "../AppPressable";
+import AppText from "../../content/AppText"; // 👈 Usamos AppText
 import { AppButtonProps } from "./index.props";
 import { styles } from "./index.styles";
 import { STATE_COLORS, getLightColor } from "./index.utils";
@@ -9,44 +19,44 @@ export default function AppButton({
   onPress,
   variant = "filled",
   status = "neutral",
-  disabled,
-  style, // Nueva prop
+  disabled = false,
+  style,
+  fullWidth = false,
 }: AppButtonProps) {
-  
   const mainColor = STATE_COLORS[status];
-  
-  // Dynamic style arrays for container and text
-  const containerStyle: ViewStyle[] = [styles.base];
-  const textStyle: TextStyle[] = [styles.text];
 
-  // Logic to apply variant-specific styling
+  // Estilos del contenedor
+  const containerStyle: ViewStyle[] = [styles.base];
+
   if (variant === "filled") {
     containerStyle.push({
       backgroundColor: mainColor,
       borderWidth: 0,
     });
-    textStyle.push({ color: "#FFFFFF" });
   } else {
     containerStyle.push({
       backgroundColor: getLightColor(mainColor),
       borderWidth: 2,
       borderColor: mainColor,
     });
-    textStyle.push({ color: mainColor });
   }
 
+  if (fullWidth) {
+    containerStyle.push({ width: "100%" } as ViewStyle);
+  }
+
+  if (style) {
+    containerStyle.push(style);
+  }
+
+  // Color del texto: blanco para filled, color principal para outline
+  const textColor = variant === "filled" ? "#FFFFFF" : mainColor;
+
   return (
-    <Pressable 
-      onPress={onPress} 
-      disabled={disabled} 
-      style={({ pressed }) => [
-        containerStyle, // Estilos base y de variante
-        style, // ✅ Estilos personalizados (nueva prop)
-        disabled && { opacity: 0.5 },
-        pressed && { opacity: 0.8, transform: [{ scale: 0.98 }] }
-      ]}
-    >
-      <Text style={textStyle}>{children}</Text>
-    </Pressable>
+    <AppPressable onPress={onPress} disabled={disabled} style={containerStyle}>
+      <AppText variant="body" style={[styles.text, { color: textColor }]}>
+        {children}
+      </AppText>
+    </AppPressable>
   );
 }

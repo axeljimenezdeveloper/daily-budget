@@ -1,3 +1,11 @@
+// ============================================================================
+// COMPONENTE DE LISTA REUTILIZABLE - AppListItem
+//
+// Representa un elemento de lista con ícono, etiqueta, subetiqueta y contenido
+// derecho opcional. Puede ser presionable o no. Si se proporciona onPress,
+// se envuelve en AppPressable para manejar la interacción.
+// ============================================================================
+
 import React from "react";
 
 import AppBox from "../../structure/AppBox";
@@ -59,8 +67,13 @@ export default function AppListItem({
     return content;
   }
 
+  // --------------------------------------------------------------------------
+  // Importante: Se fuerza el ancho al 100% para que el área táctil ocupe
+  // todo el contenedor padre. Esto evita zonas muertas en los laterales
+  // cuando el ítem está dentro de un ScrollView con padding.
+  // --------------------------------------------------------------------------
   return (
-    <AppPressable onPress={onPress} disabled={disabled}>
+    <AppPressable onPress={onPress} disabled={disabled} style={{ width: '100%' }}>
       {content}
     </AppPressable>
   );

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.34.0](///compare/v1.33.1...v1.34.0) (2026-02-18)
+
+
+### Features
+
+* **components:** implementar AppTimePicker y usarlo en configuración de notificación diaria 8135571
+
 ### [1.33.1](///compare/v1.33.0...v1.33.1) (2026-02-17)
 
 ## [1.33.0](///compare/v1.32.0...v1.33.0) (2026-02-17)

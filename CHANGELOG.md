@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.35.0](///compare/v1.34.1...v1.35.0) (2026-02-18)
+
+
+### Features
+
+* **components:** implementar animaciones de transición en AppSwitch, AppCheckBox y AppRadioButton dbc9dea
+
 ### [1.34.1](///compare/v1.34.0...v1.34.1) (2026-02-18)
 
 ## [1.34.0](///compare/v1.33.1...v1.34.0) (2026-02-18)

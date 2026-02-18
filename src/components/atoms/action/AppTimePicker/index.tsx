@@ -1,52 +1,29 @@
 // ============================================================================
 // SELECTOR DE HORA REUTILIZABLE (AppTimePicker)
 //
-// Proporciona un campo de entrada para seleccionar hora en formato HH:mm.
-// - Android: diálogo nativo (DateTimePicker modal).
-// - iOS:   modal personalizado con picker spinner y botones Cancelar/Confirmar.
-// - Soporta i18n: todos los textos visibles se obtienen del hook useTranslation.
-// - Fallback: si no se provee value, se muestra el placeholder traducido.
+// Este componente se integra visualmente como un AppListItem:
+// - Ícono de reloj a la izquierda (time-outline)
+// - Etiqueta textual a la izquierda (prop label)
+// - A la derecha muestra la hora seleccionada o el placeholder
+// - Al presionar se abre el selector nativo (Android) o un modal personalizado (iOS)
+// - Utiliza AppPressable internamente (a través de AppListItem) para feedback táctil
 // ============================================================================
 
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Platform, Modal } from 'react-native';
+import { View, Platform, Modal } from 'react-native';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { useTranslation } from 'react-i18next';
 
+// Componentes base
+import AppListItem from '@/components/atoms/action/AppListItem';
 import AppText from '@/components/atoms/content/AppText';
-import AppIcon from '@/components/atoms/content/AppIcon';
 import AppStack from '@/components/atoms/structure/AppStack';
 import AppButton from '@/components/atoms/action/AppButton';
+
+// Utilidades y estilos
+import { timeStringToDate, dateToTimeString } from './index.utils';
 import { styles } from './index.styles';
 import { AppTimePickerProps } from './index.props';
-
-// ----------------------------------------------------------------------------
-// UTILIDADES DE CONVERSIÓN (HH:mm <-> Date)
-// ----------------------------------------------------------------------------
-
-/**
- * Convierte un string en formato "HH:mm" a un objeto Date.
- * Se utiliza una fecha fija (2000-01-01) para aislar solo la hora.
- *
- * @param time - Hora en formato "HH:mm" (24h)
- * @returns Objeto Date con la hora especificada.
- */
-const timeStringToDate = (time: string): Date => {
-  const [hours, minutes] = time.split(':').map(Number);
-  return new Date(2000, 0, 1, hours, minutes);
-};
-
-/**
- * Convierte un objeto Date a string en formato "HH:mm" (24h, dos dígitos).
- *
- * @param date - Objeto Date.
- * @returns Hora en formato "HH:mm".
- */
-const dateToTimeString = (date: Date): string => {
-  const hours = date.getHours().toString().padStart(2, '0');
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  return `${hours}:${minutes}`;
-};
 
 // ----------------------------------------------------------------------------
 // COMPONENTE PRINCIPAL
@@ -68,7 +45,7 @@ export default function AppTimePicker({
   // Estado para iOS: control del modal y valor temporal durante la edición
   const [iosModalVisible, setIosModalVisible] = useState(false);
   const [tempTime, setTempTime] = useState<Date>(() =>
-    value ? timeStringToDate(value) : timeStringToDate('20:00')
+    timeStringToDate(value || '20:00')
   );
 
   const isIOS = Platform.OS === 'ios';
@@ -84,7 +61,7 @@ export default function AppTimePicker({
       setAndroidPickerVisible(true);
     } else {
       // En iOS: preparamos el modal con la hora actual
-      setTempTime(value ? timeStringToDate(value) : timeStringToDate('20:00'));
+      setTempTime(timeStringToDate(value || '20:00'));
       setIosModalVisible(true);
     }
   };
@@ -112,37 +89,29 @@ export default function AppTimePicker({
   const displayPlaceholder = placeholder ?? t('common.time_picker.placeholder');
 
   return (
-    <View style={[styles.container, style]}>
-      {label && (
-        <AppText variant="label" color="secondary" style={styles.label}>
-          {label}
-        </AppText>
-      )}
-
-      <TouchableOpacity
-        style={[styles.pickerButton, disabled && styles.disabled]}
+    <>
+      {/* ----------------------------------------------------------------
+        ÍTEM PRINCIPAL (con aspecto de AppListItem)
+        - Icono: time-outline (Ionicons)
+        - Label: texto descriptivo
+        - Right content: hora seleccionada o placeholder
+        - OnPress: abre el selector
+      ---------------------------------------------------------------- */}
+      <AppListItem
+        icon="time-outline"
+        label={label || ''}
         onPress={handlePress}
-        activeOpacity={0.7}
         disabled={disabled}
-      >
-        <AppText
-          variant="body"
-          color={value ? 'primary' : 'secondary'}
-          style={styles.timeText}
-        >
-          {value || displayPlaceholder}
-        </AppText>
-        <AppIcon
-          name="time-outline"
-          library="Ionicons"
-          size="m"
-          color={disabled ? 'secondary' : 'primary'}
-        />
-      </TouchableOpacity>
+        rightContent={
+          <AppText color={value ? 'primary' : 'secondary'}>
+            {value || displayPlaceholder}
+          </AppText>
+        }
+        style={style}
+      />
 
       {/* ----------------------------------------------------------------
         ANDROID: Diálogo nativo de selección de hora
-        Se muestra solo cuando el usuario presiona el botón.
       ---------------------------------------------------------------- */}
       {isAndroid && androidPickerVisible && (
         <DateTimePicker
@@ -156,8 +125,6 @@ export default function AppTimePicker({
 
       {/* ----------------------------------------------------------------
         iOS: Modal personalizado con picker y botones
-        - Título, botones Cancelar/Confirmar traducidos.
-        - El picker actualiza el estado temporal local.
       ---------------------------------------------------------------- */}
       {isIOS && (
         <Modal
@@ -196,6 +163,6 @@ export default function AppTimePicker({
           </View>
         </Modal>
       )}
-    </View>
+    </>
   );
 }

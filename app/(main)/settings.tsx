@@ -130,25 +130,13 @@ const ReminderTimeItem = memo(() => {
 
   return (
     <>
-      <AppBox
-        style={{
-          backgroundColor: PALETTE.nightBlue,
-          borderRadius: BORDER_RADIUS.m,
-          paddingHorizontal: SPACING.xs,
-          paddingVertical: SPACING.xs,
-          borderWidth: 1,
-          borderColor: PALETTE.darkBorder,
-        }}
-      >
-        <AppTimePicker
-          value={reminderTime}
-          onChange={(newTime) => updatePreferences({ reminderTime: newTime })}
-          label={t("settings.daily_reminder_title")}
-          placeholder={t("common.time_picker.placeholder")}
-          style={{ width: "100%" }}
-          disabled={isSaving}
-        />
-      </AppBox>
+      <AppTimePicker
+        value={reminderTime}
+        onChange={(newTime) => updatePreferences({ reminderTime: newTime })}
+        label={t("settings.daily_reminder_title")}
+        placeholder={t("common.time_picker.placeholder")}
+        disabled={isSaving}
+      />
       <AppDivider color="darkBorder" thickness={1} marginVertical="s" />
     </>
   );

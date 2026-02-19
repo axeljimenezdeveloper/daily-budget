@@ -19,19 +19,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------------
-// CONSTANTES GLOBALES
-// ----------------------------------------------------------------------------
-import { SPACING } from "@/constants/metrics";
-
-// ----------------------------------------------------------------------------
-// COMPONENTES ATÓMICOS
-// ----------------------------------------------------------------------------
-import AppBox from "@/components/atoms/structure/AppBox";
-import AppText from "@/components/atoms/content/AppText";
-import AppListItem from "@/components/atoms/action/AppListItem";
-import AppIcon from "@/components/atoms/content/AppIcon";
-
-// ----------------------------------------------------------------------------
 // COMPONENTES DEL TEMPLATE SETTINGS
 // ----------------------------------------------------------------------------
 // Layout base
@@ -39,6 +26,7 @@ import { SettingsLayout } from "@/components/templates/settings/components/layou
 
 // Secciones de UI
 import { NotificationsSection } from "@/components/templates/settings/components/sections/NotificationsSection";
+import { LanguageSection } from "@/components/templates/settings/components/sections/LanguageSection";
 import { SecuritySection } from "@/components/templates/settings/components/sections/SecuritySection";
 import { PlanSection } from "@/components/templates/settings/components/sections/PlanSection";
 import { CurrencySection } from "@/components/templates/settings/components/sections/CurrencySection";
@@ -97,33 +85,10 @@ export default function SettingsScreen() {
           Muestra el idioma actual y abre el modal de selección.
           (Pendiente de extracción a componente independiente)
         ---------------------------------------------------------------- */}
-        <AppBox marginBottom="xl">
-          <AppText
-            variant="h3"
-            color="accent"
-            style={{ marginBottom: SPACING.s }}
-          >
-            {t("settings.language_section", "Idioma")}
-          </AppText>
-          <AppBox>
-            <AppListItem
-              label={t("settings.language", "Idioma")}
-              subLabel={
-                settings.language === "es" ? "🇪🇸 Español" : "🇺🇸 English"
-              }
-              icon="language-outline"
-              onPress={() => settings.setShowLanguageModal(true)}
-              rightContent={
-                <AppIcon
-                  name="chevron-forward"
-                  library="Ionicons"
-                  size="m"
-                  color="secondary"
-                />
-              }
-            />
-          </AppBox>
-        </AppBox>
+        <LanguageSection
+          language={settings.language}
+          onPress={() => settings.setShowLanguageModal(true)}
+        />
 
         {/* ----------------------------------------------------------------
           SECCIÓN SEGURIDAD
@@ -193,7 +158,7 @@ export default function SettingsScreen() {
         title={t("settings.reset_modal_title", "Reiniciar bóveda")}
         message={t(
           "settings.reset_confirmation",
-          "¿Estás seguro? Se perderán todos tus datos de presupuesto y gastos."
+          "¿Estás seguro? Se perderán todos tus datos de presupuesto y gastos.",
         )}
         cancelText={t("common.cancel", "Cancelar")}
         confirmText={t("settings.reset_confirm", "Reiniciar")}

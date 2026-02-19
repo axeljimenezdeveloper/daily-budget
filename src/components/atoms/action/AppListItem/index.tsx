@@ -4,9 +4,11 @@
 // Representa un elemento de lista con ícono, etiqueta, subetiqueta y contenido
 // derecho opcional. Puede ser presionable o no. Si se proporciona onPress,
 // se envuelve en AppPressable para manejar la interacción.
+// Ahora soporta throttling opcional para prevenir pulsaciones rápidas.
 // ============================================================================
 
 import React from "react";
+import { ANIMATION } from "@/constants/animations"; // ← Importamos constante global
 
 import AppBox from "../../structure/AppBox";
 import AppText from "../../content/AppText";
@@ -29,6 +31,7 @@ export default function AppListItem({
   activeBackground = "nightBlue",
   padding = "m",
   style,
+  throttleMs = ANIMATION.DEFAULT_PRESS_THROTTLE_MS, // ← Valor por defecto
 }: AppListItemProps) {
   
   const { currentBackground, iconColor } = getStyleHelpers({
@@ -73,7 +76,12 @@ export default function AppListItem({
   // cuando el ítem está dentro de un ScrollView con padding.
   // --------------------------------------------------------------------------
   return (
-    <AppPressable onPress={onPress} disabled={disabled} style={{ width: '100%' }}>
+    <AppPressable
+      onPress={onPress}
+      disabled={disabled}
+      style={{ width: '100%' }}
+      throttleMs={throttleMs} // ← Pasamos la prop
+    >
       {content}
     </AppPressable>
   );

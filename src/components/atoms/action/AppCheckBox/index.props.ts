@@ -1,15 +1,15 @@
-import { ViewStyle, StyleProp } from "react-native"; // Native styling types
+import { ViewStyle, StyleProp } from "react-native";
 
 export interface AppCheckBoxProps {
-  /** Current checked state of the component */
+  /** Estado actual del checkbox (true = marcado, false = desmarcado) */
   value: boolean;
-  /** Callback function for state toggle */
+  /** Función a ejecutar cuando cambia el estado */
   onValueChange: (newValue: boolean) => void;
-  /** Optional text description next to the box */
+  /** Texto opcional que se muestra junto al cuadro */
   label?: string;
-  /** Prevents interaction and dims opacity when true */
+  /** Deshabilita la interacción cuando es true */
   disabled?: boolean;
-  /** Optional container style overrides */
+  /** Estilos personalizados para el contenedor */
   style?: StyleProp<ViewStyle>;
   /**
    * Si es true, el contenedor ocupará el 100% del ancho disponible.
@@ -17,4 +17,11 @@ export interface AppCheckBoxProps {
    * @default false
    */
   fullWidth?: boolean;
+  /**
+   * Tiempo mínimo (en ms) entre ejecuciones de onPress.
+   * Por defecto se usa DEFAULT_PRESS_THROTTLE_MS (300ms) para evitar
+   * pulsaciones dobles accidentales.
+   * @default ANIMATION.DEFAULT_PRESS_THROTTLE_MS
+   */
+  throttleMs?: number;
 }

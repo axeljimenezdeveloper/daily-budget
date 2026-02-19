@@ -25,4 +25,10 @@ export const ANIMATION = {
    * Transform y opacity pueden usar native driver; color no.
    */
   USE_NATIVE_DRIVER: true,
+
+  /**
+   * Tiempo de espera por defecto (en ms) para el throttle de pulsaciones.
+   * 300ms es un equilibrio entre prevención de dobles toques y respuesta ágil.
+   */
+  DEFAULT_PRESS_THROTTLE_MS: 300,
 } as const;

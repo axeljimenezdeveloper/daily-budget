@@ -4,10 +4,12 @@
 // Reemplaza el Switch nativo de React Native con una implementación propia
 // que permite animaciones suaves y consistentes con el sistema de diseño.
 // Utiliza el hook useToggleAnimation para manejar la transición entre estados.
+// Ahora soporta throttling opcional para prevenir pulsaciones rápidas.
 // ============================================================================
 
 import React from 'react';
 import { Animated } from 'react-native';
+import { ANIMATION } from '@/constants/animations'; // ← Importamos constante global
 import AppPressable from '../AppPressable';
 import { useToggleAnimation } from '@/hooks/useToggleAnimation';
 import { AppSwitchProps } from './index.props';
@@ -18,13 +20,11 @@ export default function AppSwitch({
   onValueChange,
   disabled = false,
   style,
+  throttleMs = ANIMATION.DEFAULT_PRESS_THROTTLE_MS, // ← Valor por defecto
 }: AppSwitchProps) {
   // --------------------------------------------------------------------------
   // HOOK DE ANIMACIÓN
   // --------------------------------------------------------------------------
-  // Se configura useNativeDriver: false para permitir animación de color
-  // (backgroundColor) junto con transform. Al finalizar la animación,
-  // se notifica el cambio mediante onValueChange.
   const { animatedValue, toggle } = useToggleAnimation({
     value,
     onAnimated: onValueChange,
@@ -34,14 +34,11 @@ export default function AppSwitch({
   // --------------------------------------------------------------------------
   // INTERPOLACIONES
   // --------------------------------------------------------------------------
-  // Color de fondo del track: transiciona entre inactivo (0) y activo (1)
   const trackBackground = animatedValue.interpolate({
     inputRange: [0, 1],
     outputRange: [SWITCH_COLORS.inactiveTrack, SWITCH_COLORS.activeTrack],
   });
 
-  // Desplazamiento horizontal del thumb:
-  // desde 0 (posición inicial) hasta el ancho disponible dentro del track
   const thumbTranslateX = animatedValue.interpolate({
     inputRange: [0, 1],
     outputRange: [
@@ -50,7 +47,6 @@ export default function AppSwitch({
     ],
   });
 
-  // Color del thumb: cambia si el componente está deshabilitado
   const thumbColor = disabled ? SWITCH_COLORS.disabledThumb : SWITCH_COLORS.thumb;
 
   // --------------------------------------------------------------------------
@@ -58,12 +54,17 @@ export default function AppSwitch({
   // --------------------------------------------------------------------------
   const handlePress = () => {
     if (!disabled) {
-      toggle(); // Invierte el valor actual (false → true, true → false)
+      toggle();
     }
   };
 
   return (
-    <AppPressable onPress={handlePress} disabled={disabled} style={style}>
+    <AppPressable
+      onPress={handlePress}
+      disabled={disabled}
+      style={style}
+      throttleMs={throttleMs} // ← Pasamos la prop
+    >
       <Animated.View
         style={[
           styles.track,

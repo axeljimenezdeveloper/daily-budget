@@ -8,8 +8,9 @@
 
 import React from "react";
 import { ViewStyle } from "react-native";
+import { ANIMATION } from "@/constants/animations"; // ← Importamos constante global
 import AppPressable from "../AppPressable";
-import AppText from "../../content/AppText"; // 👈 Usamos AppText
+import AppText from "../../content/AppText";
 import { AppButtonProps } from "./index.props";
 import { styles } from "./index.styles";
 import { STATE_COLORS, getLightColor } from "./index.utils";
@@ -22,6 +23,7 @@ export default function AppButton({
   disabled = false,
   style,
   fullWidth = false,
+  throttleMs = ANIMATION.DEFAULT_PRESS_THROTTLE_MS, // ← Valor por defecto
 }: AppButtonProps) {
   const mainColor = STATE_COLORS[status];
 
@@ -53,7 +55,12 @@ export default function AppButton({
   const textColor = variant === "filled" ? "#FFFFFF" : mainColor;
 
   return (
-    <AppPressable onPress={onPress} disabled={disabled} style={containerStyle}>
+    <AppPressable
+      onPress={onPress}
+      disabled={disabled}
+      style={containerStyle}
+      throttleMs={throttleMs} // ← Pasamos la prop
+    >
       <AppText variant="body" style={[styles.text, { color: textColor }]}>
         {children}
       </AppText>

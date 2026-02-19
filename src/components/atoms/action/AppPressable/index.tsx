@@ -1,5 +1,13 @@
+// ============================================================================
+// COMPONENTE PRESIONABLE BASE - AppPressable
+//
+// Proporciona feedback táctil unificado (opacidad, escala) y ahora soporta
+// throttling opcional para prevenir pulsaciones rápidas repetidas.
+// ============================================================================
+
 import React from "react";
 import { Pressable, ViewStyle, StyleProp } from "react-native";
+import { useThrottledCallback } from "@/hooks/useThrottledCallback";
 import { AppPressableProps } from "./index.props";
 
 export default function AppPressable({
@@ -7,10 +15,18 @@ export default function AppPressable({
   onPress,
   style,
   disabled = false,
+  throttleMs,
 }: AppPressableProps) {
+  // --------------------------------------------------------------------------
+  // APLICAR THROTTLE SI SE SOLICITA
+  // --------------------------------------------------------------------------
+  const handlePress = throttleMs && throttleMs > 0
+    ? useThrottledCallback(onPress, throttleMs)
+    : onPress;
+
   return (
     <Pressable
-      onPress={onPress}
+      onPress={handlePress}
       disabled={disabled}
       style={({ pressed }): StyleProp<ViewStyle> =>
         [

@@ -7,6 +7,7 @@
 // - Overlay con opacidad configurable
 // - Header opcional con título y botón de cierre
 // - Contenido personalizable (acepta ScrollView u otros componentes)
+// Ahora incluye throttling en el botón de cierre para evitar pulsaciones rápidas.
 // ============================================================================
 
 import React, { useEffect, useRef } from "react";
@@ -18,6 +19,7 @@ import {
   DimensionValue,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { ANIMATION } from "@/constants/animations"; // ← Importamos constante global
 import { AppModalProps } from "./index.props";
 import { styles } from "./index.styles";
 import { shouldCloseOnRelease, animateIn, animateOut } from "./index.utils";
@@ -26,7 +28,7 @@ import { shouldCloseOnRelease, animateIn, animateOut } from "./index.utils";
 import AppOverlay from "../AppOverlay";
 import AppText from "../../content/AppText";
 import AppIcon from "../../content/AppIcon";
-import AppPressable from "../../action/AppPressable"; // 👈 Ahora usamos AppPressable
+import AppPressable from "../../action/AppPressable";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -43,6 +45,7 @@ export default function AppModal({
   closeOnBackdropPress = true,
   style,
   contentStyle,
+  throttleMs = ANIMATION.DEFAULT_PRESS_THROTTLE_MS, // ← Valor por defecto
 }: AppModalProps) {
   const insets = useSafeAreaInsets();
   const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
@@ -174,7 +177,11 @@ export default function AppModal({
                 {title}
               </AppText>
               {showCloseButton && (
-                <AppPressable onPress={handleClose} style={styles.closeButton}>
+                <AppPressable
+                  onPress={handleClose}
+                  style={styles.closeButton}
+                  throttleMs={throttleMs} // ← Pasamos la prop
+                >
                   <AppIcon name="close" size="m" color="primary" />
                 </AppPressable>
               )}

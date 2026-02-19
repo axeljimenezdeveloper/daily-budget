@@ -1,14 +1,25 @@
 import { ViewStyle, StyleProp } from "react-native";
 import { STATE_COLORS } from "./index.utils";
 
-// Definition of allowed semantic variants for the tag
 export type TagVariant = keyof typeof STATE_COLORS;
 
 export interface AppTagProps {
-  label: string; // Text to display
-  variant?: TagVariant; // Semantic color theme (success, error, etc.)
-  active?: boolean; // If true, uses solid background; if false, uses light/transparent background
-  onPress?: () => void; // Optional click handler
-  onRemove?: () => void; // Optional remove handler
-  style?: StyleProp<ViewStyle>; // Style overrides
+  /** Texto de la etiqueta */
+  label: string;
+  /** Tema semántico de color (success, error, etc.) */
+  variant?: TagVariant;
+  /** Si es true, fondo sólido; si false, fondo semitransparente */
+  active?: boolean;
+  /** Función opcional al presionar la etiqueta principal */
+  onPress?: () => void;
+  /** Función opcional al presionar el icono de eliminación */
+  onRemove?: () => void;
+  /** Estilos adicionales para el contenedor */
+  style?: StyleProp<ViewStyle>;
+  /**
+   * Tiempo mínimo (en ms) entre ejecuciones de onPress y onRemove.
+   * Se aplica tanto al área principal como al botón de eliminar.
+   * @default ANIMATION.DEFAULT_PRESS_THROTTLE_MS
+   */
+  throttleMs?: number;
 }

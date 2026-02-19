@@ -1,9 +1,21 @@
-import { ReactNode } from "react"; // Type for nested components
-import { ViewStyle, StyleProp } from "react-native"; // Native styling types
+import { ReactNode } from "react";
+import { ViewStyle, StyleProp } from "react-native";
 
 export interface AppPressableProps {
-  children: ReactNode; // Content that will become interactive
-  onPress: () => void; // Function to execute when pressed
-  style?: StyleProp<ViewStyle>; // Optional custom styles for the container
-  disabled?: boolean; // If true, the component won't respond to touches
+  /** Contenido que se volverá interactivo */
+  children: ReactNode;
+  /** Función a ejecutar al presionar */
+  onPress: () => void;
+  /** Estilos personalizados para el contenedor */
+  style?: StyleProp<ViewStyle>;
+  /** Si es true, el componente no responde a toques */
+  disabled?: boolean;
+  /**
+   * Tiempo mínimo (en ms) entre ejecuciones de onPress.
+   * Si se proporciona un valor > 0, se aplica throttle de tipo "leading":
+   * la primera pulsación se ejecuta inmediatamente y las siguientes se
+   * ignoran hasta que pase el intervalo.
+   * @default undefined (sin throttle)
+   */
+  throttleMs?: number;
 }

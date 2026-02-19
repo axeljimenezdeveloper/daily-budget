@@ -17,4 +17,11 @@ export interface AppButtonProps {
   style?: ViewStyle;
   /** Si es true, el botón ocupará todo el ancho disponible */
   fullWidth?: boolean;
+  /**
+   * Tiempo mínimo (en ms) entre ejecuciones de onPress.
+   * Por defecto se usa DEFAULT_PRESS_THROTTLE_MS (300ms) para evitar
+   * pulsaciones dobles accidentales.
+   * @default ANIMATION.DEFAULT_PRESS_THROTTLE_MS
+   */
+  throttleMs?: number;
 }

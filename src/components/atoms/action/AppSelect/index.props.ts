@@ -1,13 +1,27 @@
-import { ViewStyle, StyleProp, DimensionValue } from "react-native"; // React Native types for component styling and dimensions
+import { ViewStyle, StyleProp, DimensionValue } from "react-native";
 
-// Component properties definition
 export interface AppSelectProps {
-  value?: string; // Currently selected option label
-  label?: string; // Optional field label shown above the input
-  placeholder?: string; // Text shown when no value is selected
-  onPress: () => void; // Callback function to trigger selection logic (Modal/Sheet)
-  error?: string; // Optional validation error message
-  disabled?: boolean; // Toggle component interaction state
-  width?: DimensionValue; // Custom width for flexible layouts
-  style?: StyleProp<ViewStyle>; // Additional container overrides
+  /** Opción actualmente seleccionada (texto mostrado) */
+  value?: string;
+  /** Etiqueta opcional mostrada sobre el campo */
+  label?: string;
+  /** Texto mostrado cuando no hay valor seleccionado */
+  placeholder?: string;
+  /** Función a ejecutar al presionar (para abrir modal/sheet) */
+  onPress: () => void;
+  /** Mensaje de error de validación */
+  error?: string;
+  /** Deshabilita la interacción */
+  disabled?: boolean;
+  /** Ancho personalizado del contenedor */
+  width?: DimensionValue;
+  /** Estilos adicionales para el contenedor */
+  style?: StyleProp<ViewStyle>;
+  /**
+   * Tiempo mínimo (en ms) entre ejecuciones de onPress.
+   * Por defecto se usa DEFAULT_PRESS_THROTTLE_MS (300ms) para evitar
+   * pulsaciones dobles accidentales.
+   * @default ANIMATION.DEFAULT_PRESS_THROTTLE_MS
+   */
+  throttleMs?: number;
 }

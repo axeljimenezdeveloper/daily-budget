@@ -5,11 +5,13 @@
 // - El borde del círculo exterior cambia de color gradualmente.
 // - El punto interior aparece con escala progresiva y cambio de color.
 // Utiliza el hook useToggleAnimation para gestionar la transición.
+// Ahora soporta throttling opcional para prevenir pulsaciones rápidas.
 // ============================================================================
 
 import React from 'react';
 import { Animated, StyleProp, ViewStyle } from 'react-native';
 import { PALETTE } from '@/constants/colors';
+import { ANIMATION } from '@/constants/animations'; // ← Importamos constante global
 import { useToggleAnimation } from '@/hooks/useToggleAnimation';
 import { STATE_COLORS } from './index.utils';
 import AppPressable from '../AppPressable';
@@ -25,12 +27,11 @@ export default function AppRadioButton({
   disabled = false,
   style,
   fullWidth = false,
+  throttleMs = ANIMATION.DEFAULT_PRESS_THROTTLE_MS, // ← Valor por defecto
 }: AppRadioButtonProps) {
   // --------------------------------------------------------------------------
   // HOOK DE ANIMACIÓN
   // --------------------------------------------------------------------------
-  // Se usa nativeDriver: false porque animamos backgroundColor y borderColor.
-  // El callback onAnimated ejecuta onSelect cuando la animación termina.
   const { animatedValue, toggle } = useToggleAnimation({
     value: selected,
     onAnimated: onSelect,
@@ -42,22 +43,16 @@ export default function AppRadioButton({
   // --------------------------------------------------------------------------
   const activeColor = STATE_COLORS[status];
 
-  // Color del borde exterior: transiciona entre darkBorder (inactivo) y activeColor (seleccionado)
   const borderColor = animatedValue.interpolate({
     inputRange: [0, 1],
     outputRange: [PALETTE.darkBorder, activeColor],
   });
 
-  // Color del punto interior: transiciona desde el color de fondo (transparente cuando inactivo)
-  // pero como el punto solo es visible cuando selected = true, usamos la misma interpolación
-  // para el color de fondo del punto, que va de transparente a activeColor.
-  // Alternativamente, podríamos mantener el punto siempre presente con escala 0/1.
   const dotBackground = animatedValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['transparent', activeColor],
   });
 
-  // Escala del punto interior: de 0 a 1
   const dotScale = animatedValue.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],
@@ -68,7 +63,7 @@ export default function AppRadioButton({
   // --------------------------------------------------------------------------
   const handlePress = () => {
     if (!disabled) {
-      toggle(true); // Siempre selecciona este radio button (no toggle inverso)
+      toggle(true); // Siempre selecciona este radio button
     }
   };
 
@@ -83,10 +78,15 @@ export default function AppRadioButton({
   ];
 
   return (
-    <AppPressable onPress={handlePress} disabled={disabled} style={containerStyle}>
+    <AppPressable
+      onPress={handlePress}
+      disabled={disabled}
+      style={containerStyle}
+      throttleMs={throttleMs} // ← Pasamos la prop
+    >
       {/* CÍRCULO EXTERIOR ANIMADO */}
       <Animated.View style={[styles.outerCircle, { borderColor }]}>
-        {/* PUNTO INTERIOR ANIMADO: siempre presente pero con escala y color dinámicos */}
+        {/* PUNTO INTERIOR ANIMADO */}
         <Animated.View
           style={[
             styles.innerDot,

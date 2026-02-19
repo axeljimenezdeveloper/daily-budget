@@ -5,11 +5,13 @@
 // - El borde y fondo del cuadro cambian de color gradualmente.
 // - El icono de check aparece con una escala progresiva.
 // Utiliza el hook useToggleAnimation para gestionar la transición.
+// Ahora soporta throttling opcional para prevenir pulsaciones rápidas.
 // ============================================================================
 
 import React from 'react';
 import { Animated, StyleProp, ViewStyle } from 'react-native';
 import { PALETTE } from '@/constants/colors';
+import { ANIMATION } from '@/constants/animations'; // ← Importamos constante global
 import { useToggleAnimation } from '@/hooks/useToggleAnimation';
 import AppPressable from '../AppPressable';
 import AppIcon from '../../content/AppIcon';
@@ -24,12 +26,11 @@ export default function AppCheckBox({
   disabled = false,
   style,
   fullWidth = false,
+  throttleMs = ANIMATION.DEFAULT_PRESS_THROTTLE_MS, // ← Valor por defecto
 }: AppCheckBoxProps) {
   // --------------------------------------------------------------------------
   // HOOK DE ANIMACIÓN
   // --------------------------------------------------------------------------
-  // Se usa nativeDriver: false porque animamos backgroundColor y borderColor.
-  // El callback onAnimated ejecuta onValueChange cuando la animación termina.
   const { animatedValue, toggle } = useToggleAnimation({
     value,
     onAnimated: onValueChange,
@@ -41,19 +42,16 @@ export default function AppCheckBox({
   // --------------------------------------------------------------------------
   const activeColor = PALETTE.sunsetOrange;
 
-  // Color del borde: transiciona entre darkBorder (inactivo) y sunsetOrange (activo)
   const borderColor = animatedValue.interpolate({
     inputRange: [0, 1],
     outputRange: [PALETTE.darkBorder, activeColor],
   });
 
-  // Color de fondo: transiciona entre transparente (inactivo) y sunsetOrange (activo)
   const backgroundColor = animatedValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['transparent', activeColor],
   });
 
-  // Escala del icono de check: de 0 (invisible) a 1 (tamaño normal)
   const iconScale = animatedValue.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],
@@ -64,7 +62,7 @@ export default function AppCheckBox({
   // --------------------------------------------------------------------------
   const handlePress = () => {
     if (!disabled) {
-      toggle(); // Invierte el valor actual
+      toggle();
     }
   };
 
@@ -79,7 +77,12 @@ export default function AppCheckBox({
   ];
 
   return (
-    <AppPressable onPress={handlePress} disabled={disabled} style={containerStyle}>
+    <AppPressable
+      onPress={handlePress}
+      disabled={disabled}
+      style={containerStyle}
+      throttleMs={throttleMs} // ← Pasamos la prop
+    >
       {/* CUADRO ANIMADO */}
       <Animated.View
         style={[
@@ -90,7 +93,6 @@ export default function AppCheckBox({
           },
         ]}
       >
-        {/* El icono siempre presente pero con escala animada */}
         <Animated.View style={{ transform: [{ scale: iconScale }] }}>
           <AppIcon name="checkmark" size="s" color="primary" />
         </Animated.View>

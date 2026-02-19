@@ -5,11 +5,7 @@
 // - Almacena presupuesto, transacciones, configuración y preferencias.
 // - Persiste automáticamente en AsyncStorage (clave: "vault-storage").
 // - Sincroniza el idioma con i18next al rehidratar y al cambiar.
-//
-// Flujo de uso típico:
-//   1. setup-duration.tsx → initVault() + setFinishedOnboarding()
-//   2. add-expense (futuro) → addTransaction()
-//   3. Dashboard (futuro)   → getSummary(), isExtremeMode, etc.
+// - Aplica migraciones automáticas cuando la versión del store es inferior.
 // ============================================================================
 
 // ----------------------------------------------------------------------------
@@ -25,6 +21,8 @@ import i18next from "i18next";
 // ----------------------------------------------------------------------------
 import { VaultState, Transaction, NotificationPreferences } from "./index.types";
 import { calculateDaysPassed, checkExtremeMode } from "./index.utils";
+import { CURRENT_STORE_VERSION } from "@/constants/app";
+import { migrations } from "./migrations";
 
 // ----------------------------------------------------------------------------
 // IMPLEMENTACIÓN DEL STORE CON PERSISTENCIA
@@ -44,11 +42,12 @@ export const useVaultStore = create<VaultState>()(
       currency: "$",
       language: "es",
 
-      // --- Flag de rehidratación ---
+      // --- Flag de rehidratación y versión del store ---
       _hasHydrated: false,
+      _storeVersion: 0,                     // ← nuevo campo, comienza en 0
 
       // --- Preferencias de seguridad ---
-      isBiometricEnabled: false,   // ← por defecto desactivado
+      isBiometricEnabled: false,
 
       // --- Estado inicial de notificaciones ---
       notificationPreferences: {
@@ -85,7 +84,7 @@ export const useVaultStore = create<VaultState>()(
           startDate: new Date().toISOString(),
           transactions: [],
           isConfigured: true,
-          isExtremeMode: false, // Se recalculará en el primer addTransaction
+          isExtremeMode: false,
         }),
 
       /**
@@ -128,6 +127,7 @@ export const useVaultStore = create<VaultState>()(
        * - Limpia presupuesto, transacciones y fechas.
        * - Restaura las preferencias de notificación a sus valores por defecto.
        * - Establece hasFinishedOnboarding a false para que el usuario vuelva al onboarding.
+       * - Establece la versión del store a la actual.
        *
        * @note Esta acción es utilizada actualmente en test-store.tsx y debug-reset.tsx
        */
@@ -141,12 +141,12 @@ export const useVaultStore = create<VaultState>()(
           startDate: null,
           isConfigured: false,
           isExtremeMode: false,
-          hasFinishedOnboarding: false,   // ← AHORA SE REINICIA CORRECTAMENTE
+          hasFinishedOnboarding: false,
           language: "es",
-          currency: "$",                   // ← Moneda por defecto
+          currency: "$",
           _hasHydrated: true,              // Se mantiene en true tras reset, ya fue hidratado
-          isBiometricEnabled: false,       // ← también se reinicia
-          // Reiniciar estado de notificaciones
+          _storeVersion: CURRENT_STORE_VERSION, // ← se asegura la versión actual
+          isBiometricEnabled: false,
           notificationPreferences: {
             dailyReminder: true,
             extremeModeAlert: true,
@@ -166,8 +166,6 @@ export const useVaultStore = create<VaultState>()(
        * - dailyAverage: gasto total / días transcurridos
        *
        * @returns VaultSummary
-       *
-       * @todo Optimizar con memoización (useSelector o createSelector) si se usa frecuentemente.
        */
       getSummary: () => {
         const state = get();
@@ -188,10 +186,6 @@ export const useVaultStore = create<VaultState>()(
        * - Persiste la preferencia en el store
        *
        * @param lang - Código de idioma ('es' | 'en')
-       *
-       * @note i18n.ts fuerza el idioma del dispositivo al inicio, sobrescribiendo
-       *       el valor persistido. Esto puede causar desincronización momentánea.
-       * @see i18n.ts – detección de idioma del dispositivo
        */
       setLanguage: (lang) => {
         i18next.changeLanguage(lang);
@@ -200,10 +194,6 @@ export const useVaultStore = create<VaultState>()(
 
       // --- Acciones de Notificaciones ---
 
-      /**
-       * Actualiza parcialmente las preferencias de notificación.
-       * Conserva las claves no especificadas.
-       */
       setNotificationPreferences: (prefs) =>
         set((state) => ({
           notificationPreferences: {
@@ -212,35 +202,18 @@ export const useVaultStore = create<VaultState>()(
           },
         })),
 
-      /**
-       * Marca que ya se solicitaron permisos de notificaciones.
-       * No ejecuta la solicitud real (eso se hace desde los hooks).
-       */
       requestNotificationPermissions: () =>
         set({ hasRequestedPermissions: true }),
 
-      /**
-       * Establece la fecha de hoy como la última vez que se programó
-       * el recordatorio diario. El formato es YYYY-MM-DD.
-       */
       setNotificationsScheduledForToday: () => {
         const today = new Date().toISOString().split('T')[0];
         set({ notificationsScheduledForDate: today });
       },
 
-      /**
-       * Limpia el flag de programación diaria.
-       * Útil cuando el usuario cambia la hora del recordatorio
-       * o cuando se resetea la bóveda.
-       */
       clearNotificationsScheduledFlag: () =>
         set({ notificationsScheduledForDate: null }),
 
       // --- Acciones de Seguridad ---
-      /**
-       * Activa o desactiva la preferencia de bloqueo biométrico.
-       * @param enabled - true para activar, false para desactivar
-       */
       setBiometricEnabled: (enabled) => set({ isBiometricEnabled: enabled }),
     }),
     {
@@ -256,24 +229,67 @@ export const useVaultStore = create<VaultState>()(
        * - Luego, después de rehidratar, se ejecuta el callback interno
        *
        * @note Se utiliza para:
-       *       1. Manejar errores de rehidratación.
+       *       1. Aplicar migraciones si la versión almacenada es inferior.
        *       2. Sincronizar el idioma persistido con i18next.
        *       3. Marcar que el store ya fue hidratado (_hasHydrated = true).
        */
-      onRehydrateStorage: (state) => {
+      onRehydrateStorage: (preState) => {
         // Esta función se ejecuta ANTES de rehidratar
         return (rehydratedState, error) => {
           if (error) {
             console.warn('[SURV] Error al rehidratar store:', error);
+            // Marcamos como hidratado para no bloquear la UI, aunque haya error
+            useVaultStore.setState({ _hasHydrated: true, _storeVersion: CURRENT_STORE_VERSION });
+            return;
           }
-          if (rehydratedState) {
-            // Aplicamos el idioma persistido (ya existente)
-            if (rehydratedState.language) {
-              i18next.changeLanguage(rehydratedState.language);
+
+          let finalState: any;
+
+          if (!rehydratedState) {
+            // Primera ejecución (sin datos guardados) → usar estado inicial con versión actual
+            finalState = {
+              ...preState,
+              _storeVersion: CURRENT_STORE_VERSION,
+              _hasHydrated: true,
+            };
+          } else {
+            // Fusionamos el estado inicial con los datos persistidos
+            const merged = { ...preState, ...rehydratedState };
+            const storedVersion = merged._storeVersion ?? 0; // Si no existe, es v0
+
+            if (storedVersion < CURRENT_STORE_VERSION) {
+              // Aplicar migraciones secuenciales
+              let migrated = merged;
+              for (let v = storedVersion; v < CURRENT_STORE_VERSION; v++) {
+                const migrateFn = migrations[v];
+                if (!migrateFn) {
+                  console.warn(`[SURV] Migración no encontrada para v${v} → v${v+1}`);
+                  break;
+                }
+                migrated = migrateFn(migrated);
+              }
+              finalState = {
+                ...migrated,
+                _storeVersion: CURRENT_STORE_VERSION,
+                _hasHydrated: true,
+              };
+            } else {
+              // Ya está en versión actual (o superior) → solo aseguramos la versión y el flag
+              finalState = {
+                ...merged,
+                _storeVersion: CURRENT_STORE_VERSION,
+                _hasHydrated: true,
+              };
             }
-            // ✅ Marcamos que la rehidratación terminó
-            useVaultStore.setState({ _hasHydrated: true });
           }
+
+          // Aplicar idioma persistido (si existe) después de la migración
+          if (finalState.language) {
+            i18next.changeLanguage(finalState.language);
+          }
+
+          // Actualizamos el store con el estado final (sobrescribe lo que haya puesto persist automáticamente)
+          useVaultStore.setState(finalState);
         };
       },
     }

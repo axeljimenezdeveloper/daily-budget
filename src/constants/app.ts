@@ -64,3 +64,12 @@ export const APP_INFO = {
 // importación y mejorar la semántica del código en otros módulos.
 export const APP_NAME = APP_INFO.NAME;
 export const APP_VERSION = APP_INFO.VERSION;
+
+// ----------------------------------------------------------------------------
+// VERSIÓN DEL STORE PERSISTENTE
+// ----------------------------------------------------------------------------
+/**
+ * Versión actual de la estructura del store (useVaultStore).
+ * Se incrementa cada vez que se modifica el schema de forma no compatible.
+ */
+export const CURRENT_STORE_VERSION = 1;

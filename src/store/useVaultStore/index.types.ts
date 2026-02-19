@@ -106,6 +106,13 @@ export interface VaultState {
    */
   _hasHydrated: boolean;
 
+  /**
+   * Versión de la estructura de datos persistida.
+   * Se usa para aplicar migraciones automáticas al hidratar el store.
+   * @default 0 (para datos sin versionar)
+   */
+  _storeVersion: number;
+
   // --- Preferencias de seguridad ---
   /**
    * Indica si el usuario ha activado la autenticación biométrica (huella dactilar)

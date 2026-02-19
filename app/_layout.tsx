@@ -3,7 +3,7 @@
 //
 // Responsabilidades principales:
 // - Cargar fuentes tipográficas y assets iniciales.
-// - Mostrar pantalla de carga (LoadingAnimation) mientras la app no está lista.
+// - Gestionar el splash screen nativo (expo-splash-screen) hasta que la app esté lista.
 // - Proveer el tema oscuro personalizado a través de ThemeProvider.
 // - Configurar el manejador global de notificaciones en primer plano.
 // - Crear los canales de notificación en Android (garantiza su existencia).
@@ -13,7 +13,7 @@
 // ============================================================================
 
 import "@/locales/i18n";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { View, Platform } from "react-native";
 import { Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -21,10 +21,14 @@ import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import { DarkTheme, ThemeProvider } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
+import * as SplashScreen from "expo-splash-screen"; // <-- IMPORTANTE: importar el splash screen
 import { PALETTE } from "@/constants/colors";
-import LoadingAnimation from "./(animations)/loading";
 import { NOTIFICATION_CHANNELS } from "@/features/notifications/constants";
-import { ROUTES } from "@/constants/navigation"; 
+import { ROUTES } from "@/constants/navigation";
+import { useVaultStore } from "@/store/useVaultStore";
+
+// ⚠️ Bloquear la ocultación automática del splash lo antes posible
+SplashScreen.preventAutoHideAsync();
 
 const CustomDarkTheme = {
   ...DarkTheme,
@@ -39,6 +43,7 @@ const CustomDarkTheme = {
 export default function RootLayout() {
   const router = useRouter();
   const [appIsReady, setAppIsReady] = useState(false);
+  const { _hasHydrated } = useVaultStore();
 
   // Referencias para los listeners de notificaciones (inicializadas con null)
   const notificationListener = useRef<Notifications.EventSubscription>(null);
@@ -104,7 +109,6 @@ export default function RootLayout() {
           // Navegar a la pantalla indicada en los datos
           router.push(data.screen as string);
         } else {
-          // ✅ Corregido: usar ROUTES.MAIN.INDEX en lugar de string literal
           router.push(ROUTES.MAIN.INDEX);
         }
       });
@@ -138,18 +142,32 @@ export default function RootLayout() {
     }
   }, [router]);
 
-  if (!appIsReady) {
-    return (
-      <ThemeProvider value={CustomDarkTheme}>
-        <StatusBar style="light" />
-        <LoadingAnimation />
-      </ThemeProvider>
-    );
-  }
+  // --------------------------------------------------------------------------
+  // OCULTAR EL SPLASH CUANDO TODO ESTÉ LISTO
+  // --------------------------------------------------------------------------
+  useEffect(() => {
+    const hideSplash = async () => {
+      if (appIsReady && _hasHydrated) {
+        await SplashScreen.hideAsync();
+      }
+    };
+    hideSplash();
+  }, [appIsReady, _hasHydrated]);
 
+  // (Opcional) Usar onLayout para asegurar que la vista ya está pintada antes de ocultar
+  const onLayoutRootView = useCallback(() => {
+    if (appIsReady && _hasHydrated) {
+      SplashScreen.hideAsync();
+    }
+  }, [appIsReady, _hasHydrated]);
+
+  // Mostramos el stack de navegación directamente (el splash nativo lo cubre hasta que lo ocultemos)
   return (
     <ThemeProvider value={CustomDarkTheme}>
-      <View style={{ flex: 1, backgroundColor: PALETTE.deepNight }}>
+      <View
+        style={{ flex: 1, backgroundColor: PALETTE.deepNight }}
+        onLayout={onLayoutRootView} // <-- opcional pero recomendado para evitar pantalla blanca
+      >
         <StatusBar style="light" />
         <Stack
           screenOptions={{

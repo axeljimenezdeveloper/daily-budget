@@ -8,11 +8,6 @@
     "userInterfaceStyle": "dark",
     "backgroundColor": "#0A0F1C",
     "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#0A0F1C"
-    },
     "ios": {
       "supportsTablet": true,
       "userInterfaceStyle": "dark"
@@ -24,7 +19,8 @@
         "backgroundColor": "#0A0F1C"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.SURV"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -33,7 +29,16 @@
       "expo-router",
       "expo-localization",
       "@react-native-community/datetimepicker",
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0A0F1C",
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 150,
+          "resizeMode": "contain"
+        }
+      ]
     ]
   }
 }

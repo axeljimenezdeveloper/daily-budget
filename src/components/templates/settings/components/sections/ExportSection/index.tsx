@@ -53,7 +53,7 @@ export const ExportSection: React.FC<ExportSectionProps> = React.memo(({
         color="accent"
         style={{ marginBottom: SPACING.s }}
       >
-        {t('settings.export_section', 'Exportar datos')}
+        {t('settings.export_section')}
       </AppText>
       <AppBox>
         <AppListItem

@@ -45,11 +45,11 @@ export const DangerSection: React.FC<DangerSectionProps> = React.memo(({
         color="error"
         style={{ marginBottom: SPACING.s }}
       >
-        {t('settings.danger_zone', 'Zona de peligro')}
+        {t('settings.danger_zone')}
       </AppText>
       <AppBox>
         <AppListItem
-          label={t('settings.reset_vault', 'Reiniciar bóveda')}
+          label={t('settings.reset_vault')}
           icon="trash-outline"
           iconColor="error"
           onPress={onResetPress}

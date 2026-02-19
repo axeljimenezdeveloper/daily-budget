@@ -43,11 +43,11 @@ export const CurrencySection: React.FC<CurrencySectionProps> = React.memo(({
         color="accent"
         style={{ marginBottom: SPACING.s }}
       >
-        {t('settings.currency_section', 'Moneda')}
+        {t('settings.currency_section')}
       </AppText>
       <AppBox>
         <AppListItem
-          label={t('settings.currency', 'Moneda')}
+          label={t('settings.currency')}
           subLabel={currency}
           icon="cash-outline"
         />

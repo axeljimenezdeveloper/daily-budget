@@ -3,7 +3,7 @@ import { View, ScrollView, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useVaultStore } from '@/store/useVaultStore';
 import { formatMoney } from '@/store/useVaultStore/index.utils';
-import { useExportCSV } from '@/store/hooks/useExportCSV';
+import { useExportCSV } from '@/hooks/useExportCSV';
 
 // Átomos
 import AppContainer from '@/components/atoms/structure/AppContainer';

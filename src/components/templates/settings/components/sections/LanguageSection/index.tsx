@@ -48,11 +48,11 @@ export const LanguageSection: React.FC<LanguageSectionProps> = React.memo(({
         color="accent"
         style={{ marginBottom: SPACING.s }}
       >
-        {t('settings.language_section', 'Idioma')}
+        {t('settings.language_section')}
       </AppText>
       <AppBox>
         <AppListItem
-          label={t('settings.language', 'Idioma')}
+          label={t('settings.language')}
           subLabel={languageDisplay}
           icon="language-outline"
           onPress={onPress}

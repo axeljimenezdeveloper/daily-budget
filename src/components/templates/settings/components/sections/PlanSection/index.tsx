@@ -12,7 +12,6 @@
 // DEPENDENCIAS EXTERNAS
 // ----------------------------------------------------------------------------
 import React from 'react';
-import { Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------------
@@ -59,18 +58,18 @@ export const PlanSection: React.FC<PlanSectionProps> = React.memo(({
         color="accent"
         style={{ marginBottom: SPACING.s }}
       >
-        {t('settings.current_plan_section', 'Tu plan actual')}
+        {t('settings.current_plan_section')}
       </AppText>
       <AppBox>
         <AppListItem
-          label={t('settings.total_budget', 'Presupuesto total')}
+          label={t('settings.total_budget')}
           subLabel={formattedTotalBudget}
           icon="wallet-outline"
         />
         <AppDivider color="darkBorder" thickness={1} marginVertical="s" />
 
         <AppListItem
-          label={t('settings.remaining_days', 'Días restantes')}
+          label={t('settings.remaining_days')}
           subLabel={`${remainingDays} / ${daysDuration}`}
           icon="calendar-outline"
         />
@@ -83,8 +82,8 @@ export const PlanSection: React.FC<PlanSectionProps> = React.memo(({
               marginVertical="s"
             />
             <AppListItem
-              label={t('settings.extreme_mode', 'Modo cuidado')}
-              subLabel={t('settings.activated', 'Activado')}
+              label={t('settings.extreme_mode')}
+              subLabel={t('settings.activated')}
               icon="warning"
               isActive
             />
@@ -93,7 +92,7 @@ export const PlanSection: React.FC<PlanSectionProps> = React.memo(({
 
         <AppDivider color="darkBorder" thickness={1} marginVertical="s" />
         <AppListItem
-          label={t('settings.edit_plan', 'Editar plan')}
+          label={t('settings.edit_plan')}
           icon="create-outline"
           onPress={onEditPress}
         />

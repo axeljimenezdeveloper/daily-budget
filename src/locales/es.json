@@ -19,6 +19,7 @@
     "processing": "Preparando todo...",
     "days_short": "d",
     "error_occurred": "Algo no salió bien",
+    "cancel": "Cancelar",
     "time_picker": {
       "title": "Seleccionar hora",
       "cancel": "Cancelar",
@@ -209,7 +210,24 @@
     "biometric_error": "Error de autenticación",
     "biometric_success": "Configuración biométrica completada",
     "biometric_lockout": "Demasiados intentos. Intenta más tarde.",
-    "biometric_fallback": "Usa PIN/contraseña en su lugar"
+    "biometric_fallback": "Usa PIN/contraseña en su lugar",
+    "currency_section": "Moneda",
+    "currency": "Moneda",
+    "danger_zone": "Zona de peligro",
+    "reset_vault": "Reiniciar bóveda",
+    "export_section": "Exportar datos",
+    "language_section": "Idioma",
+    "language": "Idioma",
+    "language_modal_title": "Idioma",
+    "reset_modal_title": "Reiniciar bóveda",
+    "reset_confirmation": "¿Estás seguro? Se perderán todos tus datos de presupuesto y gastos.",
+    "reset_confirm": "Reiniciar",
+    "current_plan_section": "Tu plan actual",
+    "total_budget": "Presupuesto total",
+    "remaining_days": "Días restantes",
+    "extreme_mode": "Modo cuidado",
+    "activated": "Activado",
+    "edit_plan": "Editar plan"
   },
   "validation": {
     "budget": {

@@ -14,7 +14,7 @@ import { useVaultStore } from '@/store/useVaultStore';
 import { useBiometricAuth } from '@/features/biometrics/hooks/useBiometricAuth';
 import { useNotificationPreferences } from '@/features/notifications/hooks/useNotificationPreferences';
 import { useNotificationScheduler } from '@/features/notifications/hooks/useNotificationScheduler';
-import { useExportCSV } from '@/store/hooks/useExportCSV';
+import { useExportCSV } from '@/hooks/useExportCSV';
 import { calculateDaysPassed } from '@/store/useVaultStore/index.utils';
 import { ROUTES } from '@/constants/navigation';
 import {

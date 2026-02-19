@@ -19,6 +19,7 @@
     "processing": "Preparing everything...",
     "days_short": "d",
     "error_occurred": "Something went wrong",
+    "cancel": "Cancel",
     "time_picker": {
       "title": "Select time",
       "cancel": "Cancel",
@@ -209,7 +210,24 @@
     "biometric_error": "Authentication error",
     "biometric_success": "Biometric setup completed",
     "biometric_lockout": "Too many attempts. Try again later.",
-    "biometric_fallback": "Use PIN/Password instead"
+    "biometric_fallback": "Use PIN/Password instead",
+    "currency_section": "Currency",
+    "currency": "Currency",
+    "danger_zone": "Danger zone",
+    "reset_vault": "Reset vault",
+    "export_section": "Export data",
+    "language_section": "Language",
+    "language": "Language",
+    "language_modal_title": "Language",
+    "reset_modal_title": "Reset vault",
+    "reset_confirmation": "Are you sure? All your budget and expense data will be lost.",
+    "reset_confirm": "Reset",
+    "current_plan_section": "Your current plan",
+    "total_budget": "Total budget",
+    "remaining_days": "Remaining days",
+    "extreme_mode": "Careful mode",
+    "activated": "Activated",
+    "edit_plan": "Edit plan"
   },
   "validation": {
     "budget": {

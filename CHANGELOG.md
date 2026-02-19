@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.38.0](///compare/v1.37.0-stable...v1.38.0) (2026-02-19)
+
+
+### Features
+
+* **core:** integrar splash screen nativo y sistema de migraciones del store f4d0276, closes #0A0F1
+
 ## [1.37.0](///compare/v1.36.0...v1.37.0) (2026-02-19)
 
 

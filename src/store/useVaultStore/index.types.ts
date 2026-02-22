@@ -163,6 +163,16 @@ export interface VaultState {
    */
   setLanguage: (lang: string) => void;
 
+  // --- NUEVA ACCIÓN PARA RESTAURAR BACKUP ---
+  /**
+   * Restaura completamente el estado de la bóveda a partir de un backup.
+   * Reemplaza todos los datos actuales por los datos proporcionados.
+   * Se utiliza después de validar y descifrar un archivo de backup.
+   *
+   * @param data - Estado completo de la bóveda (debe coincidir con la estructura VaultState)
+   */
+  restoreFromBackup: (data: VaultState) => void;
+
   // --- Acciones de Notificaciones ---
   /**
    * Actualiza parcialmente las preferencias de notificación.

@@ -192,6 +192,28 @@ export const useVaultStore = create<VaultState>()(
         set({ language: lang });
       },
 
+      // ----------------------------------------------------------------------
+      // RESTAURACIÓN DESDE BACKUP
+      // ----------------------------------------------------------------------
+      /**
+       * Restaura completamente el estado de la bóveda.
+       * Se asume que los datos ya han sido validados y descifrados.
+       * @param data - Estado completo de la bóveda
+       */
+      restoreFromBackup: (data) => {
+        // Sincronizar idioma con i18next
+        if (data.language) {
+          i18next.changeLanguage(data.language);
+        }
+        set({
+          ...data,
+          // Aseguramos que el flag de hidratación se mantenga
+          _hasHydrated: true,
+          // La versión del store se conserva, no la del backup (para futuras migraciones)
+          _storeVersion: CURRENT_STORE_VERSION,
+        });
+      },
+
       // --- Acciones de Notificaciones ---
 
       setNotificationPreferences: (prefs) =>

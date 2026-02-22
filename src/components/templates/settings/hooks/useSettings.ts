@@ -3,7 +3,7 @@
 //
 // Centraliza toda la lógica y datos necesarios para la pantalla de ajustes.
 // Combina el store global, hooks de notificaciones, biometría, exportación,
-// y maneja los estados locales de modales.
+// importación de backups y maneja los estados locales de modales.
 // ============================================================================
 
 import { useState, useEffect, useCallback } from 'react';
@@ -15,6 +15,8 @@ import { useBiometricAuth } from '@/features/biometrics/hooks/useBiometricAuth';
 import { useNotificationPreferences } from '@/features/notifications/hooks/useNotificationPreferences';
 import { useNotificationScheduler } from '@/features/notifications/hooks/useNotificationScheduler';
 import { useExportCSV } from '@/hooks/useExportCSV';
+import { useBackupExport } from '@/features/backups/hooks/useBackupExport';
+import { useBackupImport } from '@/features/backups/hooks/useBackupImport ';      
 import { calculateDaysPassed } from '@/store/useVaultStore/index.utils';
 import { ROUTES } from '@/constants/navigation';
 import {
@@ -44,9 +46,17 @@ export interface UseSettingsReturn {
   reminderTime: string;
   isSaving: boolean;
 
-  // Datos de exportación
+  // Datos de exportación (CSV)
   isExporting: boolean;
   exportError: string | null;
+
+  // Datos de exportación (Backup)
+  isBackupExporting: boolean;
+  backupExportError: string | null;
+
+  // Datos de importación (Backup)                                              // <-- NUEVO
+  isImporting: boolean;
+  importError: string | null;
 
   // Datos de biometría
   hasHardware: boolean | null;
@@ -76,6 +86,8 @@ export interface UseSettingsReturn {
   handleReminderTimeChange: (time: string) => void;
   handleTestNotification: () => Promise<void>;
   handleLanguageSelect: (lang: 'es' | 'en') => void;
+  handleBackupExport: () => Promise<void>;
+  handleBackupImport: () => Promise<void>;                                     // <-- NUEVO
 }
 
 // ----------------------------------------------------------------------------
@@ -127,6 +139,12 @@ export const useSettings = (): UseSettingsReturn => {
   // --- Exportación CSV ---
   const { exportCSV, isExporting, error: exportError } = useExportCSV();
 
+  // --- Exportación Backup ---
+  const { exportBackup, isExporting: isBackupExporting, error: backupExportError } = useBackupExport();
+
+  // --- Importación Backup (nuevo) ---
+  const { importBackup, isImporting, error: importError } = useBackupImport();
+
   // --- Cálculos derivados ---
   const daysPassed = calculateDaysPassed(startDate);
   const remainingDays = Math.max(0, daysDuration - daysPassed);
@@ -135,12 +153,26 @@ export const useSettings = (): UseSettingsReturn => {
   const [showLanguageModal, setShowLanguageModal] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
 
-  // --- Efecto para errores de exportación ---
+  // --- Efecto para errores de exportación CSV ---
   useEffect(() => {
     if (exportError) {
       Alert.alert(t('common.error'), exportError, [{ text: t('common.ok', 'OK') }]);
     }
   }, [exportError, t]);
+
+  // --- Efecto para errores de exportación backup ---
+  useEffect(() => {
+    if (backupExportError) {
+      Alert.alert(t('common.error'), backupExportError, [{ text: t('common.ok', 'OK') }]);
+    }
+  }, [backupExportError, t]);
+
+  // --- Efecto para errores de importación backup (nuevo) ---
+  useEffect(() => {
+    if (importError) {
+      Alert.alert(t('common.error'), importError, [{ text: t('common.ok', 'OK') }]);
+    }
+  }, [importError, t]);
 
   // --- Manejadores ---
 
@@ -232,6 +264,38 @@ export const useSettings = (): UseSettingsReturn => {
     setShowLanguageModal(false);
   }, [setLanguage]);
 
+  // --- Manejador de exportación de respaldo ---
+  const handleBackupExport = useCallback(async () => {
+    const result = await exportBackup();
+    if (result.success) {
+      Alert.alert(
+        t('common.success'),
+        t('settings.backup.export_success', 'Respaldo exportado correctamente')
+      );
+    } else {
+      Alert.alert(
+        t('common.error'),
+        result.error || t('settings.backup.export_error', 'Error al exportar respaldo')
+      );
+    }
+  }, [exportBackup, t]);
+
+  // --- Manejador de importación de respaldo (nuevo) ---
+  const handleBackupImport = useCallback(async () => {
+    const result = await importBackup();
+    if (result.success) {
+      Alert.alert(
+        t('common.success'),
+        t('settings.backup.import_success', 'Respaldo importado correctamente')
+      );
+    } else {
+      Alert.alert(
+        t('common.error'),
+        result.error || t('settings.backup.import_error', 'Error al importar respaldo')
+      );
+    }
+  }, [importBackup, t]);
+
   return {
     // Datos del store
     language: language as 'es' | 'en',
@@ -250,9 +314,17 @@ export const useSettings = (): UseSettingsReturn => {
     reminderTime,
     isSaving,
 
-    // Exportación
+    // Exportación CSV
     isExporting,
     exportError,
+
+    // Exportación Backup
+    isBackupExporting,
+    backupExportError,
+
+    // Importación Backup (nuevo)
+    isImporting,
+    importError,
 
     // Biometría
     hasHardware,
@@ -282,5 +354,7 @@ export const useSettings = (): UseSettingsReturn => {
     handleReminderTimeChange,
     handleTestNotification,
     handleLanguageSelect,
+    handleBackupExport,
+    handleBackupImport,      // <-- NUEVO
   };
 };

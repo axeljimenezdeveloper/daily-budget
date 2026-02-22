@@ -227,7 +227,17 @@
     "remaining_days": "Días restantes",
     "extreme_mode": "Modo cuidado",
     "activated": "Activado",
-    "edit_plan": "Editar plan"
+    "edit_plan": "Editar plan",
+    "export_backup": "Exportar respaldo cifrado",
+    "export_backup_loading": "Generando respaldo...",
+    "import_backup": "Importar respaldo cifrado",
+    "import_backup_loading": "Importando respaldo...",
+    "backup": {
+      "export_success": "Respaldo exportado correctamente",
+      "export_error": "Error al exportar respaldo: {{message}}",
+      "import_success": "Respaldo importado correctamente",
+      "import_error": "Error al importar respaldo: {{message}}"
+    }
   },
   "validation": {
     "budget": {

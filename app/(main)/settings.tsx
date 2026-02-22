@@ -83,7 +83,6 @@ export default function SettingsScreen() {
         {/* ----------------------------------------------------------------
           SECCIÓN IDIOMA
           Muestra el idioma actual y abre el modal de selección.
-          (Pendiente de extracción a componente independiente)
         ---------------------------------------------------------------- */}
         <LanguageSection
           language={settings.language}
@@ -123,11 +122,18 @@ export default function SettingsScreen() {
 
         {/* ----------------------------------------------------------------
           SECCIÓN EXPORTAR DATOS
-          Botón para exportar a CSV con indicador de carga.
+          Incluye exportación a CSV, exportación de backup cifrado e importación de backup.
         ---------------------------------------------------------------- */}
         <ExportSection
+          // CSV
           isExporting={settings.isExporting}
           onExport={settings.handleExportCSV}
+          // Backup export
+          isBackupExporting={settings.isBackupExporting}
+          onBackupExport={settings.handleBackupExport}
+          // Backup import
+          isImporting={settings.isImporting}
+          onImport={settings.handleBackupImport}
         />
 
         {/* ----------------------------------------------------------------

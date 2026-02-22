@@ -227,7 +227,17 @@
     "remaining_days": "Remaining days",
     "extreme_mode": "Careful mode",
     "activated": "Activated",
-    "edit_plan": "Edit plan"
+    "edit_plan": "Edit plan",
+    "export_backup": "Export encrypted backup",
+    "export_backup_loading": "Generating backup...",
+    "import_backup": "Import encrypted backup",
+    "import_backup_loading": "Importing backup...",
+    "backup": {
+      "export_success": "Backup exported successfully",
+      "export_error": "Backup export error: {{message}}",
+      "import_success": "Backup imported successfully",
+      "import_error": "Backup import error: {{message}}"
+    }
   },
   "validation": {
     "budget": {

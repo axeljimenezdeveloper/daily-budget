@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.39.0](///compare/v1.38.2...v1.39.0) (2026-02-22)
+
+
+### Features
+
+* **core:** implementar sistema de toasts y refactorizar ajustes con subhooks 62304e9
+
 ### [1.38.2](///compare/v1.38.1...v1.38.2) (2026-02-22)
 
 

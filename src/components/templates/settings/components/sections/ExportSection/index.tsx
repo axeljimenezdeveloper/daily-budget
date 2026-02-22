@@ -7,7 +7,8 @@
 //   - Importar backup cifrado (restaurar desde archivo)
 //
 // Cada opción se representa con un AppListItem que muestra su estado de carga
-// individual (spinner) y su respectivo callback.
+// individual (spinner) y su respectivo callback. Se añaden separadores
+// (AppDivider) entre ítems para mantener coherencia visual con PlanSection.
 // ============================================================================
 
 // ----------------------------------------------------------------------------
@@ -22,6 +23,7 @@ import { useTranslation } from 'react-i18next';
 import AppBox from '@/components/atoms/structure/AppBox';
 import AppText from '@/components/atoms/content/AppText';
 import AppListItem from '@/components/atoms/action/AppListItem';
+import AppDivider from '@/components/atoms/structure/AppDivider';
 import AppIcon from '@/components/atoms/content/AppIcon';
 import AppSpinner from '@/components/atoms/visual/AppSpinner';
 
@@ -90,9 +92,10 @@ export const ExportSection: React.FC<ExportSectionProps> = React.memo(({
           icon="download-outline"
           onPress={onExport}
           disabled={isExporting}
-          isActive={!isExporting}
           rightContent={csvRightContent}
         />
+
+        <AppDivider color="darkBorder" thickness={1} marginVertical="s" />
 
         {/* ----------------------------------------------------------------
           ITEM 2: EXPORTACIÓN DE BACKUP CIFRADO
@@ -103,9 +106,10 @@ export const ExportSection: React.FC<ExportSectionProps> = React.memo(({
           icon="lock-closed-outline"
           onPress={onBackupExport}
           disabled={isBackupExporting}
-          isActive={!isBackupExporting}
           rightContent={backupRightContent}
         />
+
+        <AppDivider color="darkBorder" thickness={1} marginVertical="s" />
 
         {/* ----------------------------------------------------------------
           ITEM 3: IMPORTACIÓN DE BACKUP CIFRADO
@@ -116,7 +120,6 @@ export const ExportSection: React.FC<ExportSectionProps> = React.memo(({
           icon="folder-open-outline"
           onPress={onImport}
           disabled={isImporting}
-          isActive={!isImporting}
           rightContent={importRightContent}
         />
       </AppBox>

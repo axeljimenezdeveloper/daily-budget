@@ -1,28 +1,26 @@
 // ============================================================================
-// HOOK PERSONALIZADO: useBackupKey
+// HOOK PERSONALIZADO: useBackupKey (CORREGIDO)
 //
 // Gestiona la clave de cifrado para backups, almacenada de forma segura
 // en expo-secure-store con protección biométrica (requireAuthentication: true).
-// Proporciona:
-//   - Verificación de existencia de la clave.
-//   - Generación y almacenamiento de una clave aleatoria de 256 bits.
-//   - Obtención de la clave (dispara autenticación biométrica).
-//   - Limpieza de la clave (para desactivación biométrica).
+//
+// IMPORTANTE: Este hook NO ejecuta ninguna operación automática al montarse.
+// La clave solo se obtiene o genera bajo demanda mediante las funciones expuestas.
 // ============================================================================
 
 // ----------------------------------------------------------------------------
 // DEPENDENCIAS
 // ----------------------------------------------------------------------------
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import * as LocalAuthentication from 'expo-local-authentication';
 import * as Crypto from 'expo-crypto';
-import { Buffer } from 'buffer'; // Añadido para manejo base64
+import { Buffer } from 'buffer';
 
 // ----------------------------------------------------------------------------
 // TIPOS LOCALES
 // ----------------------------------------------------------------------------
-import { BackupKeyResult, BackupKeyStatus } from '../types';
+import { BackupKeyResult } from '../types';
 
 // ----------------------------------------------------------------------------
 // CONSTANTES
@@ -34,46 +32,29 @@ const KEY_LENGTH_BYTES = 32; // 256 bits
 // HOOK PRINCIPAL
 // ----------------------------------------------------------------------------
 export const useBackupKey = () => {
-  const [status, setStatus] = useState<BackupKeyStatus>({
-    hasKey: false,
-    loading: true,
-    error: null,
-  });
+  // Estado para saber si la clave existe (útil para UI, pero no crítico)
+  const [hasKey, setHasKey] = useState<boolean | null>(null);
+  // Podríamos añadir loading si fuera necesario, pero por ahora lo omitimos
 
   // --------------------------------------------------------------------------
-  // VERIFICACIÓN INICIAL DE EXISTENCIA DE CLAVE
+  // VERIFICACIÓN DE EXISTENCIA (sin autenticación)
   // --------------------------------------------------------------------------
-  useEffect(() => {
-    let isMounted = true;
-
-    const checkKeyExists = async () => {
-      try {
-        // Nota: getItemAsync sin opciones NO requiere autenticación,
-        // solo verifica si la clave existe (devuelve null si no).
-        const key = await SecureStore.getItemAsync(BACKUP_KEY_STORAGE_KEY);
-        if (isMounted) {
-          setStatus({
-            hasKey: key !== null,
-            loading: false,
-            error: null,
-          });
-        }
-      } catch (err) {
-        if (isMounted) {
-          setStatus({
-            hasKey: false,
-            loading: false,
-            error: err instanceof Error ? err.message : 'Error al verificar clave de backup',
-          });
-        }
-      }
-    };
-
-    checkKeyExists();
-
-    return () => {
-      isMounted = false;
-    };
+  /**
+   * Verifica si la clave existe en SecureStore.
+   * Esta operación NO requiere autenticación porque getItemAsync se llama sin opciones.
+   * Útil para habilitar/deshabilitar opciones en UI sin forzar biometría.
+   */
+  const checkKeyExists = useCallback(async (): Promise<boolean> => {
+    try {
+      const key = await SecureStore.getItemAsync(BACKUP_KEY_STORAGE_KEY);
+      const exists = key !== null;
+      setHasKey(exists);
+      return exists;
+    } catch (err) {
+      console.warn('[useBackupKey] Error al verificar existencia de clave:', err);
+      setHasKey(false);
+      return false;
+    }
   }, []);
 
   // --------------------------------------------------------------------------
@@ -105,11 +86,10 @@ export const useBackupKey = () => {
       // 3. Guardar en SecureStore con autenticación biométrica
       await SecureStore.setItemAsync(BACKUP_KEY_STORAGE_KEY, keyBase64, {
         keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK_THIS_DEVICE_ONLY,
-        requireAuthentication: true, // ← ACTIVADO: fuerza autenticación al leer
+        requireAuthentication: true, // ← La lectura futura requerirá biometría
       });
 
-      setStatus({ hasKey: true, loading: false, error: null });
-
+      setHasKey(true);
       return { success: true, key: randomBytes };
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Error al generar clave de backup';
@@ -118,7 +98,7 @@ export const useBackupKey = () => {
   }, []);
 
   // --------------------------------------------------------------------------
-  // OBTENER CLAVE (dispara autenticación)
+  // OBTENER CLAVE (dispara autenticación si la clave existe)
   // --------------------------------------------------------------------------
   /**
    * Recupera la clave almacenada. Si la clave no existe, se genera automáticamente.
@@ -128,18 +108,18 @@ export const useBackupKey = () => {
    */
   const getKey = useCallback(async (): Promise<BackupKeyResult> => {
     try {
-      // Verificar si existe
+      // Verificar si existe (esto no pide autenticación)
       const existingKeyBase64 = await SecureStore.getItemAsync(BACKUP_KEY_STORAGE_KEY);
 
       if (!existingKeyBase64) {
-        // No existe → generar nueva
+        // No existe → generar nueva (esto tampoco pide autenticación)
         return await generateAndStoreKey();
       }
 
-      // Existe → recuperar (esto dispara autenticación en iOS si la clave se guardó con requireAuthentication)
+      // Existe → recuperar (esto SÍ dispara autenticación en iOS si la clave se guardó con requireAuthentication)
       const keyBase64 = await SecureStore.getItemAsync(BACKUP_KEY_STORAGE_KEY);
       if (!keyBase64) {
-        // Podría ocurrir si el usuario canceló la autenticación (en ese caso getItemAsync devuelve null)
+        // El usuario canceló la autenticación o falló
         return { success: false, error: 'Autenticación cancelada o fallida' };
       }
 
@@ -147,6 +127,7 @@ export const useBackupKey = () => {
       const keyBuffer = Buffer.from(keyBase64, 'base64');
       const key = new Uint8Array(keyBuffer.buffer, keyBuffer.byteOffset, keyBuffer.byteLength);
 
+      setHasKey(true);
       return { success: true, key };
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Error al obtener clave de backup';
@@ -163,16 +144,20 @@ export const useBackupKey = () => {
   const deleteKey = useCallback(async (): Promise<void> => {
     try {
       await SecureStore.deleteItemAsync(BACKUP_KEY_STORAGE_KEY);
-      setStatus({ hasKey: false, loading: false, error: null });
+      setHasKey(false);
     } catch (err) {
       console.warn('[useBackupKey] Error al eliminar clave:', err);
     }
   }, []);
 
   return {
-    ...status,
-    generateAndStoreKey,
-    getKey,
+    // Estado
+    hasKey,
+
+    // Métodos
+    checkKeyExists,      // Para consultar existencia sin autenticar (ej. en UI)
+    generateAndStoreKey, // Exponemos por si se necesita forzar regeneración (raro)
+    getKey,              // Principal: obtiene la clave (genera si no existe, o pide autenticación)
     deleteKey,
   };
 };

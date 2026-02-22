@@ -32,18 +32,11 @@ const KEY_LENGTH_BYTES = 32; // 256 bits
 // HOOK PRINCIPAL
 // ----------------------------------------------------------------------------
 export const useBackupKey = () => {
-  // Estado para saber si la clave existe (útil para UI, pero no crítico)
   const [hasKey, setHasKey] = useState<boolean | null>(null);
-  // Podríamos añadir loading si fuera necesario, pero por ahora lo omitimos
 
   // --------------------------------------------------------------------------
   // VERIFICACIÓN DE EXISTENCIA (sin autenticación)
   // --------------------------------------------------------------------------
-  /**
-   * Verifica si la clave existe en SecureStore.
-   * Esta operación NO requiere autenticación porque getItemAsync se llama sin opciones.
-   * Útil para habilitar/deshabilitar opciones en UI sin forzar biometría.
-   */
   const checkKeyExists = useCallback(async (): Promise<boolean> => {
     try {
       const key = await SecureStore.getItemAsync(BACKUP_KEY_STORAGE_KEY);
@@ -60,15 +53,8 @@ export const useBackupKey = () => {
   // --------------------------------------------------------------------------
   // GENERAR Y GUARDAR CLAVE (solo si no existe)
   // --------------------------------------------------------------------------
-  /**
-   * Genera una clave aleatoria de 32 bytes y la guarda en SecureStore
-   * con autenticación biométrica requerida.
-   *
-   * @returns {Promise<BackupKeyResult>} - Resultado de la operación.
-   */
   const generateAndStoreKey = useCallback(async (): Promise<BackupKeyResult> => {
     try {
-      // 1. Verificar que la biometría esté disponible y configurada
       const hasHardware = await LocalAuthentication.hasHardwareAsync();
       if (!hasHardware) {
         return { success: false, error: 'Biometría no disponible en este dispositivo' };
@@ -79,14 +65,12 @@ export const useBackupKey = () => {
         return { success: false, error: 'No hay huellas/rostro registrados en el sistema' };
       }
 
-      // 2. Generar clave aleatoria segura
       const randomBytes = await Crypto.getRandomBytesAsync(KEY_LENGTH_BYTES);
       const keyBase64 = Buffer.from(randomBytes).toString('base64');
 
-      // 3. Guardar en SecureStore con autenticación biométrica
       await SecureStore.setItemAsync(BACKUP_KEY_STORAGE_KEY, keyBase64, {
         keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK_THIS_DEVICE_ONLY,
-        requireAuthentication: true, // ← La lectura futura requerirá biometría
+        requireAuthentication: true,
       });
 
       setHasKey(true);
@@ -100,30 +84,21 @@ export const useBackupKey = () => {
   // --------------------------------------------------------------------------
   // OBTENER CLAVE (dispara autenticación si la clave existe)
   // --------------------------------------------------------------------------
-  /**
-   * Recupera la clave almacenada. Si la clave no existe, se genera automáticamente.
-   * En iOS, SecureStore lanza automáticamente el diálogo de autenticación.
-   *
-   * @returns {Promise<BackupKeyResult>} - Clave en Uint8Array si éxito.
-   */
   const getKey = useCallback(async (): Promise<BackupKeyResult> => {
     try {
-      // Verificar si existe (esto no pide autenticación)
       const existingKeyBase64 = await SecureStore.getItemAsync(BACKUP_KEY_STORAGE_KEY);
 
       if (!existingKeyBase64) {
-        // No existe → generar nueva (esto tampoco pide autenticación)
         return await generateAndStoreKey();
       }
 
-      // Existe → recuperar (esto SÍ dispara autenticación en iOS si la clave se guardó con requireAuthentication)
+      // Intenta obtener la clave (esto puede lanzar autenticación o retornar null si se cancela)
       const keyBase64 = await SecureStore.getItemAsync(BACKUP_KEY_STORAGE_KEY);
       if (!keyBase64) {
-        // El usuario canceló la autenticación o falló
-        return { success: false, error: 'Autenticación cancelada o fallida' };
+        // El usuario canceló la autenticación
+        return { success: false, error: 'user_cancelled' };
       }
 
-      // Convertir base64 a Uint8Array
       const keyBuffer = Buffer.from(keyBase64, 'base64');
       const key = new Uint8Array(keyBuffer.buffer, keyBuffer.byteOffset, keyBuffer.byteLength);
 
@@ -131,16 +106,17 @@ export const useBackupKey = () => {
       return { success: true, key };
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Error al obtener clave de backup';
+      // Detectar si el error es por cancelación del usuario
+      if (msg.toLowerCase().includes('cancel')) {
+        return { success: false, error: 'user_cancelled' };
+      }
       return { success: false, error: msg };
     }
   }, [generateAndStoreKey]);
 
   // --------------------------------------------------------------------------
-  // ELIMINAR CLAVE (para desactivar biometría)
+  // ELIMINAR CLAVE
   // --------------------------------------------------------------------------
-  /**
-   * Elimina la clave almacenada. Útil cuando el usuario desactiva la biometría.
-   */
   const deleteKey = useCallback(async (): Promise<void> => {
     try {
       await SecureStore.deleteItemAsync(BACKUP_KEY_STORAGE_KEY);
@@ -151,13 +127,10 @@ export const useBackupKey = () => {
   }, []);
 
   return {
-    // Estado
     hasKey,
-
-    // Métodos
-    checkKeyExists,      // Para consultar existencia sin autenticar (ej. en UI)
-    generateAndStoreKey, // Exponemos por si se necesita forzar regeneración (raro)
-    getKey,              // Principal: obtiene la clave (genera si no existe, o pide autenticación)
+    checkKeyExists,
+    generateAndStoreKey,
+    getKey,
     deleteKey,
   };
 };

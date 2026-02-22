@@ -236,7 +236,9 @@
       "export_success": "Backup exported successfully",
       "export_error": "Backup export error: {{message}}",
       "import_success": "Backup imported successfully",
-      "import_error": "Backup import error: {{message}}"
+      "import_error": "Backup import error: {{message}}",
+      "auth_cancelled": "Authentication cancelled",
+      "import_cancelled": "Import cancelled"
     }
   },
   "validation": {

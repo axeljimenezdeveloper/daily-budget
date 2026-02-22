@@ -10,8 +10,14 @@ export const useExportCSV = () => {
   const [isExporting, setIsExporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const exportCSV = useCallback(async () => {
-    if (isExporting) return;
+  /**
+   * Exporta los datos a un archivo CSV y lo comparte.
+   * @returns {Promise<{ success: boolean; error?: string }>}
+   */
+  const exportCSV = useCallback(async (): Promise<{ success: boolean; error?: string }> => {
+    if (isExporting) {
+      return { success: false, error: "Already exporting" };
+    }
 
     setIsExporting(true);
     setError(null);
@@ -54,16 +60,16 @@ export const useExportCSV = () => {
         UTI: "public.comma-separated-values-text",
       });
 
-      // NOTA: No eliminamos el archivo aquí.
-      // Los archivos en Paths.cache son gestionados por el SO
-      // y se eliminarán automáticamente cuando sea necesario.
+      // Éxito
+      return { success: true };
     } catch (err) {
       console.error("[SURV] Error exporting CSV:", err);
-      setError(
+      const errorMessage =
         err instanceof Error
           ? err.message
-          : t("settings.export_error", { message: "Unknown error" })
-      );
+          : t("settings.export_error", { message: "Unknown error" });
+      setError(errorMessage);
+      return { success: false, error: errorMessage };
     } finally {
       setIsExporting(false);
     }

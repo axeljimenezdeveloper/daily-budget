@@ -236,7 +236,9 @@
       "export_success": "Respaldo exportado correctamente",
       "export_error": "Error al exportar respaldo: {{message}}",
       "import_success": "Respaldo importado correctamente",
-      "import_error": "Error al importar respaldo: {{message}}"
+      "import_error": "Error al importar respaldo: {{message}}",
+      "auth_cancelled": "Autenticación cancelada",
+      "import_cancelled": "Importación cancelada"
     }
   },
   "validation": {

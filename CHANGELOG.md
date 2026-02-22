@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.38.2](///compare/v1.38.1...v1.38.2) (2026-02-22)
+
+
+### Bug Fixes
+
+* **core:** corregir autenticación biométrica involuntaria en ajustes y estabilizar resolución de módulos ESM 056b144
+
 ### [1.38.1](///compare/v1.38.0...v1.38.1) (2026-02-22)
 
 ## [1.38.0](///compare/v1.37.0-stable...v1.38.0) (2026-02-19)

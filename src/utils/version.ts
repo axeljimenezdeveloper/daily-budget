@@ -37,7 +37,7 @@ export function getFormattedVersion(): string {
 // identificar la aplicación y su versión.
 //
 // Retorno:
-//   - string: El nombre y versión de la app (ej: "SURV v1.30.0")
+//   - string: El nombre y versión de la app (ej: "Vulpis Days v1.30.0")
 export function getAppNameWithVersion(): string {
   return `${APP_NAME} ${getFormattedVersion()}`;
 }
@@ -55,7 +55,7 @@ export function getAppNameWithVersion(): string {
 //   - status: cadena que representa el estado a mostrar (por defecto "Alpha")
 //
 // Retorno:
-//   - string: Información formateada (ej: "SURV • v1.30.0 • Alpha")
+//   - string: Información formateada (ej: "Vulpis Days • v1.30.0 • Alpha")
 export function getAppInfoForFooter(includeStatus: boolean = false, status: string = "Alpha"): string {
   const base = `${APP_NAME} • ${getFormattedVersion()}`;
   if (includeStatus) {

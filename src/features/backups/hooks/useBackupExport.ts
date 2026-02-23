@@ -31,7 +31,7 @@ import { BackupOperationResult } from '../types';
 // ----------------------------------------------------------------------------
 // CONSTANTES
 // ----------------------------------------------------------------------------
-const BACKUP_FILE_NAME = 'surv-backup.surv';
+const BACKUP_FILE_NAME = 'vulpis-days-backup.vulpis';
 const BACKUP_MIME_TYPE = 'application/octet-stream';
 const NONCE_LENGTH = 12; // bytes (recomendado para AES-GCM)
 const BACKUP_VERSION = 1;

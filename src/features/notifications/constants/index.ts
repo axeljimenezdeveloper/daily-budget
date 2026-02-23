@@ -14,11 +14,11 @@ import { AndroidImportance } from 'expo-notifications';
 
 export const NOTIFICATION_IDS = {
   /** Identificador único para el recordatorio diario */
-  DAILY_REMINDER: 'surv.daily_reminder',
+  DAILY_REMINDER: 'vulpis-days.daily_reminder',
   /** Identificador para la alerta de modo cuidado */
-  EXTREME_MODE_ALERT: 'surv.extreme_mode_alert',
+  EXTREME_MODE_ALERT: 'vulpis-days.extreme_mode_alert',
   /** Identificador para la alerta de presupuesto excedido */
-  BUDGET_EXCEEDED_ALERT: 'surv.budget_exceeded_alert',
+  BUDGET_EXCEEDED_ALERT: 'vulpis-days.budget_exceeded_alert',
 } as const;
 
 // ----------------------------------------------------------------------------
@@ -28,14 +28,14 @@ export const NOTIFICATION_IDS = {
 export const NOTIFICATION_CHANNELS = {
   /** Canal para recordatorios programados */
   REMINDERS: {
-    id: 'surv_reminders',
+    id: 'vulpis-days_reminders',
     name: 'Recordatorios',
     description: 'Recordatorios diarios para registrar tus gastos',
     importance: AndroidImportance.HIGH, // Nivel de prioridad en Android
   },
   /** Canal para alertas de estado (modo cuidado, presupuesto) */
   ALERTS: {
-    id: 'surv_alerts',
+    id: 'vulpis-days_alerts',
     name: 'Alertas',
     description: 'Alertas cuando tu presupuesto requiere atención',
     importance: AndroidImportance.HIGH,

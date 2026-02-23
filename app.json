@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "SURV",
-    "slug": "SURV",
+    "name": "Vulpis Days",
+    "slug": "vulpis-days",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,7 +20,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.SURV"
+      "package": "com.anonymous.vulpisdays"
     },
     "web": {
       "favicon": "./assets/favicon.png"

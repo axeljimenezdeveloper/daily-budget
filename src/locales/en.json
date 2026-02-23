@@ -1,268 +1,268 @@
 {
   "common": {
-    "total_budget": "Your Budget",
-    "essential_expenses": "The Essentials",
-    "discretionary_spending": "The Flexible",
-    "saving_mode": "CAREFUL MODE ACTIVATED",
-    "financial_autonomy": "Your Days of Tranquility",
+    "total_budget": "Your provisions",
+    "essential_expenses": "What sustains you",
+    "discretionary_spending": "What brings you joy",
+    "saving_mode": "Light step",
+    "financial_autonomy": "Your days of tranquility",
     "error": "Something went wrong",
     "back": "Back",
     "continue": "Continue",
-    "confirm": "Ready, confirm",
+    "confirm": "Yes, confirm",
     "skip": "Skip",
     "days": "days",
-    "daily": "each day",
+    "daily": "daily",
     "total": "total",
     "select": "Choose",
-    "custom": "Customize",
-    "companion": "Your SURV Companion",
-    "processing": "Preparing everything...",
+    "custom": "Custom",
+    "companion": "Your companion Vulpis",
+    "processing": "Preparing the den...",
     "days_short": "d",
-    "error_occurred": "Something went wrong",
+    "error_occurred": "The wind erased the trail",
     "cancel": "Cancel",
     "time_picker": {
-      "title": "Select time",
+      "title": "Choose time",
       "cancel": "Cancel",
       "confirm": "Confirm",
-      "placeholder": "Select time"
+      "placeholder": "Select a time"
     }
   },
   "animations": {
     "loading": {
-      "subtitle": "Loading"
+      "subtitle": "Watching the horizon..."
     },
     "success": {
-      "title": "Everything ready!",
-      "subtitle": "We are setting up your personal dashboard...",
-      "app_slogan": "Your financial companion"
+      "title": "Den ready!",
+      "subtitle": "All in order. Breathe deep.",
+      "app_slogan": "Your days of tranquility, cared for by Vulpis"
     },
     "transition": {
-      "title": "Loading resources",
-      "subtitle": "Preparing the initial setup of your mission..."
+      "title": "Preparing the path",
+      "subtitle": "Vulpis sniffs the air to guide you better..."
     }
   },
   "onboarding": {
     "screen_1": {
-      "title": "Imagine Your Money as Time",
-      "description_part_1": "In SURV, we turn your savings into",
-      "description_highlight": "days of calm and control",
-      "description_part_2": ". You'll always know how long your funds will cover you."
+      "title": "Your money is days of tranquility",
+      "description_part_1": "This is how you'll know how long you can live ",
+      "description_highlight": "without worries",
+      "description_part_2": "This is how you know how long you can live without worries. (obsolete)"
     },
     "screen_2": {
-      "title": "See Your Day-to-Day Clearly",
-      "description_part_1": "Leave behind numbers that don't tell you anything.",
-      "description_highlight": "Here you see the days ahead of you",
-      "description_part_2": "."
+      "title": "See the horizon clearly",
+      "description_part_1": "Each expense subtracts a day. ",
+      "description_highlight": "At a glance",
+      "description_part_2": " you'll know if you're ahead or need to slow down."
     },
     "screen_3": {
-      "title": "What You Need vs. What You Love",
-      "description_part_1": "Just two buttons: what",
-      "description_essential": "supports you and gives you peace",
-      "description_part_2": "and what",
+      "title": "Two paths, one guardian",
+      "description_part_1": "What ",
+      "description_essential": "sustains you",
+      "description_part_2": " and what ",
       "description_discretionary": "makes you smile",
-      "description_part_3": "."
+      "description_part_3": ". Vulpis cares for both without judging."
     },
     "navigation": {
-      "next": "Next",
-      "get_started": "Start Now",
+      "next": "Follow the trail",
+      "get_started": "Prepare the den",
       "skip_onboarding": "Skip"
     }
   },
   "setup": {
     "titles": {
-      "main": "Let's Get Everything Ready",
-      "subtitle": "Tell me how you'd like me to accompany you",
-      "initial_configuration": "INITIAL CONFIGURATION"
+      "main": "Let's prepare your den",
+      "subtitle": "Tell me how you live so I can take better care of you",
+      "initial_configuration": "FIRST STEPS IN THE FOREST"
     },
     "budget_screen": {
-      "title": "How Much Money Do You Have Available?",
-      "description": "Tell me your budget"
+      "title": "How many provisions have you gathered?",
+      "description": "Tell me the total to store in the den"
     },
     "budget_section": {
-      "title": "YOUR RESOURCES",
-      "description": "How much do you have to start with?",
-      "budget_placeholder": "Write the total amount",
-      "budget_label": "What's your budget?"
+      "title": "YOUR PROVISIONS",
+      "description": "How much have you harvested to start?",
+      "budget_placeholder": "Enter the amount",
+      "budget_label": "What is your harvest?"
     },
     "duration_screen": {
-      "title": "How Many Days Are You Planning For?",
-      "description": "Define your time plan to distribute the money",
-      "final_action": "Start"
+      "title": "How many days do you want it to last?",
+      "description": "Choose how many days you want to cover with what you have",
+      "final_action": "Prepare den"
     },
     "duration_section": {
-      "title": "Your Plan",
-      "description": "In how many days do you want to distribute your money?",
-      "period_label": "Select the duration",
-      "custom_days_label": "Days to your measure",
+      "title": "YOUR PLAN",
+      "description": "How many days do you want to secure?",
+      "period_label": "Choose the duration",
+      "custom_days_label": "Days at your own pace",
       "custom_days_placeholder": "How many days?",
       "daily_budget_label": "For each day:",
       "total_for_period": "Total for {{days}} days:",
-      "ready_message": "Everything ready to start!"
+      "ready_message": "All set to start taking care of you!"
     },
     "period_section": {
       "title": "YOUR PLAN",
-      "description": "In how many days do you want to distribute your money?",
-      "period_label": "How many days are you planning for?",
-      "custom_days_label": "Days to your measure",
+      "description": "How many days do you want to look ahead?",
+      "period_label": "For how many days are you planning?",
+      "custom_days_label": "Days at your own pace",
       "custom_days_placeholder": "How many days?",
       "options": {
         "weekly": {
-          "label": "Weekly",
-          "description": "7 days"
+          "label": "Week",
+          "description": "7 days of tranquility"
         },
         "biweekly": {
-          "label": "Biweekly",
+          "label": "Fortnight",
           "description": "15 days"
         },
         "monthly": {
-          "label": "Monthly",
+          "label": "Full moon",
           "description": "30 days"
         },
         "custom": {
-          "label": "Custom",
-          "description": "You define the time"
+          "label": "At your own pace",
+          "description": "You define the days"
         }
       }
     },
     "currency_section": {
       "title": "YOUR CURRENCY",
-      "description": "With which currency do you handle your expenses?",
+      "description": "What trail do you count with?",
       "currency_label": "Choose your currency",
-      "modal_title": "Choose a Currency"
+      "modal_title": "Choose a currency"
     },
     "completion": {
-      "title": "Everything Ready to Start?",
-      "configuration_summary": "You'll start with {{amount}} for {{days}} days",
-      "daily_summary": "For each day: {{amount}}",
-      "start_management": "START",
-      "complete_configuration": "FINISH CONFIGURATION",
-      "configuring": "Preparing everything for you..."
+      "title": "All set to begin?",
+      "configuration_summary": "You have {{amount}} for {{days}} days of tranquility",
+      "daily_summary": "Each day: {{amount}}",
+      "start_management": "CARE FOR DEN",
+      "complete_configuration": "FINISH AND START",
+      "configuring": "Preparing your shelter..."
     },
     "errors": {
-      "vault_configuration": "Oops, I couldn't set up your space",
-      "vault_config_error": "Oops, I couldn't prepare your space",
-      "configuration_failed": "We couldn't prepare your space"
+      "vault_configuration": "Oops, the wind scattered the provisions",
+      "vault_config_error": "I couldn't store the provisions properly",
+      "configuration_failed": "Something clouded the path. Let's try again."
     },
     "modals": {
       "currency": {
-        "title": "Choose Your Currency"
+        "title": "Choose your currency"
       },
       "period": {
-        "title": "Choose the Duration"
+        "title": "Choose the duration"
       }
     },
     "notifications_modal": {
-      "title": "Would you like daily reminders?",
-      "description": "We'll remind you each day to log your expenses.",
-      "accept": "Enable",
+      "title": "Do you want Vulpis to whisper to you every day?",
+      "description": "He will remind you not to forget to record your tracks.",
+      "accept": "Yes, whisper to me",
       "decline": "Not now"
     }
   },
   "dashboard": {
     "remaining_autonomy": "You have {{count}} days of tranquility ahead",
     "status": {
-      "safe": "EVERYTHING IS FINE",
-      "warning": "LET'S REVIEW"
+      "safe": "AT EASE",
+      "warning": "WATCH THE TRAIL"
     }
   },
   "notifications": {
     "daily_reminder": {
-      "title": "Daily reminder",
-      "body": "Don't forget to log today's expenses."
+      "title": "Vulpis whispers to you",
+      "body": "The day is ending. Shall we record today's tracks?"
     },
     "extreme_mode_alert": {
-      "title": "Careful mode activated",
-      "body": "You're spending faster than recommended."
+      "title": "Light step",
+      "body": "We are spending faster. You should check the trail."
     },
     "budget_exceeded_alert": {
-      "title": "Budget exceeded",
-      "body": "You have exceeded your total budget."
+      "title": "Beyond expectations",
+      "body": "We've left more tracks than we had. Nothing serious, just keep an eye."
     },
-    "permission_denied": "Permission denied. Please enable notifications in settings.",
+    "permission_denied": "I can't whisper to you if you don't let me. Enable it in settings.",
     "test": {
-      "title": "Test notification",
-      "body": "This is a test notification",
-      "sent": "Test notification sent",
-      "error": "Error sending test notification"
+      "title": "Test whisper",
+      "body": "This is just a test that Vulpis cares for you",
+      "sent": "Test whisper sent",
+      "error": "Couldn't send whisper"
     }
   },
   "settings": {
-    "title": "Settings",
-    "notifications_section": "Notifications",
-    "daily_reminder_title": "Daily reminder",
-    "daily_reminder_description": "Receive a daily reminder to log your expenses.",
-    "extreme_alert_title": "Careful mode",
-    "extreme_alert_description": "Alert when daily spending exceeds 120% of recommended.",
-    "budget_exceeded_title": "Budget exceeded",
-    "budget_exceeded_description": "Notification when remaining budget is negative.",
-    "test_button": "Send test notification",
-    "export_csv": "Export to CSV",
-    "export_success": "Data exported successfully",
+    "title": "Prepare the den",
+    "notifications_section": "Vulpis's whispers",
+    "daily_reminder_title": "Sunset reminder",
+    "daily_reminder_description": "Every day, a whisper to record your expenses.",
+    "extreme_alert_title": "Light step alert",
+    "extreme_alert_description": "Warn if we spend more than 120% of the recommended daily amount.",
+    "budget_exceeded_title": "Trail exhausted alert",
+    "budget_exceeded_description": "Warn if provisions run out early.",
+    "test_button": "Send test whisper",
+    "export_csv": "Export tracks to CSV",
+    "export_success": "Tracks exported",
     "export_error": "Export error: {{message}}",
-    "export_loading": "Generating file...",
-    "security_section": "Security",
-    "biometric_title": "Biometric Lock",
-    "biometric_description": "Require fingerprint to open the app",
-    "biometric_prompt_message": "Authenticate to enable biometric lock",
-    "biometric_not_available": "Biometric authentication is not available on this device",
-    "biometric_not_enrolled": "No fingerprints registered in system settings",
-    "biometric_weak_security": "Your device's biometric sensor has low security level",
-    "biometric_error": "Authentication error",
-    "biometric_success": "Biometric setup completed",
-    "biometric_lockout": "Too many attempts. Try again later.",
-    "biometric_fallback": "Use PIN/Password instead",
-    "currency_section": "Currency",
+    "export_loading": "Gathering tracks...",
+    "security_section": "Den security",
+    "biometric_title": "Lock with your essence",
+    "biometric_description": "Only you can open the den with your fingerprint",
+    "biometric_prompt_message": "Authenticate to enable the biometric guardian",
+    "biometric_not_available": "Your device does not recognize fingerprints",
+    "biometric_not_enrolled": "You haven't registered any fingerprint on the system",
+    "biometric_weak_security": "The sensor is not secure enough",
+    "biometric_error": "I couldn't recognize you",
+    "biometric_success": "Now only you open the den",
+    "biometric_lockout": "Too many attempts. Wait a while.",
+    "biometric_fallback": "Use your code instead",
+    "currency_section": "Trail",
     "currency": "Currency",
-    "danger_zone": "Danger zone",
-    "reset_vault": "Reset vault",
-    "export_section": "Export data",
-    "language_section": "Language",
+    "danger_zone": "Storm zone",
+    "reset_vault": "Empty the den",
+    "export_section": "Share memory",
+    "language_section": "Forest language",
     "language": "Language",
     "language_modal_title": "Language",
-    "reset_modal_title": "Reset vault",
-    "reset_confirmation": "Are you sure? All your budget and expense data will be lost.",
-    "reset_confirm": "Reset",
+    "reset_modal_title": "Empty den",
+    "reset_confirmation": "Are you sure? You will lose all provisions and saved tracks.",
+    "reset_confirm": "Yes, empty",
     "current_plan_section": "Your current plan",
-    "total_budget": "Total budget",
-    "remaining_days": "Remaining days",
-    "extreme_mode": "Careful mode",
-    "activated": "Activated",
-    "edit_plan": "Edit plan",
-    "export_backup": "Export encrypted backup",
-    "export_backup_loading": "Generating backup...",
-    "import_backup": "Import encrypted backup",
-    "import_backup_loading": "Importing backup...",
+    "total_budget": "Total provisions",
+    "remaining_days": "Days of tranquility remaining",
+    "extreme_mode": "Light step",
+    "activated": "Active",
+    "edit_plan": "Review plan",
+    "export_backup": "Save a copy of the den",
+    "export_backup_loading": "Protecting copy...",
+    "import_backup": "Restore saved copy",
+    "import_backup_loading": "Restoring den...",
     "backup": {
-      "export_success": "Backup exported successfully",
-      "export_error": "Backup export error: {{message}}",
-      "import_success": "Backup imported successfully",
-      "import_error": "Backup import error: {{message}}",
+      "export_success": "Copy saved successfully",
+      "export_error": "Error saving copy: {{message}}",
+      "import_success": "Den restored",
+      "import_error": "Error restoring: {{message}}",
       "auth_cancelled": "Authentication cancelled",
-      "import_cancelled": "Import cancelled"
+      "import_cancelled": "Restoration cancelled"
     }
   },
   "validation": {
     "budget": {
-      "minimum": "You need at least {{amount}}",
-      "maximum": "The maximum is {{amount}}",
-      "valid_number": "Please, write a valid number",
-      "required": "I need to know your budget"
+      "minimum": "You need at least {{amount}} to start",
+      "maximum": "I can't store more than {{amount}}",
+      "valid_number": "Please enter a number",
+      "required": "Tell me how many provisions you have"
     },
     "days": {
       "minimum": "At least {{count}} day",
       "minimum_plural": "At least {{count}} days",
-      "maximum": "Maximum {{count}} days (one year)",
-      "required": "I need to know for how many days"
+      "maximum": "Maximum {{count}} days (a year of tranquility)",
+      "required": "How many days do you want it to last?"
     }
   },
   "auth": {
     "biometric": {
-      "title": "Authentication required",
-      "message": "Use your fingerprint to continue",
-      "not_available": "Biometric authentication is no longer available. It will be disabled.",
-      "disable_and_continue": "Disable and continue",
+      "title": "Vulpis needs to recognize you",
+      "message": "Use your fingerprint to open the den",
+      "not_available": "I can no longer recognize your fingerprint. I'll disable the lock.",
+      "disable_and_continue": "Disable and enter",
       "retry": "Try again",
-      "error": "Authentication failed"
+      "error": "I couldn't recognize you"
     }
   }
 }

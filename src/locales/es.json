@@ -1,27 +1,27 @@
 {
   "common": {
-    "total_budget": "Tu presupuesto",
-    "essential_expenses": "Lo esencial",
-    "discretionary_spending": "Lo flexible",
-    "saving_mode": "MODO CUIDADO ACTIVADO",
+    "total_budget": "Tus provisiones",
+    "essential_expenses": "Lo que sostiene",
+    "discretionary_spending": "Lo que alegra",
+    "saving_mode": "Paso ligero",
     "financial_autonomy": "Tus días de tranquilidad",
     "error": "Algo no salió bien",
     "back": "Volver",
     "continue": "Continuar",
-    "confirm": "Listo, confirmar",
+    "confirm": "Sí, confirmar",
     "skip": "Omitir",
     "days": "días",
     "daily": "cada día",
     "total": "total",
     "select": "Elegir",
     "custom": "Personalizar",
-    "companion": "Tu compañero SURV",
-    "processing": "Preparando todo...",
+    "companion": "Tu compañero Vulpis",
+    "processing": "Preparando la madriguera...",
     "days_short": "d",
-    "error_occurred": "Algo no salió bien",
+    "error_occurred": "El viento borró el rastro",
     "cancel": "Cancelar",
     "time_picker": {
-      "title": "Seleccionar hora",
+      "title": "Elige la hora",
       "cancel": "Cancelar",
       "confirm": "Confirmar",
       "placeholder": "Selecciona una hora"
@@ -29,119 +29,119 @@
   },
   "animations": {
     "loading": {
-      "subtitle": "Cargando"
+      "subtitle": "Vigilando el horizonte..."
     },
     "success": {
-      "title": "¡Todo listo!",
-      "subtitle": "Estamos configurando tu tablero personal...",
-      "app_slogan": "Tu compañero financiero"
+      "title": "¡Madriguera lista!",
+      "subtitle": "Todo en orden. Respira hondo.",
+      "app_slogan": "Tus días de tranquilidad, cuidados por Vulpis"
     },
     "transition": {
-      "title": "Cargando recursos",
-      "subtitle": "Preparando la configuración inicial de tu misión..."
+      "title": "Preparando el camino",
+      "subtitle": "Vulpis olfatea el aire para guiarte mejor..."
     }
   },
   "onboarding": {
     "screen_1": {
-      "title": "Imagina que tu dinero es tiempo",
-      "description_part_1": "En SURV, convertimos lo que ahorras en",
-      "description_highlight": "días de calma y control",
-      "description_part_2": ". Sabrás siempre cuánto tiempo te cubre lo que tienes."
+      "title": "Tu dinero son días de tranquilidad",
+      "description_part_1": "Así sabrás cuánto tiempo puedes vivir ",
+      "description_highlight": "sin preocupaciones",
+      "description_part_2": "Así sabrás cuánto tiempo puedes vivir sin preocupaciones. (obsoleto)"
     },
     "screen_2": {
-      "title": "Mira tu día a día con claridad",
-      "description_part_1": "Deja atrás los números que no te dicen nada.",
-      "description_highlight": "Aquí ves los días que tienes por delante",
-      "description_part_2": "."
+      "title": "Mira el horizonte con claridad",
+      "description_part_1": "Cada gasto resta un día. ",
+      "description_highlight": "De un vistazo",
+      "description_part_2": " sabrás si vas sobrado o toca aflojar el paso."
     },
     "screen_3": {
-      "title": "Lo que necesitas vs. lo que amas",
-      "description_part_1": "Solo dos botones: lo que",
-      "description_essential": "te sostiene y te da paz",
-      "description_part_2": "y lo que",
+      "title": "Dos caminos, un guardián",
+      "description_part_1": "Lo que ",
+      "description_essential": "te sostiene",
+      "description_part_2": " y lo que ",
       "description_discretionary": "te hace sonreír",
-      "description_part_3": "."
+      "description_part_3": ". Vulpis cuida ambos sin juzgar."
     },
     "navigation": {
-      "next": "Siguiente",
-      "get_started": "Empezar ahora",
-      "skip_onboarding": "Saltar"
+      "next": "Seguir el rastro",
+      "get_started": "Preparar la madriguera",
+      "skip_onboarding": "Omitir"
     }
   },
   "setup": {
     "titles": {
-      "main": "Vamos a prepararlo todo",
-      "subtitle": "Cuéntame cómo quieres que te acompañe",
-      "initial_configuration": "CONFIGURACIÓN INICIAL"
+      "main": "Preparemos tu madriguera",
+      "subtitle": "Cuéntame cómo vives para cuidarte mejor",
+      "initial_configuration": "PRIMEROS PASOS EN EL BOSQUE"
     },
     "budget_screen": {
-      "title": "¿Cuánto dinero tienes disponible?",
-      "description": "Dime cuál es tu presupuesto"
+      "title": "¿Cuántas provisiones has reunido?",
+      "description": "Dime el total para guardarlo en la madriguera"
     },
     "budget_section": {
-      "title": "TUS RECURSOS",
-      "description": "¿De cuánto dispones para comenzar?",
-      "budget_placeholder": "Escribe el monto total",
-      "budget_label": "¿Cuál es tu presupuesto?"
+      "title": "TUS PROVISIONES",
+      "description": "¿Cuánto has cosechado para empezar?",
+      "budget_placeholder": "Escribe la cantidad",
+      "budget_label": "¿Cuál es tu cosecha?"
     },
     "duration_screen": {
-      "title": "¿Para cuántos días lo planeas?",
-      "description": "Define tu plan de tiempo para distribuir el dinero",
-      "final_action": "Empezar"
+      "title": "¿Para cuántos días quieres que alcance?",
+      "description": "Elige cuántos días quieres cubrir con lo que tienes",
+      "final_action": "Preparar madriguera"
     },
     "duration_section": {
-      "title": "Tu plan",
-      "description": "¿En cuántos días quieres distribuir tu dinero?",
-      "period_label": "Selecciona la duración",
+      "title": "TU PLAN",
+      "description": "¿Cuántos días quieres asegurar?",
+      "period_label": "Elige la duración",
       "custom_days_label": "Días a tu medida",
       "custom_days_placeholder": "¿Cuántos días?",
       "daily_budget_label": "Para cada día:",
       "total_for_period": "Total para {{days}} días:",
-      "ready_message": "¡Todo listo para comenzar!"
+      "ready_message": "¡Todo listo para empezar a cuidarte!"
     },
     "period_section": {
       "title": "TU PLAN",
-      "description": "¿En cuántos días quieres distribuir tu dinero?",
+      "description": "¿Cuántos días quieres mirar al frente?",
       "period_label": "¿Para cuántos días lo planeas?",
       "custom_days_label": "Días a tu medida",
       "custom_days_placeholder": "¿Cuántos días?",
       "options": {
         "weekly": {
-          "label": "Semanal",
-          "description": "7 días"
+          "label": "Semana",
+          "description": "7 días de tranquilidad"
         },
         "biweekly": {
-          "label": "Quincenal",
+          "label": "Quincena",
           "description": "15 días"
         },
         "monthly": {
-          "label": "Mensual",
+          "label": "Luna llena",
           "description": "30 días"
         },
         "custom": {
-          "label": "Personalizado",
-          "description": "Tú defines el tiempo"
+          "label": "A tu ritmo",
+          "description": "Tú defines los días"
         }
       }
     },
     "currency_section": {
       "title": "TU MONEDA",
-      "description": "¿Con qué moneda manejas tus gastos?",
+      "description": "¿Con qué rastro cuentas?",
       "currency_label": "Elige tu moneda",
       "modal_title": "Elige una moneda"
     },
     "completion": {
       "title": "¿Todo listo para comenzar?",
-      "configuration_summary": "Empezarás con {{amount}} para {{days}} días",
-      "daily_summary": "Para cada día: {{amount}}",
-      "start_management": "EMPEZAR",
-      "complete_configuration": "TERMINAR CONFIGURACIÓN",
-      "configuring": "Preparando todo para ti..."
+      "configuration_summary": "Tienes {{amount}} para {{days}} días de tranquilidad",
+      "daily_summary": "Cada día: {{amount}}",
+      "start_management": "CUIDAR MADRIGUERA",
+      "complete_configuration": "TERMINAR Y EMPEZAR",
+      "configuring": "Preparando tu refugio..."
     },
     "errors": {
-      "vault_configuration": "Ups, no pude configurar tu espacio",
-      "vault_config_error": "Ups, no pude preparar tu espacio",
-      "configuration_failed": "No pudimos preparar tu espacio"
+      "vault_configuration": "Ups, el viento desordenó las provisiones",
+      "vault_config_error": "No pude guardar bien las provisiones",
+      "configuration_failed": "Algo enturbió el camino. Intentémoslo de nuevo."
     },
     "modals": {
       "currency": {
@@ -152,117 +152,117 @@
       }
     },
     "notifications_modal": {
-      "title": "¿Te gustaría recibir recordatorios diarios?",
-      "description": "Te recordaremos cada día registrar tus gastos.",
-      "accept": "Activar",
+      "title": "¿Quieres que Vulpis te susurre cada día?",
+      "description": "Te avisará para que no olvides registrar tus rastros.",
+      "accept": "Sí, susúrrame",
       "decline": "Ahora no"
     }
   },
   "dashboard": {
     "remaining_autonomy": "Tienes {{count}} días de tranquilidad por delante",
     "status": {
-      "safe": "TODO ESTÁ BIEN",
-      "warning": "VAMOS A REVISAR"
+      "safe": "EN CALMA",
+      "warning": "ATENTO AL RASTRO"
     }
   },
   "notifications": {
     "daily_reminder": {
-      "title": "Recordatorio diario",
-      "body": "No olvides registrar tus gastos de hoy."
+      "title": "Vulpis te susurra",
+      "body": "El día termina. ¿Registramos las huellas de hoy?"
     },
     "extreme_mode_alert": {
-      "title": "Modo cuidado activado",
-      "body": "Estás gastando más rápido de lo recomendado."
+      "title": "Paso ligero",
+      "body": "Estamos gastando más rápido. Conviene revisar el rastro."
     },
     "budget_exceeded_alert": {
-      "title": "Presupuesto excedido",
-      "body": "Has superado tu presupuesto total."
+      "title": "Más allá de lo previsto",
+      "body": "Hemos dejado más huella de la que teníamos. Nada grave, solo vigila."
     },
-    "permission_denied": "Permiso denegado. Activa las notificaciones en Ajustes.",
+    "permission_denied": "No puedo susurrarte si no me dejas. Actívalo en ajustes.",
     "test": {
-      "title": "Notificación de prueba",
-      "body": "Esta es una notificación de prueba",
-      "sent": "Notificación de prueba enviada",
-      "error": "Error al enviar notificación de prueba"
+      "title": "Susurro de prueba",
+      "body": "Esto es solo una prueba de que Vulpis te cuida",
+      "sent": "Susurro de prueba enviado",
+      "error": "No pude enviar el susurro"
     }
   },
   "settings": {
-    "title": "Ajustes",
-    "notifications_section": "Notificaciones",
-    "daily_reminder_title": "Recordatorio diario",
-    "daily_reminder_description": "Recibe un recordatorio diario para registrar tus gastos.",
-    "extreme_alert_title": "Modo cuidado",
-    "extreme_alert_description": "Alerta cuando el gasto diario supere el 120% de lo recomendado.",
-    "budget_exceeded_title": "Presupuesto excedido",
-    "budget_exceeded_description": "Notificación cuando el presupuesto restante sea negativo.",
-    "test_button": "Enviar notificación de prueba",
-    "export_csv": "Exportar a CSV",
-    "export_success": "Datos exportados correctamente",
+    "title": "Preparar la madriguera",
+    "notifications_section": "Susurros de Vulpis",
+    "daily_reminder_title": "Recordatorio al atardecer",
+    "daily_reminder_description": "Cada día, un susurro para registrar tus gastos.",
+    "extreme_alert_title": "Alerta de paso ligero",
+    "extreme_alert_description": "Avisa si gastamos más del 120% de lo recomendado al día.",
+    "budget_exceeded_title": "Alerta de rastro agotado",
+    "budget_exceeded_description": "Avisa si las provisiones se terminan antes de tiempo.",
+    "test_button": "Enviar susurro de prueba",
+    "export_csv": "Exportar rastros a CSV",
+    "export_success": "Rastros exportados",
     "export_error": "Error al exportar: {{message}}",
-    "export_loading": "Generando archivo...",
-    "security_section": "Seguridad",
-    "biometric_title": "Bloqueo biométrico",
-    "biometric_description": "Requiere huella dactilar para abrir la app",
-    "biometric_prompt_message": "Autentícate para activar el bloqueo biométrico",
-    "biometric_not_available": "La autenticación biométrica no está disponible en este dispositivo",
-    "biometric_not_enrolled": "No hay huellas registradas en los ajustes del sistema",
-    "biometric_weak_security": "El sensor biométrico de tu dispositivo tiene un nivel de seguridad bajo",
-    "biometric_error": "Error de autenticación",
-    "biometric_success": "Configuración biométrica completada",
-    "biometric_lockout": "Demasiados intentos. Intenta más tarde.",
-    "biometric_fallback": "Usa PIN/contraseña en su lugar",
-    "currency_section": "Moneda",
+    "export_loading": "Recogiendo huellas...",
+    "security_section": "Seguridad de la madriguera",
+    "biometric_title": "Bloqueo con tu esencia",
+    "biometric_description": "Solo tú puedes abrir la madriguera con tu huella",
+    "biometric_prompt_message": "Autentícate para activar el guardián biométrico",
+    "biometric_not_available": "Tu dispositivo no reconoce huellas",
+    "biometric_not_enrolled": "No has registrado ninguna huella en el sistema",
+    "biometric_weak_security": "El sensor no es suficientemente seguro",
+    "biometric_error": "No pude reconocerte",
+    "biometric_success": "Ahora solo tú abres la madriguera",
+    "biometric_lockout": "Demasiados intentos. Espera un rato.",
+    "biometric_fallback": "Usa tu código en su lugar",
+    "currency_section": "Rastro",
     "currency": "Moneda",
-    "danger_zone": "Zona de peligro",
-    "reset_vault": "Reiniciar bóveda",
-    "export_section": "Exportar datos",
-    "language_section": "Idioma",
+    "danger_zone": "Zona de tormenta",
+    "reset_vault": "Vaciar la madriguera",
+    "export_section": "Compartir memoria",
+    "language_section": "Idioma del bosque",
     "language": "Idioma",
     "language_modal_title": "Idioma",
-    "reset_modal_title": "Reiniciar bóveda",
-    "reset_confirmation": "¿Estás seguro? Se perderán todos tus datos de presupuesto y gastos.",
-    "reset_confirm": "Reiniciar",
+    "reset_modal_title": "Vaciar madriguera",
+    "reset_confirmation": "¿Estás seguro? Perderás todas las provisiones y rastros guardados.",
+    "reset_confirm": "Sí, vaciar",
     "current_plan_section": "Tu plan actual",
-    "total_budget": "Presupuesto total",
-    "remaining_days": "Días restantes",
-    "extreme_mode": "Modo cuidado",
-    "activated": "Activado",
-    "edit_plan": "Editar plan",
-    "export_backup": "Exportar respaldo cifrado",
-    "export_backup_loading": "Generando respaldo...",
-    "import_backup": "Importar respaldo cifrado",
-    "import_backup_loading": "Importando respaldo...",
+    "total_budget": "Provisiones totales",
+    "remaining_days": "Días de tranquilidad restantes",
+    "extreme_mode": "Paso ligero",
+    "activated": "Activo",
+    "edit_plan": "Revisar plan",
+    "export_backup": "Guardar copia de la madriguera",
+    "export_backup_loading": "Protegiendo copia...",
+    "import_backup": "Recuperar copia guardada",
+    "import_backup_loading": "Restaurando madriguera...",
     "backup": {
-      "export_success": "Respaldo exportado correctamente",
-      "export_error": "Error al exportar respaldo: {{message}}",
-      "import_success": "Respaldo importado correctamente",
-      "import_error": "Error al importar respaldo: {{message}}",
+      "export_success": "Copia guardada con éxito",
+      "export_error": "Error al guardar copia: {{message}}",
+      "import_success": "Madriguera restaurada",
+      "import_error": "Error al restaurar: {{message}}",
       "auth_cancelled": "Autenticación cancelada",
-      "import_cancelled": "Importación cancelada"
+      "import_cancelled": "Restauración cancelada"
     }
   },
   "validation": {
     "budget": {
-      "minimum": "Necesitas al menos {{amount}}",
-      "maximum": "El máximo es {{amount}}",
-      "valid_number": "Por favor, escribe un número válido",
-      "required": "Necesito saber tu presupuesto"
+      "minimum": "Necesitas al menos {{amount}} para empezar",
+      "maximum": "No puedo guardar más de {{amount}}",
+      "valid_number": "Escribe un número, por favor",
+      "required": "Dime cuántas provisiones tienes"
     },
     "days": {
       "minimum": "Al menos {{count}} día",
       "minimum_plural": "Al menos {{count}} días",
-      "maximum": "Máximo {{count}} días (un año)",
-      "required": "Necesito saber para cuántos días"
+      "maximum": "Máximo {{count}} días (un año de tranquilidad)",
+      "required": "¿Para cuántos días quieres que alcance?"
     }
   },
   "auth": {
     "biometric": {
-      "title": "Autenticación requerida",
-      "message": "Usa tu huella para continuar",
-      "not_available": "La autenticación biométrica ya no está disponible. Se desactivará.",
-      "disable_and_continue": "Desactivar y continuar",
-      "retry": "Reintentar",
-      "error": "Error de autenticación"
+      "title": "Vulpis necesita reconocerte",
+      "message": "Usa tu huella para abrir la madriguera",
+      "not_available": "Ya no puedo reconocer tu huella. Desactivaré el bloqueo.",
+      "disable_and_continue": "Desactivar y entrar",
+      "retry": "Intentar de nuevo",
+      "error": "No pude reconocerte"
     }
   }
 }

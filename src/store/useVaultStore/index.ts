@@ -259,7 +259,7 @@ export const useVaultStore = create<VaultState>()(
         // Esta función se ejecuta ANTES de rehidratar
         return (rehydratedState, error) => {
           if (error) {
-            console.warn('[SURV] Error al rehidratar store:', error);
+            console.warn('[Vulpis Days] Error al rehidratar store:', error);
             // Marcamos como hidratado para no bloquear la UI, aunque haya error
             useVaultStore.setState({ _hasHydrated: true, _storeVersion: CURRENT_STORE_VERSION });
             return;
@@ -285,7 +285,7 @@ export const useVaultStore = create<VaultState>()(
               for (let v = storedVersion; v < CURRENT_STORE_VERSION; v++) {
                 const migrateFn = migrations[v];
                 if (!migrateFn) {
-                  console.warn(`[SURV] Migración no encontrada para v${v} → v${v+1}`);
+                  console.warn(`[Vulpis Days] Migración no encontrada para v${v} → v${v+1}`);
                   break;
                 }
                 migrated = migrateFn(migrated);

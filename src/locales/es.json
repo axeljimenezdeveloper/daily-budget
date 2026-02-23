@@ -163,7 +163,29 @@
     "status": {
       "safe": "EN CALMA",
       "warning": "ATENTO AL RASTRO"
-    }
+    },
+    "greeting": {
+      "morning_calm": "Buenos días. La madriguera está en calma.",
+      "afternoon_calm": "Buenas tardes. Todo tranquilo por aquí.",
+      "evening_calm": "Buenas noches. La madriguera descansa.",
+      "morning_extreme": "Buenos días. Atento al rastro, hoy toca pisar con cuidado.",
+      "afternoon_extreme": "Buenas tardes. Paso ligero, revisa el camino.",
+      "evening_extreme": "Buenas noches. Mañana será un día para mirar el horizonte.",
+      "calm": "La madriguera está en calma.",
+      "extreme": "Atento al rastro. Paso ligero."
+    },
+    "days_of_tranquility": "días de tranquilidad",
+    "days_of_tranquility_plural": "días de tranquilidad",
+    "progress": "{{passed}}/{{total}} días",
+    "per_day": "por día",
+    "spent": "gastado",
+    "days_since_start": "días desde inicio",
+    "recent_trails": "Últimos rastros",
+    "empty": {
+      "title": "Todavía no hay rastros",
+      "message": "¿Qué has cazado hoy? Registra tu primera huella."
+    },
+    "loading": "Vulpis husmea el entorno..."
   },
   "notifications": {
     "daily_reminder": {

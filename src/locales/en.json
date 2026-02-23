@@ -163,7 +163,29 @@
     "status": {
       "safe": "AT EASE",
       "warning": "WATCH THE TRAIL"
-    }
+    },
+    "greeting": {
+      "morning_calm": "Good morning. The den is calm.",
+      "afternoon_calm": "Good afternoon. All quiet here.",
+      "evening_calm": "Good evening. The den rests.",
+      "morning_extreme": "Good morning. Watch the trail, today tread carefully.",
+      "afternoon_extreme": "Good afternoon. Light step, check the path.",
+      "evening_extreme": "Good evening. Tomorrow will be a day to look at the horizon.",
+      "calm": "The den is calm.",
+      "extreme": "Watch the trail. Light step."
+    },
+    "days_of_tranquility": "day of tranquility",
+    "days_of_tranquility_plural": "days of tranquility",
+    "progress": "{{passed}}/{{total}} days",
+    "per_day": "per day",
+    "spent": "spent",
+    "days_since_start": "days since start",
+    "recent_trails": "Recent trails",
+    "empty": {
+      "title": "No trails yet",
+      "message": "What have you hunted today? Record your first track."
+    },
+    "loading": "Vulpis sniffs the surroundings..."
   },
   "notifications": {
     "daily_reminder": {

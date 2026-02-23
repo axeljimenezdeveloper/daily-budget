@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.40.0](///compare/v1.39.1...v1.40.0) (2026-02-23)
+
+
+### Features
+
+* **haptics:** implementar retroalimentación háptica configurable en toda la interfaz 99f01e4
+
 ### [1.39.1](///compare/v1.39.0...v1.39.1) (2026-02-23)
 
 ## [1.39.0](///compare/v1.38.2...v1.39.0) (2026-02-22)

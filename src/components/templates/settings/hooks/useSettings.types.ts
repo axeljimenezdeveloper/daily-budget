@@ -1,5 +1,7 @@
-// Si se quiere mantener la interfaz en este archivo, se puede copiar; pero
-// asumimos que está definida en otro lado. Por simplicidad, la incluimos:
+// ============================================================================
+// TIPOS DEL HOOK useSettings
+// ============================================================================
+
 export interface UseSettingsReturn {
   language: 'es' | 'en';
   setLanguage: (lang: 'es' | 'en') => void;
@@ -13,6 +15,7 @@ export interface UseSettingsReturn {
   extremeModeAlert: boolean;
   budgetExceededAlert: boolean;
   reminderTime: string;
+  hapticFeedback: boolean;
   isSaving: boolean;
   isExporting: boolean;
   exportError: string | null;
@@ -39,6 +42,7 @@ export interface UseSettingsReturn {
   handleExtremeAlertChange: (value: boolean) => void;
   handleBudgetExceededChange: (value: boolean) => void;
   handleReminderTimeChange: (time: string) => void;
+  handleHapticToggle: (value: boolean) => void;
   handleTestNotification: () => Promise<void>;
   handleLanguageSelect: (lang: 'es' | 'en') => void;
   handleBackupExport: () => Promise<void>;

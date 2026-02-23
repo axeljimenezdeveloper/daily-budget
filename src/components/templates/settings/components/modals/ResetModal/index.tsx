@@ -60,6 +60,7 @@ export const ResetModal: React.FC<ResetModalProps> = ({
           <AppPressable
             style={[styles.modalButton, styles.modalButtonCancel]}
             onPress={onClose}
+            hapticFeedback="light"
           >
             <AppText
               variant="body"
@@ -72,6 +73,7 @@ export const ResetModal: React.FC<ResetModalProps> = ({
           <AppPressable
             style={[styles.modalButton, styles.modalButtonDanger]}
             onPress={onConfirm}
+            hapticFeedback="light"
           >
             <AppText
               variant="body"

@@ -55,6 +55,7 @@ export const useVaultStore = create<VaultState>()(
         extremeModeAlert: true,
         budgetExceededAlert: true,
         reminderTime: "20:00",
+        hapticFeedback: true,   // <-- AÑADIDO
       },
       notificationsScheduledForDate: null,
       hasRequestedPermissions: false,
@@ -152,6 +153,7 @@ export const useVaultStore = create<VaultState>()(
             extremeModeAlert: true,
             budgetExceededAlert: true,
             reminderTime: "20:00",
+            hapticFeedback: true,   // <-- AÑADIDO
           },
           notificationsScheduledForDate: null,
           hasRequestedPermissions: false,

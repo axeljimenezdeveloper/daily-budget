@@ -16,10 +16,13 @@ import { useSettingsBiometrics } from './useSettingsBiometrics';
 import { useSettingsExport } from './useSettingsExport';
 import { useSettingsModals } from './useSettingsModals';
 import { useSettingsUtils } from './useSettingsUtils';
+import { useSettingsHaptics } from './useSettingsHaptics'; 
+
 // ----------------------------------------------------------------------------
 // TIPO DE RETORNO 
 // ----------------------------------------------------------------------------
 import { UseSettingsReturn } from './useSettings.types';
+
 // ----------------------------------------------------------------------------
 // HOOK PRINCIPAL
 // ----------------------------------------------------------------------------
@@ -31,6 +34,7 @@ export const useSettings = (): UseSettingsReturn => {
   const exportModule = useSettingsExport();
   const modals = useSettingsModals();
   const utils = useSettingsUtils();
+  const haptics = useSettingsHaptics(); 
 
   // Combinar todas las propiedades en un solo objeto
   return {
@@ -40,5 +44,6 @@ export const useSettings = (): UseSettingsReturn => {
     ...exportModule,
     ...modals,
     ...utils,
+    ...haptics, 
   };
 };

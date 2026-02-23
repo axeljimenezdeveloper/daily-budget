@@ -33,7 +33,6 @@ export default function AppListItem({
   style,
   throttleMs = ANIMATION.DEFAULT_PRESS_THROTTLE_MS, // ← Valor por defecto
 }: AppListItemProps) {
-  
   const { currentBackground, iconColor } = getStyleHelpers({
     isActive,
     background,
@@ -79,8 +78,9 @@ export default function AppListItem({
     <AppPressable
       onPress={onPress}
       disabled={disabled}
-      style={{ width: '100%' }}
-      throttleMs={throttleMs} // ← Pasamos la prop
+      style={{ width: "100%" }}
+      throttleMs={throttleMs}
+      hapticFeedback="light"
     >
       {content}
     </AppPressable>

@@ -59,7 +59,8 @@ export default function AppButton({
       onPress={onPress}
       disabled={disabled}
       style={containerStyle}
-      throttleMs={throttleMs} // ← Pasamos la prop
+      throttleMs={throttleMs}
+      hapticFeedback="light"
     >
       <AppText variant="body" style={[styles.text, { color: textColor }]}>
         {children}

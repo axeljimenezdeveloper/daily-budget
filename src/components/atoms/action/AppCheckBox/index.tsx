@@ -81,7 +81,8 @@ export default function AppCheckBox({
       onPress={handlePress}
       disabled={disabled}
       style={containerStyle}
-      throttleMs={throttleMs} // ← Pasamos la prop
+      throttleMs={throttleMs}
+      hapticFeedback="selection"
     >
       {/* CUADRO ANIMADO */}
       <Animated.View

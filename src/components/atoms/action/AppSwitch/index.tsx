@@ -63,7 +63,8 @@ export default function AppSwitch({
       onPress={handlePress}
       disabled={disabled}
       style={style}
-      throttleMs={throttleMs} // ← Pasamos la prop
+      throttleMs={throttleMs}
+      hapticFeedback="selection"
     >
       <Animated.View
         style={[

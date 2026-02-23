@@ -239,7 +239,10 @@
       "import_error": "Error al restaurar: {{message}}",
       "auth_cancelled": "Autenticación cancelada",
       "import_cancelled": "Restauración cancelada"
-    }
+    },
+    "haptics_section": "Vibración",
+    "haptics_title": "Respuesta háptica",
+    "haptics_description": "Pequeñas vibraciones al interactuar con la interfaz"
   },
   "validation": {
     "budget": {

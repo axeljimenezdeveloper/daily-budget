@@ -82,7 +82,8 @@ export default function AppRadioButton({
       onPress={handlePress}
       disabled={disabled}
       style={containerStyle}
-      throttleMs={throttleMs} // ← Pasamos la prop
+      throttleMs={throttleMs}
+      hapticFeedback="selection"
     >
       {/* CÍRCULO EXTERIOR ANIMADO */}
       <Animated.View style={[styles.outerCircle, { borderColor }]}>

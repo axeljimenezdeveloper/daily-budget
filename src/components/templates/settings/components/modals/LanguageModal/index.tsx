@@ -61,6 +61,7 @@ export const LanguageModal: React.FC<LanguageModalProps> = ({
             onSelectLanguage('es');
             onClose();
           }}
+          hapticFeedback="light"
         >
           <AppText variant="body" color="primary">
             🇪🇸 Español
@@ -77,6 +78,7 @@ export const LanguageModal: React.FC<LanguageModalProps> = ({
             onSelectLanguage('en');
             onClose();
           }}
+          hapticFeedback="light"
         >
           <AppText variant="body" color="primary">
             🇺🇸 English

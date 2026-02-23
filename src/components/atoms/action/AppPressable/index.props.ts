@@ -1,6 +1,16 @@
 import { ReactNode } from "react";
 import { ViewStyle, StyleProp } from "react-native";
 
+// Definimos los tipos de haptic permitidos
+export type HapticFeedbackType = 
+  | 'light'
+  | 'medium'
+  | 'heavy'
+  | 'selection'
+  | 'success'
+  | 'warning'
+  | 'error';
+
 export interface AppPressableProps {
   /** Contenido que se volverá interactivo */
   children: ReactNode;
@@ -18,4 +28,13 @@ export interface AppPressableProps {
    * @default undefined (sin throttle)
    */
   throttleMs?: number;
+  /**
+   * Activa retroalimentación háptica al presionar.
+   * - Si es `true`, usa el tipo por defecto 'light'.
+   * - Si es un string, debe ser uno de los tipos soportados.
+   * @example
+   * hapticFeedback="light"   // impacto ligero
+   * hapticFeedback="success" // notificación de éxito
+   */
+  hapticFeedback?: boolean | HapticFeedbackType;
 }

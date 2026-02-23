@@ -62,6 +62,11 @@ export interface NotificationPreferences {
    * @default "20:00"
    */
   reminderTime: string;
+  /**
+   * Activa la respuesta háptica (vibración) en interacciones.
+   * @default true
+   */
+  hapticFeedback: boolean;
 }
 
 // ----------------------------------------------------------------------------

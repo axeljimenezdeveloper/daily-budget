@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.41.0](///compare/v1.40.0...v1.41.0) (2026-02-23)
+
+
+### Features
+
+* **dashboard:** implementar pantalla principal con layout y FAB ebab8ca
+
 ## [1.40.0](///compare/v1.39.1...v1.40.0) (2026-02-23)
 
 

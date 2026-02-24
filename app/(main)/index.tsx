@@ -1,32 +1,50 @@
 // ============================================================================
-// PANTALLA PRINCIPAL - DASHBOARD (CON LAYOUT + FAB)
-//
-// Centro neurálgico de Vulpis Days. Muestra el estado actual de la bóveda.
-// Utiliza DashboardLayout para la estructura base, incluyendo el FAB.
+// PANTALLA PRINCIPAL - DASHBOARD (CON IDEAL DINÁMICO Y MODO CUIDADO)
 // ============================================================================
 
-// ----------------------------------------------------------------------------
-// DEPENDENCIAS EXTERNAS
-// ----------------------------------------------------------------------------
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { useTranslation } from 'react-i18next';
-import { useRouter } from 'expo-router';
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+  AppState,
+  AppStateStatus,
+} from "react-native";
+import { useTranslation } from "react-i18next";
+import { useRouter } from "expo-router";
 
 // ----------------------------------------------------------------------------
-// DEPENDENCIAS INTERNAS (HOOKS Y UTILIDADES)
+// COMPONENTES ATÓMICOS Y MOLECULARES
 // ----------------------------------------------------------------------------
-import { DashboardLayout } from '@/components/templates/dashboard/components/layout/DashboardLayout';
-import { useDashboardData } from '@/components/templates/dashboard/hooks/useDashboardData';
-import { useGreeting } from '@/components/templates/dashboard/hooks/useGreeting';
-import { useStoreHydration } from '@/components/templates/dashboard/hooks/useStoreHydration';
-import { usePullToRefresh } from '@/components/templates/dashboard/hooks/usePullToRefresh';
-import { useHaptic } from '@/hooks/useHaptic';
-import { formatMoney } from '@/store/useVaultStore/index.utils';
-import { formatDate } from '@/utils/date';
-import { PALETTE } from '@/constants/colors';
-import { SPACING, TYPOGRAPHY, BORDER_RADIUS } from '@/constants/metrics';
-import { ROUTES } from '@/constants/navigation';
+import AppBox from "@/components/atoms/structure/AppBox";
+import AppText from "@/components/atoms/content/AppText";
+import AppIcon from "@/components/atoms/content/AppIcon";
+import AppStack from "@/components/atoms/structure/AppStack";
+import AppListItem from "@/components/atoms/action/AppListItem";
+import AppDivider from "@/components/atoms/structure/AppDivider";
+import AppBadge from "@/components/atoms/visual/AppBadge";
+import { DashboardLayout } from "@/components/templates/dashboard/components/layout/DashboardLayout";
+import AppCircularProgress from "@/components/molecules/visual/AppCircularProgress";
+import MetricPill from "@/components/molecules/display/MetricPill";
+
+// ----------------------------------------------------------------------------
+// HOOKS PERSONALIZADOS
+// ----------------------------------------------------------------------------
+import { useDashboardData } from "@/components/templates/dashboard/hooks/useDashboardData";
+import { useGreeting } from "@/components/templates/dashboard/hooks/useGreeting";
+import { usePullToRefresh } from "@/components/templates/dashboard/hooks/usePullToRefresh";
+import { useStoreHydration } from "@/components/templates/dashboard/hooks/useStoreHydration";
+import { useHaptic } from "@/hooks/useHaptic";
+
+// ----------------------------------------------------------------------------
+// CONSTANTES Y UTILIDADES
+// ----------------------------------------------------------------------------
+import { PALETTE } from "@/constants/colors";
+import { SPACING } from "@/constants/metrics";
+import { ROUTES } from "@/constants/navigation";
+import { formatMoney } from "@/store/useVaultStore/index.utils";
+import { formatRelativeTime } from "@/utils/date";
 
 // ----------------------------------------------------------------------------
 // COMPONENTE PRINCIPAL
@@ -36,61 +54,169 @@ export default function DashboardScreen() {
   const router = useRouter();
   const haptic = useHaptic();
 
-  // --------------------------------------------------------------------------
-  // HOOKS PERSONALIZADOS
-  // --------------------------------------------------------------------------
+  // Estado para forzar re-render en cambios de día o cuando la app vuelve a primer plano
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    const forceUpdate = () => setTick((t) => t + 1);
+
+    // 1. Timeout hasta la próxima medianoche
+    const now = new Date();
+    const midnight = new Date(now);
+    midnight.setHours(24, 0, 0, 0); // próxima medianoche
+    const timeUntilMidnight = midnight.getTime() - now.getTime();
+
+    const timeout = setTimeout(forceUpdate, timeUntilMidnight);
+
+    // 2. Listener de AppState para actualizar cuando la app vuelve a primer plano
+    const subscription = AppState.addEventListener(
+      "change",
+      (nextAppState: AppStateStatus) => {
+        if (nextAppState === "active") {
+          forceUpdate();
+        }
+      },
+    );
+
+    return () => {
+      clearTimeout(timeout);
+      subscription.remove();
+    };
+  }, []);
+
+  // Datos reales del store
   const {
-    daysDuration,
-    isExtremeMode,
-    currency,
-    summary,
     remainingDays,
+    daysDuration,
+    currency,
     progressPercent,
     recentTransactions,
+    isExtremeMode,
+    hasHydrated,
+    summary,
     remainingBudget,
+    totalBudget,
+    idealToday,
+    todaySpent, // <-- nuevo
   } = useDashboardData();
 
   const greeting = useGreeting(isExtremeMode);
-  const hydrated = useStoreHydration();
   const { refreshing, onRefresh } = usePullToRefresh();
+  const hydrated = useStoreHydration();
 
-  // --------------------------------------------------------------------------
-  // COLOR DE LA BARRA DE PROGRESO
-  // --------------------------------------------------------------------------
-  const getProgressBarColor = (): string => {
-    if (remainingDays <= 0) return PALETTE.errorRed;
-    if (isExtremeMode || remainingDays < 3) return PALETTE.warningOrange;
-    return PALETTE.successGreen;
-  };
-
-  // --------------------------------------------------------------------------
-  // MANEJADORES CON HAPTIC
-  // --------------------------------------------------------------------------
-  const handleAddExpense = (): void => {
-    haptic.light();
-    router.push(ROUTES.MAIN.ADD_EXPENSE);
-  };
-
-  const handleTransactionPress = (): void => {
-    haptic.selection();
-    router.push(ROUTES.MAIN.HISTORY);
-  };
-
-  // --------------------------------------------------------------------------
-  // RENDERIZADO CONDICIONAL (MIENTRAS HIDRATA)
-  // --------------------------------------------------------------------------
+  // Mientras el store no esté hidratado, mostramos un spinner
   if (!hydrated) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color={PALETTE.sunsetOrange} />
-        <Text style={styles.loadingText}>{t('dashboard.loading')}</Text>
+        <AppText variant="body" color="secondary" style={styles.loadingText}>
+          {t("dashboard.loading", "Cargando...")}
+        </AppText>
       </View>
     );
   }
 
-  // --------------------------------------------------------------------------
-  // RENDERIZADO PRINCIPAL
-  // --------------------------------------------------------------------------
+  const daysPassed = summary.daysPassed;
+
+  // Debug: Mostrar valores reales para verificar el porcentaje
+  useEffect(() => {
+    console.log("📊 Dashboard data:", {
+      progressPercent,
+      totalBudget,
+      remainingBudget,
+      remainingDays,
+      daysDuration,
+      daysPassed,
+      idealToday,
+      todaySpent,
+      recentTransactions: recentTransactions.length,
+      isExtremeMode,
+      tick,
+    });
+  }, [
+    progressPercent,
+    totalBudget,
+    remainingBudget,
+    remainingDays,
+    daysDuration,
+    daysPassed,
+    idealToday,
+    todaySpent,
+    recentTransactions,
+    isExtremeMode,
+    tick,
+  ]);
+
+  // Mapeo de categorías a iconos (puede moverse a utils)
+  const getCategoryIcon = (category: string): string => {
+    const lower = category.toLowerCase();
+    if (
+      lower.includes("comida") ||
+      lower.includes("groceries") ||
+      lower.includes("food")
+    )
+      return "fast-food-outline";
+    if (
+      lower.includes("uber") ||
+      lower.includes("transporte") ||
+      lower.includes("car")
+    )
+      return "car-outline";
+    if (
+      lower.includes("ocio") ||
+      lower.includes("leisure") ||
+      lower.includes("game")
+    )
+      return "game-controller-outline";
+    if (lower.includes("salud") || lower.includes("health"))
+      return "medical-outline";
+    return "fast-food-outline";
+  };
+
+  const handleAddExpense = () => {
+    haptic.light();
+    router.push(ROUTES.MAIN.ADD_EXPENSE);
+  };
+
+  const handleTransactionPress = () => {
+    haptic.selection();
+    router.push(ROUTES.MAIN.HISTORY);
+  };
+
+  // Determinar el color de la píldora "Ideal hoy"
+  const getIdealTodayStatus = () => {
+    if (idealToday < 0) return "error";
+    if (isExtremeMode) return "warning";
+    if (idealToday > 0) return "success"; // Bonificación (verde)
+    return "default";
+  };
+
+  // Determinar etiqueta del ciclo según duración
+  const getCycleLabel = () => {
+    if (daysDuration === 7) return t("dashboard.cycle.weekly", "Semanal");
+    if (daysDuration === 15) return t("dashboard.cycle.biweekly", "Quincenal");
+    if (daysDuration === 30) return t("dashboard.cycle.monthly", "Mensual");
+    return t("dashboard.cycle.custom", "Personalizado");
+  };
+
+  // Determinar estado y etiqueta de la badge diaria
+  const getDailyStatus = () => {
+    if (todaySpent === 0) return "info";
+    if (todaySpent <= idealToday) return "success";
+    if (todaySpent <= idealToday * 2) return "warning";
+    return "error";
+  };
+
+  const getDailyLabel = () => {
+    if (todaySpent === 0)
+      return t("dashboard.badge.no_spending", "Sin gastos hoy");
+    if (todaySpent <= idealToday)
+      return t("dashboard.badge.on_track", "Al día");
+    if (todaySpent <= idealToday * 2)
+      return t("dashboard.badge.caution", "Cuidado");
+    return t("dashboard.badge.over", "Excedido");
+  };
+
   return (
     <DashboardLayout
       onRefresh={onRefresh}
@@ -102,285 +228,179 @@ export default function DashboardScreen() {
           onPress={handleAddExpense}
           activeOpacity={0.8}
         >
-          <Text style={styles.fabIcon}>+</Text>
+          <AppText style={styles.fabIcon}>+</AppText>
         </TouchableOpacity>
       }
     >
-      {/* --------------------------------------------------------------------
-        CABECERA: Saludo dinámico
-      -------------------------------------------------------------------- */}
-      <View style={styles.header}>
-        <Text style={styles.greeting}>{greeting}</Text>
-      </View>
-
-      {/* --------------------------------------------------------------------
-        MÉTRICA PRINCIPAL
-      -------------------------------------------------------------------- */}
-      <View style={styles.mainCounter}>
-        <Text style={styles.bigNumber}>{remainingDays}</Text>
-        <Text style={styles.counterLabel}>
-          {t('dashboard.days_of_tranquility', { count: remainingDays })}
-        </Text>
-
-        <View style={styles.progressContainer}>
-          <View style={styles.progressBarBackground}>
-            <View
-              style={[
-                styles.progressBarFill,
-                {
-                  width: `${progressPercent}%`,
-                  backgroundColor: getProgressBarColor(),
-                },
-              ]}
+      {/* CABECERA */}
+      <AppBox marginBottom="xl">
+        <View style={styles.greetingHeader}>
+          <AppText variant="h2" color="primary">
+            {greeting}
+          </AppText>
+          <AppText
+            variant="body"
+            color="secondary"
+            style={{ marginTop: SPACING.xs }}
+          >
+            {t("dashboard.subtitle", "Estado financiero")}
+          </AppText>
+          <AppStack
+            direction="horizontal"
+            gap="s"
+            style={{ marginTop: SPACING.s, flexWrap: "wrap" }}
+          >
+            {/* Badge del ciclo */}
+            <AppBadge label={getCycleLabel()} status="info" variant="subtle" />
+            {/* Badge del estado diario */}
+            <AppBadge
+              label={getDailyLabel()}
+              status={getDailyStatus()}
+              variant="subtle"
             />
-          </View>
-          <Text style={styles.progressText}>
-            {t('dashboard.progress', {
-              passed: summary.daysPassed,
+            {isExtremeMode && (
+              <AppBadge
+                label={t("dashboard.badge.extreme_mode", "Modo cuidado")}
+                status="error"
+                variant="subtle"
+              />
+            )}
+          </AppStack>
+        </View>
+      </AppBox>
+
+      {/* ANILLO INTERACTIVO */}
+      <AppBox marginBottom="xl" align="center">
+        <AppCircularProgress
+          progress={progressPercent}
+          remaining={remainingBudget}
+          total={totalBudget}
+          currency={currency}
+          isExtremeMode={isExtremeMode}
+          spentLabel={t("dashboard.circular.spent_label", "Gastado")} // <-- nueva
+          availableLabel={t("dashboard.circular.available_label", "Disponible")} // <-- nueva
+          spentFooter={
+            <AppText
+              variant="caption"
+              color="secondary"
+              style={styles.footerText}
+            >
+              {t("dashboard.circular.remaining_with_days", {
+                amount: formatMoney(remainingBudget, currency),
+                days: remainingDays,
+              })}
+            </AppText>
+          }
+          availableFooter={
+            <AppText
+              variant="caption"
+              color="secondary"
+              style={styles.footerText}
+            >
+              {t("dashboard.circular.initial_budget", {
+                amount: formatMoney(totalBudget, currency),
+              })}
+            </AppText>
+          }
+        />
+      </AppBox>
+
+      {/* PÍLDORAS DE MICRO-RESUMEN */}
+      <AppBox marginBottom="xl">
+        <AppStack direction="horizontal" gap="m" fullWidth>
+          <MetricPill
+            label={t("dashboard.pill.ideal_today", "Ideal hoy")}
+            value={formatMoney(idealToday, currency)}
+            status={getIdealTodayStatus()}
+          />
+          <MetricPill
+            label={t("dashboard.pill.cycle", "Ciclo")}
+            value={t("dashboard.pill.cycle_format", {
+              passed: daysPassed,
               total: daysDuration,
             })}
-          </Text>
-        </View>
-      </View>
+          />
+        </AppStack>
+      </AppBox>
 
-      {/* --------------------------------------------------------------------
-        TARJETAS DE MÉTRICAS SECUNDARIAS (4 en 2 filas)
-      -------------------------------------------------------------------- */}
-      <View style={styles.statsGrid}>
-        {/* Primera fila */}
-        <View style={styles.statsRow}>
-          <View style={styles.statCard}>
-            <Text style={styles.statIcon}>📊</Text>
-            <Text style={styles.statLabel}>{t('dashboard.per_day')}</Text>
-            <Text style={styles.statValue}>
-              {formatMoney(summary.dailyAverage, currency)}
-            </Text>
-          </View>
-
-          <View style={styles.statCard}>
-            <Text style={styles.statIcon}>📋</Text>
-            <Text style={styles.statLabel}>{t('dashboard.spent')}</Text>
-            <Text style={styles.statValue}>
-              {formatMoney(summary.totalSpent, currency)}
-            </Text>
-          </View>
-        </View>
-
-        {/* Segunda fila */}
-        <View style={styles.statsRow}>
-          <View style={styles.statCard}>
-            <Text style={styles.statIcon}>📅</Text>
-            <Text style={styles.statLabel}>{t('dashboard.days_since_start')}</Text>
-            <Text style={styles.statValue}>{summary.daysPassed}</Text>
-          </View>
-
-          <View style={styles.statCard}>
-            <Text style={styles.statIcon}>💰</Text>
-            <Text style={styles.statLabel}>
-              {/* TODO: Agregar clave 'dashboard.remaining' a los archivos de idioma */}
-              {t('dashboard.remaining', { defaultValue: 'restante' })}
-            </Text>
-            <Text style={styles.statValue}>
-              {formatMoney(remainingBudget, currency)}
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      {/* --------------------------------------------------------------------
-        SECCIÓN DE ÚLTIMOS RASTROS
-      -------------------------------------------------------------------- */}
-      <View style={styles.historySection}>
-        <Text style={styles.sectionTitle}>{t('dashboard.recent_trails')}</Text>
+      {/* LISTA DE ACTIVIDADES RECIENTES */}
+      <AppBox marginBottom="xl">
+        <AppText
+          variant="h3"
+          color="accent"
+          style={{ marginBottom: SPACING.s }}
+        >
+          {t("dashboard.recent_trails", "Últimos rastros")}
+        </AppText>
 
         {recentTransactions.length > 0 ? (
-          recentTransactions.map((tx) => (
-            <TouchableOpacity
-              key={tx.id}
-              style={styles.historyItem}
-              onPress={handleTransactionPress}
-              activeOpacity={0.7}
-            >
-              <View style={styles.itemIcon}>
-                <Text style={styles.itemIconText}>🍴</Text>
-              </View>
-              <View style={styles.itemDetails}>
-                <Text style={styles.itemName}>
-                  {tx.category}
-                  {tx.note ? ` (${tx.note})` : ''}
-                </Text>
-                <Text style={styles.itemDate}>{formatDate(tx.date)}</Text>
-              </View>
-              <Text style={styles.itemAmount}>
-                -{formatMoney(tx.amount, currency)}
-              </Text>
-            </TouchableOpacity>
-          ))
+          <AppBox>
+            {recentTransactions.map((tx, index) => (
+              <React.Fragment key={tx.id}>
+                <AppListItem
+                  icon={getCategoryIcon(tx.category)}
+                  label={tx.category + (tx.note ? ` (${tx.note})` : "")}
+                  subLabel={formatRelativeTime(new Date(tx.date))}
+                  rightContent={
+                    <AppBadge
+                      label={`-${formatMoney(tx.amount, currency)}`}
+                      status="warning"
+                      variant="subtle"
+                    />
+                  }
+                  onPress={handleTransactionPress}
+                  iconColor="secondary"
+                />
+                {index < recentTransactions.length - 1 && (
+                  <AppDivider
+                    color="darkBorder"
+                    thickness={1}
+                    marginVertical="s"
+                  />
+                )}
+              </React.Fragment>
+            ))}
+          </AppBox>
         ) : (
-          <View style={styles.emptyState}>
-            <Text style={styles.emptyTitle}>{t('dashboard.empty.title')}</Text>
-            <Text style={styles.emptyMessage}>{t('dashboard.empty.message')}</Text>
-          </View>
+          <AppBox align="center" padding="xl">
+            <AppText
+              variant="body"
+              color="primary"
+              style={{ marginBottom: SPACING.xs }}
+            >
+              {t("dashboard.empty.title", "Sin movimientos")}
+            </AppText>
+            <AppText variant="caption" color="secondary" align="center">
+              {t("dashboard.empty.message", "Tus gastos aparecerán aquí")}
+            </AppText>
+          </AppBox>
         )}
-      </View>
+      </AppBox>
     </DashboardLayout>
   );
 }
 
 // ----------------------------------------------------------------------------
-// ESTILOS
+// ESTILOS (SOLO LOS NECESARIOS)
 // ----------------------------------------------------------------------------
 const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
     backgroundColor: PALETTE.deepNight,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   loadingText: {
-    ...TYPOGRAPHY.bodyMd,
-    color: PALETTE.lightGray,
     marginTop: SPACING.m,
   },
-  // Header
-  header: {
-    marginBottom: SPACING.xl,
-  },
-  greeting: {
-    ...TYPOGRAPHY.title,
-    color: PALETTE.creamWhite,
-    maxWidth: '90%',
-  },
-  // Main counter
-  mainCounter: {
-    marginBottom: SPACING.xl,
-  },
-  bigNumber: {
-    ...TYPOGRAPHY.hero,
-    color: PALETTE.creamWhite,
-    lineHeight: TYPOGRAPHY.hero.fontSize * 1.1,
-  },
-  counterLabel: {
-    ...TYPOGRAPHY.bodyMd,
-    color: PALETTE.lightGray,
-    marginBottom: SPACING.m,
-  },
-  progressContainer: {
-    width: '100%',
-  },
-  progressBarBackground: {
-    width: '100%',
-    height: 10,
-    backgroundColor: PALETTE.nightBlue,
-    borderRadius: BORDER_RADIUS.round,
-    overflow: 'hidden',
-  },
-  progressBarFill: {
-    height: '100%',
-    borderRadius: BORDER_RADIUS.round,
-  },
-  progressText: {
-    ...TYPOGRAPHY.bodySm,
-    color: PALETTE.lightGray,
-    textAlign: 'right',
-    marginTop: SPACING.xs,
-  },
-  // Stats grid (contenedor principal vertical)
-  statsGrid: {
-    flexDirection: 'column',
-    gap: SPACING.s,
-    marginBottom: SPACING.xl,
-  },
-  // Fila del grid
-  statsRow: {
-    flexDirection: 'row',
-    gap: SPACING.s,
-  },
-  statCard: {
-    flex: 1,
-    backgroundColor: PALETTE.nightBlue,
-    padding: SPACING.m,
-    borderRadius: BORDER_RADIUS.l,
-  },
-  statIcon: {
-    fontSize: 24,
-    marginBottom: SPACING.xs,
-  },
-  statLabel: {
-    ...TYPOGRAPHY.label,
-    color: PALETTE.lightGray,
-    marginBottom: 2,
-  },
-  statValue: {
-    ...TYPOGRAPHY.bodyMd,
-    fontWeight: '700',
-    color: PALETTE.creamWhite,
-  },
-  // History section
-  historySection: {
-    marginBottom: SPACING.xl,
-  },
-  sectionTitle: {
-    ...TYPOGRAPHY.header,
-    color: PALETTE.sunsetOrange,
-    marginBottom: SPACING.l,
-  },
-  historyItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: SPACING.l,
-  },
-  itemIcon: {
-    width: 45,
-    height: 45,
-    borderRadius: BORDER_RADIUS.round,
-    backgroundColor: PALETTE.nightBlue,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: SPACING.m,
-  },
-  itemIconText: {
-    fontSize: 24,
-  },
-  itemDetails: {
-    flex: 1,
-  },
-  itemName: {
-    ...TYPOGRAPHY.bodyMd,
-    color: PALETTE.creamWhite,
-  },
-  itemDate: {
-    ...TYPOGRAPHY.bodySm,
-    color: PALETTE.lightGray,
-  },
-  itemAmount: {
-    ...TYPOGRAPHY.bodyMd,
-    fontWeight: '500',
-    color: PALETTE.creamWhite,
-  },
-  emptyState: {
-    alignItems: 'center',
-    paddingVertical: SPACING.xl,
-  },
-  emptyTitle: {
-    ...TYPOGRAPHY.bodyLg,
-    color: PALETTE.creamWhite,
-    marginBottom: SPACING.xs,
-  },
-  emptyMessage: {
-    ...TYPOGRAPHY.bodySm,
-    color: PALETTE.lightGray,
-    textAlign: 'center',
-  },
-  // FAB (solo estilo visual; posición la maneja el layout)
   fab: {
     width: 60,
     height: 60,
     borderRadius: 30,
     backgroundColor: PALETTE.sunsetOrange,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
@@ -388,8 +408,18 @@ const styles = StyleSheet.create({
   },
   fabIcon: {
     fontSize: 32,
-    color: '#fff',
-    fontWeight: '300',
+    color: "#fff",
+    fontWeight: "300",
     lineHeight: 32,
+  },
+  greetingHeader: {
+    borderLeftWidth: 4,
+    borderLeftColor: PALETTE.sunsetOrange,
+    paddingLeft: SPACING.l,
+  },
+  footerText: {
+    fontSize: 11,
+    textAlign: "center",
+    paddingHorizontal: 4,
   },
 });

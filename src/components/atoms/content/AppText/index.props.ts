@@ -7,4 +7,8 @@ export interface AppTextProps {
   align?: keyof typeof TEXT_ALIGNMENT; // Selection of text alignment options for layout control
   children: React.ReactNode; // Content to be rendered inside the text component
   style?: any; // Optional prop to allow custom style overrides from parent components
+  /** Si el texto debe ajustar su tamaño para caber en el contenedor (solo iOS) */
+  adjustsFontSizeToFit?: boolean;
+  /** Número máximo de líneas */
+  numberOfLines?: number;
 }

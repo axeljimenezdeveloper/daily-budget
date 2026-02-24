@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.43.0](///compare/v1.42.0...v1.43.0) (2026-02-24)
+
+
+### Features
+
+* **core:** renombrar aplicación a 'Vulpis' y refinar textos de onboarding y dashboard c917633
+
 ## [1.42.0](///compare/v1.41.0...v1.42.0) (2026-02-24)
 
 

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.42.0](///compare/v1.41.0...v1.42.0) (2026-02-24)
+
+
+### Features
+
+* **dashboard:** implementa dashboard con métricas dinámicas y modo cuidado fb69cd4
+
 ## [1.41.0](///compare/v1.40.0...v1.41.0) (2026-02-23)
 
 

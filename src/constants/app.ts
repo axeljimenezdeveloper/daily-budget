@@ -1,5 +1,5 @@
 // ============================================================================
-// CONSTANTES DE LA APLICACIÓN - "Metadatos centralizados de Vulpis Days"
+// CONSTANTES DE LA APLICACIÓN - "Metadatos centralizados de Vulpis"
 //
 // Este archivo define las constantes fundamentales de la aplicación que son
 // utilizadas en múltiples componentes y módulos. Centraliza información como
@@ -20,14 +20,14 @@ export const APP_INFO = {
   // --------------------------------------------------------------------------
   // NAME: Nombre oficial de la aplicación, utilizado en branding y UI
   // VERSION: Versión actual de la aplicación en formato semántico (MAJOR.MINOR.PATCH)
-  NAME: 'Vulpis Days' as const,
+  NAME: 'Vulpis' as const,
   VERSION: '1.40.0' as const,
   
   // --------------------------------------------------------------------------
   // PARA USO FUTURO - DESCOMENTAR SEGÚN NECESIDAD
   // --------------------------------------------------------------------------
   // DISPLAY_NAME: Nombre completo para mostrar en tiendas o pantallas de inicio
-  // DISPLAY_NAME: 'Vulpis Days - Tu compañero de bolsillo' as const,
+  // DISPLAY_NAME: 'Vulpis - Tu compañero de bolsillo' as const,
   
   // --------------------------------------------------------------------------
   // CONFIGURACIÓN DE ENTORNO
@@ -42,8 +42,8 @@ export const APP_INFO = {
   // --------------------------------------------------------------------------
   // SUPPORT_EMAIL: Correo para soporte técnico y retroalimentación de usuarios
   // WEBSITE: URL oficial de la aplicación para más información
-  // SUPPORT_EMAIL: 'soporte@vulpisdaysapp.com' as const,
-  // WEBSITE: 'https://vulpisdaysapp.com' as const,
+  // SUPPORT_EMAIL: 'soporte@vulpisapp.com' as const,
+  // WEBSITE: 'https://vulpisapp.com' as const,
   
   // --------------------------------------------------------------------------
   // CONFIGURACIÓN ESPECÍFICA POR ENTORNO

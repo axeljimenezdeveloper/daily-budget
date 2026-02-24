@@ -121,7 +121,7 @@ const ReminderTimeItem = memo<{
         placeholder={t('common.time_picker.placeholder')}
         disabled={isSaving}
       />
-      <AppDivider color="darkBorder" thickness={1} marginVertical="s" />
+      {/* <AppDivider color="darkBorder" thickness={1} marginVertical="s" /> */}
     </>
   );
 });
@@ -171,7 +171,7 @@ export const NotificationsSection: React.FC<NotificationsSectionProps> = React.m
         <ExtremeAlertItem value={extremeModeAlert} onChange={onExtremeAlertChange} />
         <BudgetExceededItem value={budgetExceededAlert} onChange={onBudgetExceededChange} />
         <ReminderTimeItem value={reminderTime} isSaving={isSaving} onChange={onReminderTimeChange} />
-        <TestNotificationItem onPress={onTestNotification} />
+        {/* <TestNotificationItem onPress={onTestNotification} /> */}
       </AppBox>
     </AppBox>
   );

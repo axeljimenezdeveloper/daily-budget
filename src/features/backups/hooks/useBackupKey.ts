@@ -25,7 +25,7 @@ import { BackupKeyResult } from '../types';
 // ----------------------------------------------------------------------------
 // CONSTANTES
 // ----------------------------------------------------------------------------
-const BACKUP_KEY_STORAGE_KEY = 'vulpis-days.backup.encryptionKey';
+const BACKUP_KEY_STORAGE_KEY = 'vulpis.backup.encryptionKey';
 const KEY_LENGTH_BYTES = 32; // 256 bits
 
 // ----------------------------------------------------------------------------

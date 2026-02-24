@@ -31,7 +31,7 @@ export const useHaptic = () => {
     try {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     } catch (error) {
-      console.warn('[Vulpis Days] Haptic feedback failed (light):', error);
+      console.warn('[Vulpis] Haptic feedback failed (light):', error);
     }
   };
 
@@ -45,7 +45,7 @@ export const useHaptic = () => {
     try {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     } catch (error) {
-      console.warn('[Vulpis Days] Haptic feedback failed (medium):', error);
+      console.warn('[Vulpis] Haptic feedback failed (medium):', error);
     }
   };
 
@@ -59,7 +59,7 @@ export const useHaptic = () => {
     try {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     } catch (error) {
-      console.warn('[Vulpis Days] Haptic feedback failed (heavy):', error);
+      console.warn('[Vulpis] Haptic feedback failed (heavy):', error);
     }
   };
 
@@ -73,7 +73,7 @@ export const useHaptic = () => {
     try {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     } catch (error) {
-      console.warn('[Vulpis Days] Haptic feedback failed (success):', error);
+      console.warn('[Vulpis] Haptic feedback failed (success):', error);
     }
   };
 
@@ -87,7 +87,7 @@ export const useHaptic = () => {
     try {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
     } catch (error) {
-      console.warn('[Vulpis Days] Haptic feedback failed (warning):', error);
+      console.warn('[Vulpis] Haptic feedback failed (warning):', error);
     }
   };
 
@@ -101,7 +101,7 @@ export const useHaptic = () => {
     try {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
     } catch (error) {
-      console.warn('[Vulpis Days] Haptic feedback failed (error):', error);
+      console.warn('[Vulpis] Haptic feedback failed (error):', error);
     }
   };
 
@@ -115,7 +115,7 @@ export const useHaptic = () => {
     try {
       Haptics.selectionAsync();
     } catch (error) {
-      console.warn('[Vulpis Days] Haptic feedback failed (selection):', error);
+      console.warn('[Vulpis] Haptic feedback failed (selection):', error);
     }
   };
 
@@ -129,7 +129,7 @@ export const useHaptic = () => {
     try {
       Haptics.impactAsync(style);
     } catch (error) {
-      console.warn(`[Vulpis Days] Haptic feedback failed (impact: ${style}):`, error);
+      console.warn(`[Vulpis] Haptic feedback failed (impact: ${style}):`, error);
     }
   };
 
@@ -143,7 +143,7 @@ export const useHaptic = () => {
     try {
       Haptics.notificationAsync(type);
     } catch (error) {
-      console.warn(`[Vulpis Days] Haptic feedback failed (notification: ${type}):`, error);
+      console.warn(`[Vulpis] Haptic feedback failed (notification: ${type}):`, error);
     }
   };
 

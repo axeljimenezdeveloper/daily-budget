@@ -78,19 +78,19 @@ export default function SettingsScreen() {
         {/* ----------------------------------------------------------------
           SECCIÓN PLAN ACTUAL
         ---------------------------------------------------------------- */}
-        <PlanSection
+        {/* <PlanSection
           totalBudget={settings.totalBudget}
           remainingDays={settings.remainingDays}
           daysDuration={settings.daysDuration}
           isExtremeMode={settings.isExtremeMode}
           currency={settings.currency}
           onEditPress={settings.handleEditPlan}
-        />
+        /> */}
 
         {/* ----------------------------------------------------------------
           SECCIÓN MONEDA
         ---------------------------------------------------------------- */}
-        <CurrencySection currency={settings.currency} />
+        {/* <CurrencySection currency={settings.currency} /> */}
 
         {/* ----------------------------------------------------------------
           SECCIÓN EXPORTAR DATOS

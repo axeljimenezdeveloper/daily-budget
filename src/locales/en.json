@@ -43,24 +43,24 @@
   },
   "onboarding": {
     "screen_1": {
-      "title": "Imagine Your Money as Time",
-      "description_part_1": "In Vulpis, we turn your savings into",
-      "description_highlight": "days of calm and control",
-      "description_part_2": ". You'll always know how long your funds will cover you."
+      "title": "Your Money, in Days of Tranquility",
+      "description_part_1": "Forget cold numbers. In Vulpis, your money becomes",
+      "description_highlight": "days of calm",
+      "description_part_2": "you can truly enjoy."
     },
     "screen_2": {
-      "title": "See Your Day-to-Day Clearly",
-      "description_part_1": "Leave behind numbers that don't tell you anything.",
-      "description_highlight": "Here you see the days ahead of you",
-      "description_part_2": "."
+      "title": "See the Future Clearly",
+      "description_part_1": "Every morning you'll know",
+      "description_highlight": "how many days of tranquility ",
+      "description_part_2": "lie ahead."
     },
     "screen_3": {
-      "title": "What You Need vs. What You Love",
-      "description_part_1": "Just two buttons: what",
-      "description_essential": "supports you and gives you peace",
+      "title": "Two Ways to Spend",
+      "description_part_1": "Quickly log what",
+      "description_essential": "supports you",
       "description_part_2": "and what",
-      "description_discretionary": "makes you smile",
-      "description_part_3": "."
+      "description_discretionary": "makes you happy",
+      "description_part_3": ". It's that simple."
     },
     "navigation": {
       "next": "Next",
@@ -180,10 +180,10 @@
     "per_day": "per day",
     "spent": "spent",
     "days_since_start": "days since start",
-    "recent_trails": "Recent transactions",
+    "recent_trails": "Recent footprints",
     "empty": {
-      "title": "No transactions yet",
-      "message": "Record your first expense to get started."
+      "title": "No footprints yet",
+      "message": "Your first footprints will appear here."
     },
     "loading": "Loading...",
     "circular": {
@@ -240,7 +240,7 @@
     "daily_reminder_title": "Daily reminder",
     "daily_reminder_description": "Receive a daily reminder to log your expenses.",
     "extreme_alert_title": "Careful mode",
-    "extreme_alert_description": "Alert when daily spending exceeds 120% of recommended.",
+    "extreme_alert_description": "We'll alert you if you're spending faster than recommended.",
     "budget_exceeded_title": "Budget exceeded",
     "budget_exceeded_description": "Notification when remaining budget is negative.",
     "test_button": "Send test notification",

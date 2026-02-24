@@ -43,29 +43,29 @@
   },
   "onboarding": {
     "screen_1": {
-      "title": "Imagina que tu dinero es tiempo",
-      "description_part_1": "En Vulpis, convertimos lo que ahorras en",
-      "description_highlight": "días de calma y control",
-      "description_part_2": ". Sabrás siempre cuánto tiempo te cubre lo que tienes."
+      "title": "Tu dinero, en días de tranquilidad",
+      "description_part_1": "Olvida los números fríos. En Vulpis, tu dinero se convierte en",
+      "description_highlight": "días de calma",
+      "description_part_2": "que puedes disfrutar."
     },
     "screen_2": {
-      "title": "Mira tu día a día con claridad",
-      "description_part_1": "Deja atrás los números que no te dicen nada.",
-      "description_highlight": "Aquí ves los días que tienes por delante",
-      "description_part_2": "."
+      "title": "Ve el futuro con claridad",
+      "description_part_1": "Cada mañana sabrás",
+      "description_highlight": "cuántos días de tranquilidad ",
+      "description_part_2": "te quedan por delante."
     },
     "screen_3": {
-      "title": "Lo que necesitas vs. lo que amas",
-      "description_part_1": "Solo dos botones: lo que",
-      "description_essential": "te sostiene y te da paz",
+      "title": "Dos formas de gastar",
+      "description_part_1": "Registra rápido lo que",
+      "description_essential": "te sostiene",
       "description_part_2": "y lo que",
-      "description_discretionary": "te hace sonreír",
-      "description_part_3": "."
+      "description_discretionary": "te hace feliz",
+      "description_part_3": ". Así de simple."
     },
     "navigation": {
       "next": "Siguiente",
       "get_started": "Empezar ahora",
-      "skip_onboarding": "Saltar"
+      "skip_onboarding": "Omitir"
     }
   },
   "setup": {
@@ -180,17 +180,17 @@
     "per_day": "por día",
     "spent": "gastado",
     "days_since_start": "días desde inicio",
-    "recent_trails": "Últimos movimientos",
+    "recent_trails": "Últimas huellas",
     "empty": {
       "title": "Todavía no hay movimientos",
-      "message": "Registra tu primer gasto para comenzar."
+      "message": "Tus primeras huellas aparecerán aquí."
     },
     "loading": "Cargando...",
     "circular": {
       "remaining_with_days": "Te quedan {{amount}} para {{days}} días",
       "initial_budget": "Presupuesto inicial: {{amount}}",
       "spent_label": "Gastado",
-  "available_label": "Disponible"
+      "available_label": "Disponible"
     },
     "pill": {
       "ideal_today": "Ideal hoy",
@@ -240,7 +240,7 @@
     "daily_reminder_title": "Recordatorio diario",
     "daily_reminder_description": "Recibe un recordatorio diario para registrar tus gastos.",
     "extreme_alert_title": "Modo cuidado",
-    "extreme_alert_description": "Alerta cuando el gasto diario supere el 120% de lo recomendado.",
+    "extreme_alert_description": "Te avisamos si gastas más rápido de lo recomendado.",
     "budget_exceeded_title": "Presupuesto excedido",
     "budget_exceeded_description": "Notificación cuando el presupuesto restante sea negativo.",
     "test_button": "Enviar notificación de prueba",

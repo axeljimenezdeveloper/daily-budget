@@ -79,7 +79,7 @@ export const useVaultStore = create<VaultState>()(
       initVault: (amount, days, currency) => {
         // ← MEJORA: validar que amount y days sean números positivos
         if (amount <= 0 || days <= 0) {
-          console.warn('[Vulpis Days] initVault: amount y days deben ser positivos');
+          console.warn('[Vulpis] initVault: amount y days deben ser positivos');
           return; // No actualizamos el estado
         }
         set({
@@ -106,7 +106,7 @@ export const useVaultStore = create<VaultState>()(
         set((state) => {
           // ← MEJORA: validar que amount sea positivo
           if (amount <= 0) {
-            console.warn('[Vulpis Days] addTransaction: amount debe ser positivo');
+            console.warn('[Vulpis] addTransaction: amount debe ser positivo');
             return state; // No hay cambios
           }
 
@@ -272,7 +272,7 @@ export const useVaultStore = create<VaultState>()(
         // Esta función se ejecuta ANTES de rehidratar
         return (rehydratedState, error) => {
           if (error) {
-            console.warn('[Vulpis Days] Error al rehidratar store:', error);
+            console.warn('[Vulpis] Error al rehidratar store:', error);
             // Marcamos como hidratado para no bloquear la UI, aunque haya error
             useVaultStore.setState({ _hasHydrated: true, _storeVersion: CURRENT_STORE_VERSION });
             return;
@@ -298,7 +298,7 @@ export const useVaultStore = create<VaultState>()(
               for (let v = storedVersion; v < CURRENT_STORE_VERSION; v++) {
                 const migrateFn = migrations[v];
                 if (!migrateFn) {
-                  console.warn(`[Vulpis Days] Migración no encontrada para v${v} → v${v+1}`);
+                  console.warn(`[Vulpis] Migración no encontrada para v${v} → v${v+1}`);
                   break;
                 }
                 migrated = migrateFn(migrated);

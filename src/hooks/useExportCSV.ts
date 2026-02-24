@@ -32,7 +32,7 @@ export const useExportCSV = () => {
       .toISOString()
       .replace(/[:.]/g, "-")
       .slice(0, 19);
-    const fileName = `vulpis_days_export_${timestamp}.csv`;
+    const fileName = `vulpis_export_${timestamp}.csv`;
 
     let file: File | undefined;
 
@@ -63,7 +63,7 @@ export const useExportCSV = () => {
       // Éxito
       return { success: true };
     } catch (err) {
-      console.error("[Vulpis Days] Error exporting CSV:", err);
+      console.error("[Vulpis] Error exporting CSV:", err);
       const errorMessage =
         err instanceof Error
           ? err.message

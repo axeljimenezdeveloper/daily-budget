@@ -22,21 +22,31 @@ import { Transaction, VaultSummary } from './index.types';
 
 /**
  * Calcula los días enteros transcurridos desde la fecha de inicio.
+ * 
+ * Lógica: se cuenta el día de inicio como día 1. Si han pasado menos de 24h,
+ * se considera 1 día. Si han pasado entre 24h y 48h, son 2 días, etc.
  *
  * @param startDate - Fecha ISO de inicio (o null si no existe)
  * @returns Número de días transcurridos (mínimo 1 para evitar división por cero)
  *
  * @example
- * calculateDaysPassed('2025-01-01T00:00:00.000Z') // => días entre esa fecha y ahora
+ * calculateDaysPassed('2025-01-01T00:00:00.000Z') 
+ * // Si hoy es 2025-01-01T10:00:00.000Z → 1
+ * // Si hoy es 2025-01-02T01:00:00.000Z → 2
  */
 export const calculateDaysPassed = (startDate: string | null): number => {
   if (!startDate) return 1;
   const start = new Date(startDate).getTime();
   const now = new Date().getTime();
   const diff = now - start;
-  // Se redondea hacia arriba para considerar cualquier fracción como un día completo
-  // Math.max asegura que nunca retorne 0 (evita divisiones por cero en otros cálculos)
-  return Math.max(1, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+  // ← MEJORA: floor + 1 para contar días completos transcurridos
+  // Ejemplo: 24h exactas → floor(1) + 1 = 2? No: 24h = 86400000ms, floor(1) = 1, +1 = 2 (eso sería incorrecto)
+  // Revisemos: queremos que 24h exactas sean 2 días? Depende de la definición. 
+  // Si el inicio fue a las 00:00 del día 1, y ahora son las 00:00 del día 2, han pasado 24h exactas, debería ser día 2.
+  // Con floor(1) + 1 = 2, es correcto.
+  // Si han pasado 23h, floor(0) + 1 = 1, correcto.
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+  return Math.max(1, days);
 };
 
 // ----------------------------------------------------------------------------
@@ -79,6 +89,8 @@ export const checkExtremeMode = (
 
 /**
  * Formatea una cantidad numérica con el símbolo de moneda y dos decimales.
+ * Utiliza locale 'en-US' para garantizar formato consistente (punto como separador de miles,
+ * coma decimal) independientemente de la configuración regional del dispositivo.
  *
  * @param amount - Número a formatear
  * @param currency - Símbolo de la moneda (ej. "$", "€", "Bs")
@@ -88,7 +100,8 @@ export const checkExtremeMode = (
  * formatMoney(1234.5, "$") // => "$ 1,234.50"
  */
 export const formatMoney = (amount: number, currency: string): string => {
-  return `${currency} ${amount.toLocaleString(undefined, {
+  // ← MEJORA: locale fijo 'en-US' para consistencia
+  return `${currency} ${amount.toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`;
@@ -228,7 +241,7 @@ export const generateCSV = (
       concept += ` (${t.note})`;
     }
 
-    // Formatear monto con moneda y dos decimales
+    // Formatear monto con moneda y dos decimales (usa formatMoney con locale fijo)
     const formattedAmount = formatMoney(t.amount, currency);
 
     rows.push(

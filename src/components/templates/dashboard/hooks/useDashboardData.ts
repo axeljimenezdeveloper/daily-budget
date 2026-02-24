@@ -1,11 +1,35 @@
 // ============================================================================
-// HOOK PERSONALIZADO: useDashboardData (con idealToday y todaySpent)
+// HOOK PERSONALIZADO: useDashboardData
+// ============================================================================
+// Proporciona todos los datos derivados necesarios para el dashboard principal.
+// - Consume el store useVaultStore con selectores finos.
+// - Memoiza cálculos como días restantes, porcentaje de progreso, ideal hoy,
+//   gasto de hoy y transacciones recientes.
+// - Utiliza useShallow para obtener el resumen (getSummary) y evitar re-renders
+//   innecesarios si el objeto no cambia profundamente.
 // ============================================================================
 
 import { useMemo } from 'react';
 import { useVaultStore } from '@/store/useVaultStore';
 import { useShallow } from 'zustand/react/shallow';
 
+/**
+ * Hook personalizado que encapsula toda la lógica de datos para el dashboard.
+ *
+ * @returns {Object} Objeto con los siguientes campos:
+ *   - totalBudget: number – Presupuesto total inicial.
+ *   - remainingBudget: number – Presupuesto restante.
+ *   - daysDuration: number – Duración total del período en días.
+ *   - isExtremeMode: boolean – Indica si el modo cuidado está activo.
+ *   - currency: string – Símbolo de la moneda.
+ *   - hasHydrated: boolean – Flag de hidratación del store.
+ *   - summary: VaultSummary – Resumen (totalSpent, daysPassed, isOverBudget, dailyAverage).
+ *   - remainingDays: number – Días que quedan (mínimo 0).
+ *   - progressPercent: number – Porcentaje gastado (0-100).
+ *   - recentTransactions: Transaction[] – Últimas 3 transacciones.
+ *   - idealToday: number – Presupuesto ideal para hoy (remainingBudget / remainingDays).
+ *   - todaySpent: number – Total gastado en el día de hoy.
+ */
 export const useDashboardData = () => {
   const totalBudget = useVaultStore((state) => state.totalBudget);
   const remainingBudget = useVaultStore((state) => state.remainingBudget);
@@ -58,6 +82,6 @@ export const useDashboardData = () => {
     progressPercent,
     recentTransactions,
     idealToday,
-    todaySpent, // <-- nuevo campo
+    todaySpent,
   };
 };

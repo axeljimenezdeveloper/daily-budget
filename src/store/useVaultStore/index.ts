@@ -40,11 +40,11 @@ export const useVaultStore = create<VaultState>()(
       hasFinishedOnboarding: false,
       isExtremeMode: false,
       currency: "$",
-      language: "es",
+      language: "es", // ← MEJORA: el tipo ahora es 'es' | 'en' (se reflejará en types)
 
       // --- Flag de rehidratación y versión del store ---
       _hasHydrated: false,
-      _storeVersion: 0,                     // ← nuevo campo, comienza en 0
+      _storeVersion: 0,
 
       // --- Preferencias de seguridad ---
       isBiometricEnabled: false,
@@ -55,7 +55,7 @@ export const useVaultStore = create<VaultState>()(
         extremeModeAlert: true,
         budgetExceededAlert: true,
         reminderTime: "20:00",
-        hapticFeedback: true,   // <-- AÑADIDO
+        hapticFeedback: true,
       },
       notificationsScheduledForDate: null,
       hasRequestedPermissions: false,
@@ -76,7 +76,12 @@ export const useVaultStore = create<VaultState>()(
        * @param days    - Duración del período en días
        * @param currency - Símbolo de la moneda (ej. "$", "Bs")
        */
-      initVault: (amount, days, currency) =>
+      initVault: (amount, days, currency) => {
+        // ← MEJORA: validar que amount y days sean números positivos
+        if (amount <= 0 || days <= 0) {
+          console.warn('[Vulpis Days] initVault: amount y days deben ser positivos');
+          return; // No actualizamos el estado
+        }
         set({
           totalBudget: amount,
           remainingBudget: amount,
@@ -86,7 +91,8 @@ export const useVaultStore = create<VaultState>()(
           transactions: [],
           isConfigured: true,
           isExtremeMode: false,
-        }),
+        });
+      },
 
       /**
        * Registra un gasto, resta del presupuesto y actualiza el modo cuidado.
@@ -98,6 +104,12 @@ export const useVaultStore = create<VaultState>()(
        */
       addTransaction: (amount, category, note) =>
         set((state) => {
+          // ← MEJORA: validar que amount sea positivo
+          if (amount <= 0) {
+            console.warn('[Vulpis Days] addTransaction: amount debe ser positivo');
+            return state; // No hay cambios
+          }
+
           const newTransaction: Transaction = {
             id: Date.now().toString(),
             amount,
@@ -145,15 +157,15 @@ export const useVaultStore = create<VaultState>()(
           hasFinishedOnboarding: false,
           language: "es",
           currency: "$",
-          _hasHydrated: true,              // Se mantiene en true tras reset, ya fue hidratado
-          _storeVersion: CURRENT_STORE_VERSION, // ← se asegura la versión actual
+          _hasHydrated: true,
+          _storeVersion: CURRENT_STORE_VERSION,
           isBiometricEnabled: false,
           notificationPreferences: {
             dailyReminder: true,
             extremeModeAlert: true,
             budgetExceededAlert: true,
             reminderTime: "20:00",
-            hapticFeedback: true,   // <-- AÑADIDO
+            hapticFeedback: true,
           },
           notificationsScheduledForDate: null,
           hasRequestedPermissions: false,
@@ -190,6 +202,7 @@ export const useVaultStore = create<VaultState>()(
        * @param lang - Código de idioma ('es' | 'en')
        */
       setLanguage: (lang) => {
+        // ← MEJORA: podríamos validar que lang sea 'es' o 'en', pero el tipo ya lo restringe
         i18next.changeLanguage(lang);
         set({ language: lang });
       },
@@ -209,9 +222,7 @@ export const useVaultStore = create<VaultState>()(
         }
         set({
           ...data,
-          // Aseguramos que el flag de hidratación se mantenga
           _hasHydrated: true,
-          // La versión del store se conserva, no la del backup (para futuras migraciones)
           _storeVersion: CURRENT_STORE_VERSION,
         });
       },

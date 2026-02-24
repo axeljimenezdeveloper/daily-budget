@@ -101,8 +101,8 @@ export interface VaultState {
   startDate: string | null;
   /** Símbolo de la moneda (ej. "$", "Bs", "€") */
   currency: string;
-  /** Código de idioma activo ('es' | 'en') */
-  language: string;
+  /** Código de idioma activo - solo se soporta 'es' o 'en' */
+  language: 'es' | 'en';  // ← MEJORA: tipado estricto
 
   /** 
    * Indica si el store ya fue rehidratado desde AsyncStorage.
@@ -166,9 +166,9 @@ export interface VaultState {
    * Actualiza el store y sincroniza i18next.
    * @param lang - Código de idioma ('es' | 'en')
    */
-  setLanguage: (lang: string) => void;
+  setLanguage: (lang: 'es' | 'en') => void;  // ← MEJORA: tipado estricto
 
-  // --- NUEVA ACCIÓN PARA RESTAURAR BACKUP ---
+  // --- Acción para restaurar backup ---
   /**
    * Restaura completamente el estado de la bóveda a partir de un backup.
    * Reemplaza todos los datos actuales por los datos proporcionados.

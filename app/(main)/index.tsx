@@ -41,7 +41,7 @@ import { useHaptic } from "@/hooks/useHaptic";
 // CONSTANTES Y UTILIDADES
 // ----------------------------------------------------------------------------
 import { PALETTE } from "@/constants/colors";
-import { SPACING } from "@/constants/metrics";
+import { SPACING, SIZES } from "@/constants/metrics";
 import { ROUTES } from "@/constants/navigation";
 import { formatMoney } from "@/store/useVaultStore/index.utils";
 import { formatRelativeTime } from "@/utils/date";
@@ -49,6 +49,13 @@ import { formatRelativeTime } from "@/utils/date";
 // ----------------------------------------------------------------------------
 // COMPONENTE PRINCIPAL
 // ----------------------------------------------------------------------------
+
+/**
+ * Pantalla principal del dashboard.
+ * Muestra el resumen financiero: anillo de progreso, píldoras, transacciones recientes,
+ * y permite navegar a añadir gasto o al historial.
+ * Se actualiza automáticamente al cambiar de día o al volver a primer plano.
+ */
 export default function DashboardScreen() {
   const { t } = useTranslation();
   const router = useRouter();
@@ -75,7 +82,7 @@ export default function DashboardScreen() {
         if (nextAppState === "active") {
           forceUpdate();
         }
-      },
+      }
     );
 
     return () => {
@@ -97,7 +104,7 @@ export default function DashboardScreen() {
     remainingBudget,
     totalBudget,
     idealToday,
-    todaySpent, // <-- nuevo
+    todaySpent,
   } = useDashboardData();
 
   const greeting = useGreeting(isExtremeMode);
@@ -118,9 +125,23 @@ export default function DashboardScreen() {
 
   const daysPassed = summary.daysPassed;
 
-  // Debug: Mostrar valores reales para verificar el porcentaje
-  useEffect(() => {
-    console.log("📊 Dashboard data:", {
+  // Debug: Mostrar valores reales para verificar el porcentaje (solo en desarrollo)
+  if (__DEV__) {
+    useEffect(() => {
+      console.log("📊 Dashboard data:", {
+        progressPercent,
+        totalBudget,
+        remainingBudget,
+        remainingDays,
+        daysDuration,
+        daysPassed,
+        idealToday,
+        todaySpent,
+        recentTransactions: recentTransactions.length,
+        isExtremeMode,
+        tick,
+      });
+    }, [
       progressPercent,
       totalBudget,
       remainingBudget,
@@ -129,25 +150,17 @@ export default function DashboardScreen() {
       daysPassed,
       idealToday,
       todaySpent,
-      recentTransactions: recentTransactions.length,
+      recentTransactions,
       isExtremeMode,
       tick,
-    });
-  }, [
-    progressPercent,
-    totalBudget,
-    remainingBudget,
-    remainingDays,
-    daysDuration,
-    daysPassed,
-    idealToday,
-    todaySpent,
-    recentTransactions,
-    isExtremeMode,
-    tick,
-  ]);
+    ]);
+  }
 
-  // Mapeo de categorías a iconos (puede moverse a utils)
+  /**
+   * Determina el icono correspondiente a una categoría de gasto.
+   * @param category - Nombre de la categoría (ej. "Comida", "Uber").
+   * @returns Nombre del icono (según Ionicons).
+   */
   const getCategoryIcon = (category: string): string => {
     const lower = category.toLowerCase();
     if (
@@ -173,41 +186,58 @@ export default function DashboardScreen() {
     return "fast-food-outline";
   };
 
+  /**
+   * Navega a la pantalla de añadir gasto con feedback háptico.
+   */
   const handleAddExpense = () => {
     haptic.light();
     router.push(ROUTES.MAIN.ADD_EXPENSE);
   };
 
+  /**
+   * Navega al historial de transacciones con feedback háptico.
+   */
   const handleTransactionPress = () => {
     haptic.selection();
     router.push(ROUTES.MAIN.HISTORY);
   };
 
-  // Determinar el color de la píldora "Ideal hoy"
-  const getIdealTodayStatus = () => {
+  /**
+   * Determina el estado semántico de la píldora "Ideal hoy".
+   * @returns 'error' | 'warning' | 'success' | 'default'
+   */
+  const getIdealTodayStatus = (): 'error' | 'warning' | 'success' | 'default' => {
     if (idealToday < 0) return "error";
     if (isExtremeMode) return "warning";
-    if (idealToday > 0) return "success"; // Bonificación (verde)
+    if (idealToday > 0) return "success";
     return "default";
   };
 
-  // Determinar etiqueta del ciclo según duración
-  const getCycleLabel = () => {
+  /**
+   * Retorna la etiqueta traducida del ciclo según la duración configurada.
+   */
+  const getCycleLabel = (): string => {
     if (daysDuration === 7) return t("dashboard.cycle.weekly", "Semanal");
     if (daysDuration === 15) return t("dashboard.cycle.biweekly", "Quincenal");
     if (daysDuration === 30) return t("dashboard.cycle.monthly", "Mensual");
     return t("dashboard.cycle.custom", "Personalizado");
   };
 
-  // Determinar estado y etiqueta de la badge diaria
-  const getDailyStatus = () => {
+  /**
+   * Determina el estado semántico de la badge de gasto diario.
+   * @returns 'info' | 'success' | 'warning' | 'error'
+   */
+  const getDailyStatus = (): 'info' | 'success' | 'warning' | 'error' => {
     if (todaySpent === 0) return "info";
     if (todaySpent <= idealToday) return "success";
     if (todaySpent <= idealToday * 2) return "warning";
     return "error";
   };
 
-  const getDailyLabel = () => {
+  /**
+   * Retorna la etiqueta traducida de la badge de gasto diario.
+   */
+  const getDailyLabel = (): string => {
     if (todaySpent === 0)
       return t("dashboard.badge.no_spending", "Sin gastos hoy");
     if (todaySpent <= idealToday)
@@ -277,8 +307,8 @@ export default function DashboardScreen() {
           total={totalBudget}
           currency={currency}
           isExtremeMode={isExtremeMode}
-          spentLabel={t("dashboard.circular.spent_label", "Gastado")} // <-- nueva
-          availableLabel={t("dashboard.circular.available_label", "Disponible")} // <-- nueva
+          spentLabel={t("dashboard.circular.spent_label", "Gastado")}
+          availableLabel={t("dashboard.circular.available_label", "Disponible")}
           spentFooter={
             <AppText
               variant="caption"
@@ -407,10 +437,10 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   fabIcon: {
-    fontSize: 32,
-    color: "#fff",
+    fontSize: SIZES.xxl, // 32 según SIZES
+    color: PALETTE.creamWhite,
     fontWeight: "300",
-    lineHeight: 32,
+    lineHeight: SIZES.xxl,
   },
   greetingHeader: {
     borderLeftWidth: 4,

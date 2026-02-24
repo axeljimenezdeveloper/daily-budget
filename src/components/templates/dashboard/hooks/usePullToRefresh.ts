@@ -1,6 +1,6 @@
 // ============================================================================
 // HOOK PERSONALIZADO: usePullToRefresh
-//
+// ============================================================================
 // Encapsula la lógica de pull-to-refresh para la pantalla principal.
 // Proporciona el estado de refresco y la función para disparar la acción,
 // incluyendo feedback háptico y una simulación de recarga (retraso breve).
@@ -24,6 +24,14 @@ const REFRESH_DELAY = 500; // milisegundos
 // ----------------------------------------------------------------------------
 // HOOK PRINCIPAL
 // ----------------------------------------------------------------------------
+
+/**
+ * Hook que gestiona el estado y la acción de pull-to-refresh.
+ *
+ * @returns {Object} - Contiene:
+ *   - refreshing: boolean – Indica si el refresco está en curso.
+ *   - onRefresh: () => Promise<void> – Función asíncrona para iniciar el refresco.
+ */
 export const usePullToRefresh = () => {
   const [refreshing, setRefreshing] = useState(false);
   const haptic = useHaptic();

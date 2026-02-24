@@ -1,6 +1,6 @@
 // ============================================================================
 // HOOK PERSONALIZADO: useGreeting
-//
+// ============================================================================
 // Genera el mensaje de saludo dinámico para la cabecera del dashboard.
 // El mensaje varía según la hora del día (mañana, tarde, noche) y el estado
 // de la bóveda (modo cuidado activo o no).
@@ -15,6 +15,12 @@ import { useTranslation } from 'react-i18next';
 
 type Period = 'morning' | 'afternoon' | 'evening';
 
+/**
+ * Hook que retorna un saludo personalizado según la hora y el modo cuidado.
+ *
+ * @param isExtremeMode - Indica si el modo cuidado está activo (cambia el tono del saludo).
+ * @returns El saludo traducido correspondiente al período actual.
+ */
 export const useGreeting = (isExtremeMode: boolean): string => {
   const { t } = useTranslation();
 

@@ -135,6 +135,38 @@ export const useVaultStore = create<VaultState>()(
         }),
 
       /**
+       * Elimina una transacción por su ID.
+       * - Restaura el monto al presupuesto restante.
+       * - Recalcula el modo cuidado (isExtremeMode) con los nuevos valores.
+       *
+       * @param id - Identificador de la transacción a eliminar
+       */
+      deleteTransaction: (id) =>
+        set((state) => {
+          const transactionToDelete = state.transactions.find((t) => t.id === id);
+          if (!transactionToDelete) {
+            console.warn('[Vulpis] deleteTransaction: transacción no encontrada', id);
+            return state;
+          }
+
+          const newRemaining = state.remainingBudget + transactionToDelete.amount;
+          const newTransactions = state.transactions.filter((t) => t.id !== id);
+
+          const shouldBeExtreme = checkExtremeMode(
+            state.totalBudget,
+            newRemaining,
+            state.daysDuration,
+            state.startDate
+          );
+
+          return {
+            remainingBudget: newRemaining,
+            transactions: newTransactions,
+            isExtremeMode: shouldBeExtreme,
+          };
+        }),
+
+      /**
        * Reinicia completamente la bóveda al estado inicial.
        * - Fuerza el idioma a español (i18next y store).
        * - Limpia presupuesto, transacciones y fechas.

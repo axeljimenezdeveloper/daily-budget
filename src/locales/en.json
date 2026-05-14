@@ -315,5 +315,22 @@
       "retry": "Try again",
       "error": "Authentication failed"
     }
+  },
+  "history": {
+    "title": "Expense History",
+    "empty": {
+      "title": "No expenses recorded",
+      "subtitle": "Add your first expense from the main screen"
+    },
+    "delete": {
+      "confirm_title": "Delete expense",
+      "confirm_message": "Are you sure you want to delete this expense?",
+      "cancel": "Cancel",
+      "confirm": "Delete",
+      "success": "Expense deleted successfully",
+      "error": "Could not delete expense"
+    },
+    "total_spent": "Total spent",
+    "average_per_day": "Average per day"
   }
 }

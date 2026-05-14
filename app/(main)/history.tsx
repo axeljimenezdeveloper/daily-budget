@@ -1,61 +1,62 @@
-import React from "react";
-import { View } from "react-native";
-import AppText from "@/components/atoms/content/AppText";
-import AppContainer from "@/components/atoms/structure/AppContainer";
-import AppStack from "@/components/atoms/structure/AppStack";
-import AppIcon from "@/components/atoms/content/AppIcon"; 
-import { PALETTE } from "@/constants/colors";
-import { SPACING, BORDER_RADIUS } from "@/constants/metrics";
+// ============================================================================
+// PANTALLA DE HISTORIAL DE GASTOS
+//
+// Punto de entrada de la funcionalidad de historial.
+// Consume los componentes del template history y los hooks correspondientes.
+// Obtiene los datos reales del store (useVaultStore) y gestiona la eliminación
+// de gastos con confirmación modal y feedback visual mediante toasts.
+// ============================================================================
 
-export default function HistoryPlaceholder() {
+import React from 'react';
+
+// ----------------------------------------------------------------------------
+// COMPONENTES DEL TEMPLATE HISTORY
+// ----------------------------------------------------------------------------
+import { HistoryLayout } from '@/components/templates/history/components/layout/HistoryLayout';
+import { ExpensesList } from '@/components/templates/history/components/sections/ExpensesList';
+import { EmptyState } from '@/components/templates/history/components/sections/EmptyState';
+import { DeleteModal } from '@/components/templates/history/components/modals/DeleteModal';
+
+// ----------------------------------------------------------------------------
+// HOOKS DEL TEMPLATE HISTORY (implementaciones reales)
+// ----------------------------------------------------------------------------
+import { useHistory } from '@/components/templates/history/hooks/useHistory';
+import { useExpenseDelete } from '@/components/templates/history/hooks/useExpenseDelete';
+
+// ----------------------------------------------------------------------------
+// COMPONENTE PRINCIPAL
+// ----------------------------------------------------------------------------
+export default function HistoryScreen() {
+  // Obtener datos agrupados y moneda desde el store
+  const { groupedExpenses, currency, hasTransactions } = useHistory();
+
+  // Lógica de eliminación (modal, confirmación, toast)
+  const {
+    showDeleteModal,
+    openDeleteModal,
+    confirmDelete,
+    cancelDelete,
+  } = useExpenseDelete();
+
   return (
-    <AppContainer>
-      <AppStack
-        flex={1}
-        direction="vertical"
-        justify="center"
-        align="center"
-        gap="xl" 
-      >
-        {/* Icono de historial escalado */}
-        <View style={{ 
-              transform: [{ scale: 1.5 }] 
-        }}>
-            <AppIcon 
-              name="list-outline" 
-              library="Ionicons" 
-              size="xxl" 
-              color="secondary" 
-            />
-        </View>
+    <HistoryLayout>
+      {/* Mostrar lista de gastos si existen, de lo contrario estado vacío */}
+      {!hasTransactions ? (
+        <EmptyState />
+      ) : (
+        <ExpensesList
+          groupedExpenses={groupedExpenses}
+          currency={currency}
+          onDeletePress={openDeleteModal}
+        />
+      )}
 
-        {/* Sección de textos */}
-        <AppStack direction="vertical" align="center" gap="s" style={{ paddingHorizontal: SPACING.l }}>
-          <AppText variant="h2" align="center" style={{ textTransform: 'uppercase', letterSpacing: 1 }}>
-            Historial
-          </AppText>
-          
-          <AppText variant="body" align="center" color="secondary" style={{ maxWidth: 300 }}>
-            Aquí verás el rastro de tus gastos. Estamos diseñando la lista cronológica para que sea simple y clara.
-          </AppText>
-        </AppStack>
-
-        {/* Badge de estado */}
-        <View style={{
-            marginTop: SPACING.m,
-            paddingVertical: SPACING.xs,
-            paddingHorizontal: SPACING.m,
-            backgroundColor: PALETTE.nightBlue, 
-            borderWidth: 1,
-            borderColor: PALETTE.darkBorder,
-            borderRadius: BORDER_RADIUS.round,
-        }}>
-            <AppText variant="label" color="accent" align="center" style={{ fontWeight: '700' }}>
-               PUNTO DE DESARROLLO: HISTORIAL
-            </AppText>
-        </View>
-
-      </AppStack>
-    </AppContainer>
+      {/* Modal de confirmación de eliminación */}
+      <DeleteModal
+        isOpen={showDeleteModal}
+        onClose={cancelDelete}
+        onConfirm={confirmDelete}
+      />
+    </HistoryLayout>
   );
 }

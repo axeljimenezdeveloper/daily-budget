@@ -154,6 +154,12 @@ export interface VaultState {
    * @param note - Nota opcional
    */
   addTransaction: (amount: number, category: string, note?: string) => void;
+  /**
+   * Elimina una transacción por su ID.
+   * Restaura el monto al presupuesto restante y recalcula el modo cuidado.
+   * @param id - Identificador de la transacción a eliminar
+   */
+  deleteTransaction: (id: string) => void;
   /** Reinicia la bóveda al estado inicial y fuerza el idioma a español */
   resetVault: () => void;
   /**

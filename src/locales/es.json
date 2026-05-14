@@ -315,5 +315,22 @@
       "retry": "Reintentar",
       "error": "Error de autenticación"
     }
+  },
+  "history": {
+    "title": "Historial de gastos",
+    "empty": {
+      "title": "No hay gastos registrados",
+      "subtitle": "Agrega tu primer gasto desde la pantalla principal"
+    },
+    "delete": {
+      "confirm_title": "Eliminar gasto",
+      "confirm_message": "¿Estás seguro de que deseas eliminar este gasto?",
+      "cancel": "Cancelar",
+      "confirm": "Eliminar",
+      "success": "Gasto eliminado correctamente",
+      "error": "No se pudo eliminar el gasto"
+    },
+    "total_spent": "Total gastado",
+    "average_per_day": "Promedio por día"
   }
 }

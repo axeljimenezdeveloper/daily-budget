@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.44.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.43.1...v1.44.0) (2026-05-14)
+
+
+### Features
+
+* **history:** implementar pantalla de historial con agrupación por día y eliminación de gastos ([362a4a4](https://github.com/axeljimenezdeveloper/VulpisDays/commit/362a4a48a5a6384f1ec44c29a3fe2401d458ba1f))
+
 ### [1.43.1](///compare/v1.43.0...v1.43.1) (2026-05-14)
 
 ## [1.43.0](///compare/v1.42.0...v1.43.0) (2026-02-24)

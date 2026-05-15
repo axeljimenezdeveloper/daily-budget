@@ -47,13 +47,18 @@ import { formatMoney } from "@/store/useVaultStore/index.utils";
 import { formatRelativeTime } from "@/utils/date";
 
 // ----------------------------------------------------------------------------
+// MODAL PARA AGREGAR GASTO
+// ----------------------------------------------------------------------------
+import { AddExpenseModal } from "@/components/templates/add-expense/components/modals/AddExpenseModal";
+
+// ----------------------------------------------------------------------------
 // COMPONENTE PRINCIPAL
 // ----------------------------------------------------------------------------
 
 /**
  * Pantalla principal del dashboard.
  * Muestra el resumen financiero: anillo de progreso, píldoras, transacciones recientes,
- * y permite navegar a añadir gasto o al historial.
+ * y permite añadir gasto mediante un modal o navegar al historial.
  * Se actualiza automáticamente al cambiar de día o al volver a primer plano.
  */
 export default function DashboardScreen() {
@@ -63,6 +68,9 @@ export default function DashboardScreen() {
 
   // Estado para forzar re-render en cambios de día o cuando la app vuelve a primer plano
   const [tick, setTick] = useState(0);
+
+  // Estado para controlar la visibilidad del modal de agregar gasto
+  const [isAddExpenseModalOpen, setIsAddExpenseModalOpen] = useState(false);
 
   useEffect(() => {
     const forceUpdate = () => setTick((t) => t + 1);
@@ -187,11 +195,11 @@ export default function DashboardScreen() {
   };
 
   /**
-   * Navega a la pantalla de añadir gasto con feedback háptico.
+   * Abre el modal para agregar un nuevo gasto con feedback háptico.
    */
   const handleAddExpense = () => {
     haptic.light();
-    router.push(ROUTES.MAIN.ADD_EXPENSE);
+    setIsAddExpenseModalOpen(true);
   };
 
   /**
@@ -248,165 +256,173 @@ export default function DashboardScreen() {
   };
 
   return (
-    <DashboardLayout
-      onRefresh={onRefresh}
-      refreshing={refreshing}
-      refreshControlColor={PALETTE.sunsetOrange}
-      fab={
-        <TouchableOpacity
-          style={styles.fab}
-          onPress={handleAddExpense}
-          activeOpacity={0.8}
-        >
-          <AppText style={styles.fabIcon}>+</AppText>
-        </TouchableOpacity>
-      }
-    >
-      {/* CABECERA */}
-      <AppBox marginBottom="xl">
-        <View style={styles.greetingHeader}>
-          <AppText variant="h2" color="primary">
-            {greeting}
-          </AppText>
-          <AppText
-            variant="body"
-            color="secondary"
-            style={{ marginTop: SPACING.xs }}
+    <>
+      <DashboardLayout
+        onRefresh={onRefresh}
+        refreshing={refreshing}
+        refreshControlColor={PALETTE.sunsetOrange}
+        fab={
+          <TouchableOpacity
+            style={styles.fab}
+            onPress={handleAddExpense}
+            activeOpacity={0.8}
           >
-            {t("dashboard.subtitle", "Estado financiero")}
-          </AppText>
-          <AppStack
-            direction="horizontal"
-            gap="s"
-            style={{ marginTop: SPACING.s, flexWrap: "wrap" }}
-          >
-            {/* Badge del ciclo */}
-            <AppBadge label={getCycleLabel()} status="info" variant="subtle" />
-            {/* Badge del estado diario */}
-            <AppBadge
-              label={getDailyLabel()}
-              status={getDailyStatus()}
-              variant="subtle"
-            />
-            {isExtremeMode && (
-              <AppBadge
-                label={t("dashboard.badge.extreme_mode", "Modo cuidado")}
-                status="error"
-                variant="subtle"
-              />
-            )}
-          </AppStack>
-        </View>
-      </AppBox>
-
-      {/* ANILLO INTERACTIVO */}
-      <AppBox marginBottom="xl" align="center">
-        <AppCircularProgress
-          progress={progressPercent}
-          remaining={remainingBudget}
-          total={totalBudget}
-          currency={currency}
-          isExtremeMode={isExtremeMode}
-          spentLabel={t("dashboard.circular.spent_label", "Gastado")}
-          availableLabel={t("dashboard.circular.available_label", "Disponible")}
-          spentFooter={
-            <AppText
-              variant="caption"
-              color="secondary"
-              style={styles.footerText}
-            >
-              {t("dashboard.circular.remaining_with_days", {
-                amount: formatMoney(remainingBudget, currency),
-                days: remainingDays,
-              })}
+            <AppText style={styles.fabIcon}>+</AppText>
+          </TouchableOpacity>
+        }
+      >
+        {/* CABECERA */}
+        <AppBox marginBottom="xl">
+          <View style={styles.greetingHeader}>
+            <AppText variant="h2" color="primary">
+              {greeting}
             </AppText>
-          }
-          availableFooter={
-            <AppText
-              variant="caption"
-              color="secondary"
-              style={styles.footerText}
-            >
-              {t("dashboard.circular.initial_budget", {
-                amount: formatMoney(totalBudget, currency),
-              })}
-            </AppText>
-          }
-        />
-      </AppBox>
-
-      {/* PÍLDORAS DE MICRO-RESUMEN */}
-      <AppBox marginBottom="xl">
-        <AppStack direction="horizontal" gap="m" fullWidth>
-          <MetricPill
-            label={t("dashboard.pill.ideal_today", "Ideal hoy")}
-            value={formatMoney(idealToday, currency)}
-            status={getIdealTodayStatus()}
-          />
-          <MetricPill
-            label={t("dashboard.pill.cycle", "Ciclo")}
-            value={t("dashboard.pill.cycle_format", {
-              passed: daysPassed,
-              total: daysDuration,
-            })}
-          />
-        </AppStack>
-      </AppBox>
-
-      {/* LISTA DE ACTIVIDADES RECIENTES */}
-      <AppBox marginBottom="xl">
-        <AppText
-          variant="h3"
-          color="accent"
-          style={{ marginBottom: SPACING.s }}
-        >
-          {t("dashboard.recent_trails", "Últimos rastros")}
-        </AppText>
-
-        {recentTransactions.length > 0 ? (
-          <AppBox>
-            {recentTransactions.map((tx, index) => (
-              <React.Fragment key={tx.id}>
-                <AppListItem
-                  icon={getCategoryIcon(tx.category)}
-                  label={tx.category + (tx.note ? ` (${tx.note})` : "")}
-                  subLabel={formatRelativeTime(new Date(tx.date))}
-                  rightContent={
-                    <AppBadge
-                      label={`-${formatMoney(tx.amount, currency)}`}
-                      status="warning"
-                      variant="subtle"
-                    />
-                  }
-                  onPress={handleTransactionPress}
-                  iconColor="secondary"
-                />
-                {index < recentTransactions.length - 1 && (
-                  <AppDivider
-                    color="darkBorder"
-                    thickness={1}
-                    marginVertical="s"
-                  />
-                )}
-              </React.Fragment>
-            ))}
-          </AppBox>
-        ) : (
-          <AppBox align="center" padding="xl">
             <AppText
               variant="body"
-              color="primary"
-              style={{ marginBottom: SPACING.xs }}
+              color="secondary"
+              style={{ marginTop: SPACING.xs }}
             >
-              {t("dashboard.empty.title", "Sin movimientos")}
+              {t("dashboard.subtitle", "Estado financiero")}
             </AppText>
-            <AppText variant="caption" color="secondary" align="center">
-              {t("dashboard.empty.message", "Tus gastos aparecerán aquí")}
-            </AppText>
-          </AppBox>
-        )}
-      </AppBox>
-    </DashboardLayout>
+            <AppStack
+              direction="horizontal"
+              gap="s"
+              style={{ marginTop: SPACING.s, flexWrap: "wrap" }}
+            >
+              {/* Badge del ciclo */}
+              <AppBadge label={getCycleLabel()} status="info" variant="subtle" />
+              {/* Badge del estado diario */}
+              <AppBadge
+                label={getDailyLabel()}
+                status={getDailyStatus()}
+                variant="subtle"
+              />
+              {isExtremeMode && (
+                <AppBadge
+                  label={t("dashboard.badge.extreme_mode", "Modo cuidado")}
+                  status="error"
+                  variant="subtle"
+                />
+              )}
+            </AppStack>
+          </View>
+        </AppBox>
+
+        {/* ANILLO INTERACTIVO */}
+        <AppBox marginBottom="xl" align="center">
+          <AppCircularProgress
+            progress={progressPercent}
+            remaining={remainingBudget}
+            total={totalBudget}
+            currency={currency}
+            isExtremeMode={isExtremeMode}
+            spentLabel={t("dashboard.circular.spent_label", "Gastado")}
+            availableLabel={t("dashboard.circular.available_label", "Disponible")}
+            spentFooter={
+              <AppText
+                variant="caption"
+                color="secondary"
+                style={styles.footerText}
+              >
+                {t("dashboard.circular.remaining_with_days", {
+                  amount: formatMoney(remainingBudget, currency),
+                  days: remainingDays,
+                })}
+              </AppText>
+            }
+            availableFooter={
+              <AppText
+                variant="caption"
+                color="secondary"
+                style={styles.footerText}
+              >
+                {t("dashboard.circular.initial_budget", {
+                  amount: formatMoney(totalBudget, currency),
+                })}
+              </AppText>
+            }
+          />
+        </AppBox>
+
+        {/* PÍLDORAS DE MICRO-RESUMEN */}
+        <AppBox marginBottom="xl">
+          <AppStack direction="horizontal" gap="m" fullWidth>
+            <MetricPill
+              label={t("dashboard.pill.ideal_today", "Ideal hoy")}
+              value={formatMoney(idealToday, currency)}
+              status={getIdealTodayStatus()}
+            />
+            <MetricPill
+              label={t("dashboard.pill.cycle", "Ciclo")}
+              value={t("dashboard.pill.cycle_format", {
+                passed: daysPassed,
+                total: daysDuration,
+              })}
+            />
+          </AppStack>
+        </AppBox>
+
+        {/* LISTA DE ACTIVIDADES RECIENTES */}
+        <AppBox marginBottom="xl">
+          <AppText
+            variant="h3"
+            color="accent"
+            style={{ marginBottom: SPACING.s }}
+          >
+            {t("dashboard.recent_trails", "Últimos rastros")}
+          </AppText>
+
+          {recentTransactions.length > 0 ? (
+            <AppBox>
+              {recentTransactions.map((tx, index) => (
+                <React.Fragment key={tx.id}>
+                  <AppListItem
+                    icon={getCategoryIcon(tx.category)}
+                    label={tx.category + (tx.note ? ` (${tx.note})` : "")}
+                    subLabel={formatRelativeTime(new Date(tx.date))}
+                    rightContent={
+                      <AppBadge
+                        label={`-${formatMoney(tx.amount, currency)}`}
+                        status="warning"
+                        variant="subtle"
+                      />
+                    }
+                    onPress={handleTransactionPress}
+                    iconColor="secondary"
+                  />
+                  {index < recentTransactions.length - 1 && (
+                    <AppDivider
+                      color="darkBorder"
+                      thickness={1}
+                      marginVertical="s"
+                    />
+                  )}
+                </React.Fragment>
+              ))}
+            </AppBox>
+          ) : (
+            <AppBox align="center" padding="xl">
+              <AppText
+                variant="body"
+                color="primary"
+                style={{ marginBottom: SPACING.xs }}
+              >
+                {t("dashboard.empty.title", "Sin movimientos")}
+              </AppText>
+              <AppText variant="caption" color="secondary" align="center">
+                {t("dashboard.empty.message", "Tus gastos aparecerán aquí")}
+              </AppText>
+            </AppBox>
+          )}
+        </AppBox>
+      </DashboardLayout>
+
+      {/* MODAL PARA AGREGAR GASTO */}
+      <AddExpenseModal
+        isOpen={isAddExpenseModalOpen}
+        onClose={() => setIsAddExpenseModalOpen(false)}
+      />
+    </>
   );
 }
 

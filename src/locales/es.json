@@ -332,5 +332,28 @@
     },
     "total_spent": "Total gastado",
     "average_per_day": "Promedio por día"
+  },
+  "addExpense": {
+    "title": "Registrar gasto",
+    "amount_label": "Monto",
+    "amount_placeholder": "0.00",
+    "category_label": "Categoría",
+    "category_placeholder": "Selecciona una categoría",
+    "note_label": "Nota (opcional)",
+    "note_placeholder": "ej. almuerzo, transporte...",
+    "submit_button": "Guardar gasto",
+    "cancel_button": "Cancelar",
+    "success_message": "Gasto agregado correctamente",
+    "error_message": "No se pudo agregar el gasto",
+    "validation_amount_positive": "El monto debe ser mayor a cero",
+    "validation_amount_exceeds_budget": "El monto supera el presupuesto restante",
+    "validation_category_required": "Por favor selecciona una categoría"
+  },
+  "categories": {
+    "food": "Comida",
+    "transport": "Transporte",
+    "leisure": "Ocio",
+    "health": "Salud",
+    "other": "Otro"
   }
 }

@@ -332,5 +332,28 @@
     },
     "total_spent": "Total spent",
     "average_per_day": "Average per day"
+  },
+  "addExpense": {
+    "title": "Add expense",
+    "amount_label": "Amount",
+    "amount_placeholder": "0.00",
+    "category_label": "Category",
+    "category_placeholder": "Select a category",
+    "note_label": "Note (optional)",
+    "note_placeholder": "e.g. lunch, transport...",
+    "submit_button": "Save expense",
+    "cancel_button": "Cancel",
+    "success_message": "Expense added successfully",
+    "error_message": "Could not add expense",
+    "validation_amount_positive": "Amount must be greater than zero",
+    "validation_amount_exceeds_budget": "Amount exceeds remaining budget",
+    "validation_category_required": "Please select a category"
+  },
+  "categories": {
+    "food": "Food",
+    "transport": "Transport",
+    "leisure": "Leisure",
+    "health": "Health",
+    "other": "Other"
   }
 }

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.45.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.44.0...v1.45.0) (2026-05-15)
+
+
+### Features
+
+* **add-expense:** implementar lógica y estructura core para el registro de gastos ([a3e1c66](https://github.com/axeljimenezdeveloper/VulpisDays/commit/a3e1c6678801c3511284374be6884feb2ee9095f))
+
 ## [1.44.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.43.1...v1.44.0) (2026-05-14)
 
 

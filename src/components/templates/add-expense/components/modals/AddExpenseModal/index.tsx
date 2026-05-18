@@ -19,10 +19,7 @@ import { StyleSheet } from 'react-native';
 // ----------------------------------------------------------------------------
 import AppModal from '@/components/atoms/structure/AppModal';
 import AppBox from '@/components/atoms/structure/AppBox';
-import AppStack from '@/components/atoms/structure/AppStack';
-import AppSpacer from '@/components/atoms/structure/AppSpacer';
 import AppText from '@/components/atoms/content/AppText';
-import AppIcon from '@/components/atoms/content/AppIcon';
 import AppInput from '@/components/atoms/action/AppInput';
 import AppButton from '@/components/atoms/action/AppButton';
 import AppPressable from '@/components/atoms/action/AppPressable';
@@ -37,7 +34,7 @@ import AppFormField from '@/components/molecules/forms/AppFormField';
 // CONSTANTES GLOBALES DE DISEÑO
 // ----------------------------------------------------------------------------
 import { PALETTE } from '@/constants/colors';
-import { SPACING, BORDER_RADIUS } from '@/constants/metrics';
+import { SPACING } from '@/constants/metrics';
 
 // ----------------------------------------------------------------------------
 // TIPOS, CONSTANTES Y HOOKS LOCALES
@@ -67,7 +64,6 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
   // --------------------------------------------------------------------------
   // HOOK DEL FORMULARIO
   // --------------------------------------------------------------------------
-  // Al guardar exitosamente, cerramos el modal y ejecutamos el callback externo.
   const {
     formData,
     errors,
@@ -87,7 +83,6 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
   // --------------------------------------------------------------------------
   // EFECTO PARA RESETEAR EL FORMULARIO AL ABRIR EL MODAL
   // --------------------------------------------------------------------------
-  // Cada vez que se abre el modal, limpiamos campos y errores.
   useEffect(() => {
     if (isOpen) {
       resetForm();
@@ -95,64 +90,66 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
   }, [isOpen, resetForm]);
 
   // --------------------------------------------------------------------------
-  // FUNCIÓN AUXILIAR: OBTENER ETIQUETA TRADUCIDA DE UNA CATEGORÍA
+  // RENDERIZADO DEL SELECTOR DE CATEGORÍAS (GRID 3+2, SIN ICONOS)
   // --------------------------------------------------------------------------
   /**
-   * Retorna el nombre traducido de una categoría a partir de su ID.
-   * @param categoryId - Identificador de la categoría (ej. 'food').
-   * @returns Nombre traducido (ej. 'Comida' o 'Food').
+   * Renderiza un botón individual para una categoría (solo texto).
+   * @param category - Objeto de la categoría (id, labelKey)
+   * @param isSelected - Indica si esta categoría está activa
    */
-  const getCategoryLabel = (categoryId: string): string => {
-    const category = CATEGORIES.find((cat) => cat.id === categoryId);
-    return category ? t(category.labelKey) : '';
-  };
-
-  // --------------------------------------------------------------------------
-  // RENDERIZADO DEL SELECTOR DE CATEGORÍAS (BOTONES VISUALES)
-  // --------------------------------------------------------------------------
-  /**
-   * Renderiza una lista horizontal de botones para seleccionar categorías.
-   * Cada botón muestra un ícono y el nombre traducido de la categoría.
-   * La categoría activa tiene estilo resaltado.
-   */
-  const renderCategorySelector = () => (
-    <AppStack direction="horizontal" gap="s" style={styles.categoryContainer}>
-      {CATEGORIES.map((category) => {
-        const isSelected = formData.categoryId === category.id;
-        return (
-          <AppPressable
-            key={category.id}
-            style={[
-              styles.categoryButton,
-              {
-                backgroundColor: isSelected
-                  ? `${PALETTE.sunsetOrange}20`
-                  : PALETTE.nightBlue,
-                borderColor: isSelected
-                  ? PALETTE.sunsetOrange
-                  : PALETTE.darkBorder,
-              },
-            ]}
-            onPress={() => setCategoryId(category.id)}
-            hapticFeedback="light"
-          >
-            <AppIcon
-              name={category.icon}
-              size="s"
-              color={isSelected ? 'accent' : 'secondary'}
-            />
-            <AppSpacer size="xs" horizontal />
-            <AppText
-              variant="body"
-              color={isSelected ? 'accent' : 'primary'}
-            >
-              {t(category.labelKey)}
-            </AppText>
-          </AppPressable>
-        );
-      })}
-    </AppStack>
+  const renderCategoryButton = (
+    category: typeof CATEGORIES[number],
+    isSelected: boolean
+  ) => (
+    <AppPressable
+      key={category.id}
+      style={[
+        styles.categoryButton,
+        {
+          backgroundColor: isSelected
+            ? `${PALETTE.sunsetOrange}20`
+            : PALETTE.nightBlue,
+          borderColor: isSelected ? PALETTE.sunsetOrange : PALETTE.darkBorder,
+        },
+      ]}
+      onPress={() => setCategoryId(category.id)}
+      hapticFeedback="light"
+    >
+      <AppText variant="body" color={isSelected ? 'accent' : 'primary'}>
+        {t(category.labelKey)}
+      </AppText>
+    </AppPressable>
   );
+
+  /**
+   * Renderiza el selector de categorías como un grid de dos filas:
+   * - Primera fila: 3 categorías (food, transport, leisure)
+   * - Segunda fila: 2 categorías (health, other)
+   * Cada botón ocupa el mismo ancho dentro de su fila gracias a flex:1.
+   */
+  const renderCategorySelector = () => {
+    // Dividir las categorías en dos grupos
+    const firstRowCategories = CATEGORIES.slice(0, 3); // Comida, Transporte, Ocio
+    const secondRowCategories = CATEGORIES.slice(3, 5); // Salud, Otro
+
+    return (
+      <AppBox gap="s">
+        {/* Primera fila: 3 categorías */}
+        <AppBox direction="row" gap="s">
+          {firstRowCategories.map((category) =>
+            renderCategoryButton(category, formData.categoryId === category.id)
+          )}
+        </AppBox>
+
+        {/* Segunda fila: 2 categorías */}
+        <AppBox direction="row" gap="s">
+          {secondRowCategories.map((category) =>
+            renderCategoryButton(category, formData.categoryId === category.id)
+          )}
+        </AppBox>
+      </AppBox>
+    );
+  };
 
   // --------------------------------------------------------------------------
   // RENDERIZADO PRINCIPAL
@@ -166,10 +163,10 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
       closeOnBackdropPress
       height="auto"
     >
-      <AppStack gap="l">
-        {/* ----------------------------------------------------------------
+      <AppBox gap="l">
+        {/* --------------------------------------------------------------------
           CAMPO: MONTO
-        ---------------------------------------------------------------- */}
+        -------------------------------------------------------------------- */}
         <AppFormField
           label={t('addExpense.amount_label')}
           error={errors.amount}
@@ -183,9 +180,9 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
           />
         </AppFormField>
 
-        {/* ----------------------------------------------------------------
-          CAMPO: CATEGORÍA (selector visual)
-        ---------------------------------------------------------------- */}
+        {/* --------------------------------------------------------------------
+          CAMPO: CATEGORÍA (selector visual en grid, solo texto)
+        -------------------------------------------------------------------- */}
         <AppFormField
           label={t('addExpense.category_label')}
           error={errors.category}
@@ -193,9 +190,9 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
           {renderCategorySelector()}
         </AppFormField>
 
-        {/* ----------------------------------------------------------------
+        {/* --------------------------------------------------------------------
           CAMPO: NOTA (opcional, multilínea)
-        ---------------------------------------------------------------- */}
+        -------------------------------------------------------------------- */}
         <AppFormField label={t('addExpense.note_label')}>
           <AppInput
             value={formData.note}
@@ -207,9 +204,9 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
           />
         </AppFormField>
 
-        {/* ----------------------------------------------------------------
+        {/* --------------------------------------------------------------------
           BOTONES DE ACCIÓN
-        ---------------------------------------------------------------- */}
+        -------------------------------------------------------------------- */}
         <AppBox direction="row" justify="space-between" gap="m">
           {/* Botón Cancelar */}
           <AppButton
@@ -231,18 +228,18 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
             style={styles.halfButton}
           >
             {isSubmitting ? (
-              <AppStack direction="horizontal" gap="s" align="center">
+              <AppBox direction="row" gap="s" align="center">
                 <AppSpinner size="s" color="primary" />
                 <AppText variant="body" color="primary">
                   {t('common.processing')}
                 </AppText>
-              </AppStack>
+              </AppBox>
             ) : (
               t('addExpense.submit_button')
             )}
           </AppButton>
         </AppBox>
-      </AppStack>
+      </AppBox>
     </AppModal>
   );
 };
@@ -251,24 +248,16 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
 // ESTILOS LOCALES
 // ----------------------------------------------------------------------------
 const styles = StyleSheet.create({
-  categoryContainer: {
-    flexWrap: 'wrap',
-  },
   categoryButton: {
-    flexDirection: 'row',
+    flex: 1, // Hace que todos los botones en la misma fila tengan el mismo ancho
     alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: SPACING.m,
     paddingVertical: SPACING.s,
-    borderRadius: BORDER_RADIUS.round,
+    borderRadius: 0,
     borderWidth: 1,
-    marginBottom: SPACING.xs,
   },
   halfButton: {
     flex: 1,
   },
 });
-
-// ----------------------------------------------------------------------------
-// DISPLAY NAME PARA DEBUG
-// ----------------------------------------------------------------------------
-AddExpenseModal.displayName = 'AddExpenseModal';

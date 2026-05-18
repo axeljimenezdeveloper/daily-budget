@@ -1,43 +1,21 @@
 // ============================================================================
-// MODAL DE DETALLE DE GASTO - ExpenseDetailModal
-//
-// Modal que muestra toda la información de un gasto de forma detallada:
-// - Categoría (con su icono)
-// - Monto formateado
-// - Fecha completa localizada (ej. "lunes, 18 de mayo de 2026")
-// - Nota completa (sin truncar, multilínea)
+// MODAL DE DETALLE DE GASTO - ExpenseDetailModal (CORREGIDO CON KEY)
 // ============================================================================
 
-// ----------------------------------------------------------------------------
-// DEPENDENCIAS EXTERNAS
-// ----------------------------------------------------------------------------
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 
-// ----------------------------------------------------------------------------
-// COMPONENTES ATÓMICOS
-// ----------------------------------------------------------------------------
 import AppModal from '@/components/atoms/structure/AppModal';
 import AppBox from '@/components/atoms/structure/AppBox';
 import AppText from '@/components/atoms/content/AppText';
 import AppIcon from '@/components/atoms/content/AppIcon';
 import AppDivider from '@/components/atoms/structure/AppDivider';
 
-// ----------------------------------------------------------------------------
-// CONSTANTES Y UTILIDADES
-// ----------------------------------------------------------------------------
 import { SPACING } from '@/constants/metrics';
 import { formatMoney } from '@/store/useVaultStore/index.utils';
-
-// ----------------------------------------------------------------------------
-// TIPOS
-// ----------------------------------------------------------------------------
 import { ExpenseDetailModalProps } from './index.props';
 
-// ----------------------------------------------------------------------------
-// COMPONENTE PRINCIPAL
-// ----------------------------------------------------------------------------
 export const ExpenseDetailModal: React.FC<ExpenseDetailModalProps> = ({
   isOpen,
   onClose,
@@ -46,9 +24,6 @@ export const ExpenseDetailModal: React.FC<ExpenseDetailModalProps> = ({
 }) => {
   const { t, i18n } = useTranslation();
 
-  // --------------------------------------------------------------------------
-  // FORMATEO DE FECHA LOCALIZADA (ej. "lunes, 18 de mayo de 2026")
-  // --------------------------------------------------------------------------
   const formattedDate = useMemo(() => {
     if (!transaction) return '';
     const date = new Date(transaction.date);
@@ -60,11 +35,11 @@ export const ExpenseDetailModal: React.FC<ExpenseDetailModalProps> = ({
     });
   }, [transaction, i18n.language]);
 
-  // Si no hay transacción, no renderizamos contenido
   if (!transaction) return null;
 
   return (
     <AppModal
+      key={transaction.id} // 🔑 Clave: fuerza reinicio del modal cuando cambia la transacción
       isOpen={isOpen}
       onClose={onClose}
       title={t('expenseDetail.title')}
@@ -138,9 +113,6 @@ export const ExpenseDetailModal: React.FC<ExpenseDetailModalProps> = ({
   );
 };
 
-// ----------------------------------------------------------------------------
-// ESTILOS LOCALES
-// ----------------------------------------------------------------------------
 const styles = StyleSheet.create({
   container: {
     paddingVertical: SPACING.s,

@@ -1,137 +1,107 @@
 // ============================================================================
-// PANTALLA DE AJUSTES - settings.tsx
+// PANTALLA DE HISTORIAL DE GASTOS
+//
+// Punto de entrada de la funcionalidad de historial.
+// Consume los componentes del template history y los hooks correspondientes.
+// Obtiene los datos reales del store (useVaultStore) y gestiona la eliminación
+// de gastos con confirmación modal y feedback visual mediante toasts.
+// Ahora también permite ver el detalle completo de un gasto al presionar la fila.
+//
+// IMPORTANTE: Los modales (DeleteModal y ExpenseDetailModal) se renderizan
+// FUERA de HistoryLayout para evitar problemas de posicionamiento (centrado
+// incorrecto). Este mismo patrón se usa en settings.tsx y funciona correctamente.
 // ============================================================================
 
-import React from "react";
-import { useTranslation } from "react-i18next";
+import React, { useState } from 'react';
 
-// Layout base
-import { SettingsLayout } from "@/components/templates/settings/components/layout/SettingsLayout";
+// ----------------------------------------------------------------------------
+// COMPONENTES DEL TEMPLATE HISTORY
+// ----------------------------------------------------------------------------
+import { HistoryLayout } from '@/components/templates/history/components/layout/HistoryLayout';
+import { ExpensesList } from '@/components/templates/history/components/sections/ExpensesList';
+import { EmptyState } from '@/components/templates/history/components/sections/EmptyState';
+import { DeleteModal } from '@/components/templates/history/components/modals/DeleteModal';
+import { ExpenseDetailModal } from '@/components/templates/history/components/modals/ExpenseDetailModal';
 
-// Secciones de UI
-import { NotificationsSection } from "@/components/templates/settings/components/sections/NotificationsSection";
-import { HapticsSection } from "@/components/templates/settings/components/sections/HapticsSection"; // <-- NUEVO
-import { LanguageSection } from "@/components/templates/settings/components/sections/LanguageSection";
-import { SecuritySection } from "@/components/templates/settings/components/sections/SecuritySection";
-import { PlanSection } from "@/components/templates/settings/components/sections/PlanSection";
-import { CurrencySection } from "@/components/templates/settings/components/sections/CurrencySection";
-import { ExportSection } from "@/components/templates/settings/components/sections/ExportSection";
-import { DangerSection } from "@/components/templates/settings/components/sections/DangerSection";
+// ----------------------------------------------------------------------------
+// HOOKS DEL TEMPLATE HISTORY (implementaciones reales)
+// ----------------------------------------------------------------------------
+import { useHistory } from '@/components/templates/history/hooks/useHistory';
+import { useExpenseDelete } from '@/components/templates/history/hooks/useExpenseDelete';
 
-// Modales
-import { LanguageModal } from "@/components/templates/settings/components/modals/LanguageModal";
-import { ResetModal } from "@/components/templates/settings/components/modals/ResetModal";
+// ----------------------------------------------------------------------------
+// TIPOS DEL STORE
+// ----------------------------------------------------------------------------
+import { Transaction } from '@/store/useVaultStore/index.types';
 
-// Hook
-import { useSettings } from "@/components/templates/settings/hooks/useSettings";
+// ----------------------------------------------------------------------------
+// COMPONENTE PRINCIPAL
+// ----------------------------------------------------------------------------
+export default function HistoryScreen() {
+  // Obtener datos agrupados y moneda desde el store
+  const { groupedExpenses, currency, hasTransactions } = useHistory();
 
-export default function SettingsScreen() {
-  const { t } = useTranslation();
-  const settings = useSettings();
+  // Lógica de eliminación (modal, confirmación, toast)
+  const {
+    showDeleteModal,
+    openDeleteModal,
+    confirmDelete,
+    cancelDelete,
+  } = useExpenseDelete();
+
+  // --------------------------------------------------------------------------
+  // ESTADO PARA EL MODAL DE DETALLE
+  // --------------------------------------------------------------------------
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+
+  // --------------------------------------------------------------------------
+  // FUNCIÓN PARA ABRIR EL MODAL DE DETALLE
+  // --------------------------------------------------------------------------
+  const openDetailModal = (transaction: Transaction) => {
+    setSelectedTransaction(transaction);
+    setIsDetailModalOpen(true);
+  };
 
   return (
     <>
-      <SettingsLayout>
-        {/* ----------------------------------------------------------------
-          SECCIÓN NOTIFICACIONES
-        ---------------------------------------------------------------- */}
-        <NotificationsSection
-          dailyReminder={settings.dailyReminder}
-          extremeModeAlert={settings.extremeModeAlert}
-          budgetExceededAlert={settings.budgetExceededAlert}
-          reminderTime={settings.reminderTime}
-          isSaving={settings.isSaving}
-          onDailyReminderChange={settings.handleDailyReminderChange}
-          onExtremeAlertChange={settings.handleExtremeAlertChange}
-          onBudgetExceededChange={settings.handleBudgetExceededChange}
-          onReminderTimeChange={settings.handleReminderTimeChange}
-          onTestNotification={settings.handleTestNotification}
-        />
+      {/* --------------------------------------------------------------------
+        LAYOUT PRINCIPAL (SOLO CONTENIDO DE LA PANTALLA)
+      -------------------------------------------------------------------- */}
+      <HistoryLayout>
+        {/* Mostrar lista de gastos si existen, de lo contrario estado vacío */}
+        {!hasTransactions ? (
+          <EmptyState />
+        ) : (
+          <ExpensesList
+            groupedExpenses={groupedExpenses}
+            currency={currency}
+            onDeletePress={openDeleteModal}
+            onDetailPress={openDetailModal}
+          />
+        )}
+      </HistoryLayout>
 
-        {/* ----------------------------------------------------------------
-          SECCIÓN HÁPTICOS (NUEVA)
-        ---------------------------------------------------------------- */}
-        <HapticsSection
-          hapticFeedback={settings.hapticFeedback}
-          onToggle={settings.handleHapticToggle}
-        />
+      {/* --------------------------------------------------------------------
+        MODALES (FUERA DEL LAYOUT PARA EVITAR PROBLEMAS DE POSICIONAMIENTO)
+        Nota: Se renderizan al mismo nivel que HistoryLayout, igual que en
+        settings.tsx. Esto asegura que AppOverlay ocupe toda la pantalla y
+        AppModal pueda alinear su contenido al fondo correctamente.
+      -------------------------------------------------------------------- */}
 
-        {/* ----------------------------------------------------------------
-          SECCIÓN IDIOMA
-        ---------------------------------------------------------------- */}
-        <LanguageSection
-          language={settings.language}
-          onPress={() => settings.setShowLanguageModal(true)}
-        />
-
-        {/* ----------------------------------------------------------------
-          SECCIÓN SEGURIDAD
-        ---------------------------------------------------------------- */}
-        <SecuritySection
-          isBiometricEnabled={settings.isBiometricEnabled}
-          onToggle={settings.handleBiometricToggle}
-          isLoading={settings.biometricToggleLoading || settings.authLoading}
-          isAvailabilityLoading={settings.biometricAvailabilityLoading}
-          isDisabled={!settings.hasHardware || !settings.isEnrolled}
-        />
-
-        {/* ----------------------------------------------------------------
-          SECCIÓN PLAN ACTUAL
-        ---------------------------------------------------------------- */}
-        {/* <PlanSection
-          totalBudget={settings.totalBudget}
-          remainingDays={settings.remainingDays}
-          daysDuration={settings.daysDuration}
-          isExtremeMode={settings.isExtremeMode}
-          currency={settings.currency}
-          onEditPress={settings.handleEditPlan}
-        /> */}
-
-        {/* ----------------------------------------------------------------
-          SECCIÓN MONEDA
-        ---------------------------------------------------------------- */}
-        {/* <CurrencySection currency={settings.currency} /> */}
-
-        {/* ----------------------------------------------------------------
-          SECCIÓN EXPORTAR DATOS
-        ---------------------------------------------------------------- */}
-        <ExportSection
-          isExporting={settings.isExporting}
-          onExport={settings.handleExportCSV}
-          isBackupExporting={settings.isBackupExporting}
-          onBackupExport={settings.handleBackupExport}
-          isImporting={settings.isImporting}
-          onImport={settings.handleBackupImport}
-        />
-
-        {/* ----------------------------------------------------------------
-          SECCIÓN ZONA DE PELIGRO
-        ---------------------------------------------------------------- */}
-        <DangerSection onResetPress={() => settings.setShowResetModal(true)} />
-      </SettingsLayout>
-
-      {/* ----------------------------------------------------------------
-        MODALES
-      ---------------------------------------------------------------- */}
-      <LanguageModal
-        isOpen={settings.showLanguageModal}
-        onClose={() => settings.setShowLanguageModal(false)}
-        selectedLanguage={settings.language}
-        onSelectLanguage={settings.handleLanguageSelect}
-        title={t("settings.language_modal_title", "Idioma")}
+      {/* Modal de confirmación de eliminación */}
+      <DeleteModal
+        isOpen={showDeleteModal}
+        onClose={cancelDelete}
+        onConfirm={confirmDelete}
       />
 
-      <ResetModal
-        isOpen={settings.showResetModal}
-        onClose={() => settings.setShowResetModal(false)}
-        onConfirm={settings.handleResetConfirm}
-        title={t("settings.reset_modal_title", "Reiniciar bóveda")}
-        message={t(
-          "settings.reset_confirmation",
-          "¿Estás seguro? Se perderán todos tus datos de presupuesto y gastos."
-        )}
-        cancelText={t("common.cancel", "Cancelar")}
-        confirmText={t("settings.reset_confirm", "Reiniciar")}
+      {/* Modal de detalle del gasto */}
+      <ExpenseDetailModal
+        isOpen={isDetailModalOpen}
+        onClose={() => setIsDetailModalOpen(false)}
+        transaction={selectedTransaction}
+        currency={currency}
       />
     </>
   );

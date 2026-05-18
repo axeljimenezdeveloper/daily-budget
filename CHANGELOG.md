@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.46.1](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.46.0...v1.46.1) (2026-05-18)
+
+
+### Bug Fixes
+
+* **history:** corregir posicionamiento de modales y herencia de altura en ExpenseDetailModal ([4e36ceb](https://github.com/axeljimenezdeveloper/VulpisDays/commit/4e36ceb75bcc8eb7d0c2d4b21f085dca7d4de487))
+
 ## [1.46.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.45.1...v1.46.0) (2026-05-18)
 
 

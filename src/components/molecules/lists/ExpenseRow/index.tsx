@@ -2,7 +2,8 @@
 // COMPONENTE MOLECULAR: ExpenseRow
 //
 // Representa una fila individual en la lista de gastos del historial.
-// - Muestra la categoría como texto principal.
+// - Muestra la categoría como texto TRADUCIDO según idioma actual.
+// - Muestra el icono DINÁMICO según la categoría (comida, transporte, etc.).
 // - La nota se trunca a 2 líneas con puntos suspensivos.
 // - El monto formateado se muestra a la derecha, dentro del área presionable.
 // - El botón de eliminar es independiente (no abre el modal de detalle).
@@ -13,6 +14,7 @@
 // DEPENDENCIAS EXTERNAS
 // ----------------------------------------------------------------------------
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 // ----------------------------------------------------------------------------
 // COMPONENTES ATÓMICOS
@@ -23,10 +25,11 @@ import AppBox from '@/components/atoms/structure/AppBox';
 import AppText from '@/components/atoms/content/AppText';
 
 // ----------------------------------------------------------------------------
-// UTILIDADES
+// UTILIDADES Y FEATURES
 // ----------------------------------------------------------------------------
 import { formatMoney } from '@/store/useVaultStore/index.utils';
 import { SPACING } from '@/constants/metrics';
+import { useCategoryIcon } from '@/features/categories';
 
 // ----------------------------------------------------------------------------
 // TIPOS
@@ -42,6 +45,9 @@ export const ExpenseRow: React.FC<ExpenseRowProps> = ({
   onDelete,
   onDetailPress,
 }) => {
+  const { t } = useTranslation();
+  const iconName = useCategoryIcon(transaction.category);
+
   // --------------------------------------------------------------------------
   // MANEJADOR DE ELIMINACIÓN (con throttling y haptic por AppPressable)
   // --------------------------------------------------------------------------
@@ -50,7 +56,7 @@ export const ExpenseRow: React.FC<ExpenseRowProps> = ({
   };
 
   // --------------------------------------------------------------------------
-  // MANEJADOR DE DETALLE (solo si se proporcionó el callback)
+  // MANEJADOR DE DETALLLE (solo si se proporcionó el callback)
   // --------------------------------------------------------------------------
   const handleDetail = () => {
     if (onDetailPress) {
@@ -79,13 +85,13 @@ export const ExpenseRow: React.FC<ExpenseRowProps> = ({
         throttleMs={300}
       >
         <AppBox direction="row" align="center" gap="m" style={{ flex: 1 }}>
-          {/* Ícono de categoría */}
-          <AppIcon name="cash-outline" color="secondary" size="m" />
+          {/* Ícono dinámico según categoría */}
+          <AppIcon name={iconName} color="secondary" size="m" />
 
-          {/* Textos: categoría y nota (truncada a 2 líneas) */}
+          {/* Textos: categoría traducida y nota (truncada a 2 líneas) */}
           <AppBox flex={1} gap="xs">
             <AppText variant="body" color="primary">
-              {transaction.category}
+              {t(`categories.${transaction.category}`)}
             </AppText>
             {transaction.note && (
               <AppText

@@ -1,5 +1,8 @@
 // ============================================================================
-// MODAL DE DETALLE DE GASTO - ExpenseDetailModal (CORREGIDO CON KEY)
+// MODAL DE DETALLE DE GASTO - ExpenseDetailModal
+//
+// Muestra toda la información de una transacción: categoría (con icono dinámico
+// y texto traducido), monto, fecha formateada según idioma y nota completa.
 // ============================================================================
 
 import React, { useMemo } from 'react';
@@ -14,6 +17,7 @@ import AppDivider from '@/components/atoms/structure/AppDivider';
 
 import { SPACING } from '@/constants/metrics';
 import { formatMoney } from '@/store/useVaultStore/index.utils';
+import { useCategoryIcon } from '@/features/categories'; // ← NUEVO: hook para icono dinámico
 import { ExpenseDetailModalProps } from './index.props';
 
 export const ExpenseDetailModal: React.FC<ExpenseDetailModalProps> = ({
@@ -23,6 +27,9 @@ export const ExpenseDetailModal: React.FC<ExpenseDetailModalProps> = ({
   currency,
 }) => {
   const { t, i18n } = useTranslation();
+
+  // Icono dinámico según categoría (con fallback para null)
+  const categoryIcon = useCategoryIcon(transaction?.category ?? 'other');
 
   const formattedDate = useMemo(() => {
     if (!transaction) return '';
@@ -48,15 +55,15 @@ export const ExpenseDetailModal: React.FC<ExpenseDetailModalProps> = ({
       height="auto"
     >
       <AppBox gap="l" style={styles.container}>
-        {/* Categoría */}
+        {/* Categoría con icono dinámico y texto traducido */}
         <AppBox direction="row" align="center" gap="m">
-          <AppIcon name="cash-outline" color="accent" size="l" />
+          <AppIcon name={categoryIcon} color="accent" size="l" />
           <AppBox flex={1}>
             <AppText variant="caption" color="secondary">
               {t('expenseDetail.category')}
             </AppText>
             <AppText variant="body" color="primary">
-              {transaction.category}
+              {t(`categories.${transaction.category}`)}
             </AppText>
           </AppBox>
         </AppBox>

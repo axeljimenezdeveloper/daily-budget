@@ -38,10 +38,10 @@ import { SPACING } from '@/constants/metrics';
 import { MAX_NOTE_LENGTH } from '@/constants/validation';
 
 // ----------------------------------------------------------------------------
-// TIPOS, CONSTANTES Y HOOKS LOCALES
+// FEATURES Y HOOKS LOCALES
 // ----------------------------------------------------------------------------
 import { useAddExpenseForm } from '../../../hooks/useAddExpenseForm';
-import { CATEGORIES } from '../../../constants';
+import { CATEGORIES } from '@/features/categories'; // ← CAMBIO: ahora importa desde el feature unificado
 import { AddExpenseModalProps } from './index.props';
 
 // ----------------------------------------------------------------------------

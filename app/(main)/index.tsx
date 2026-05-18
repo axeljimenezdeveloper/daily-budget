@@ -38,6 +38,11 @@ import { useStoreHydration } from "@/components/templates/dashboard/hooks/useSto
 import { useHaptic } from "@/hooks/useHaptic";
 
 // ----------------------------------------------------------------------------
+// FEATURES
+// ----------------------------------------------------------------------------
+import { useCategoryIcon } from "@/features/categories";
+
+// ----------------------------------------------------------------------------
 // CONSTANTES Y UTILIDADES
 // ----------------------------------------------------------------------------
 import { PALETTE } from "@/constants/colors";
@@ -163,36 +168,6 @@ export default function DashboardScreen() {
       tick,
     ]);
   }
-
-  /**
-   * Determina el icono correspondiente a una categoría de gasto.
-   * @param category - Nombre de la categoría (ej. "Comida", "Uber").
-   * @returns Nombre del icono (según Ionicons).
-   */
-  const getCategoryIcon = (category: string): string => {
-    const lower = category.toLowerCase();
-    if (
-      lower.includes("comida") ||
-      lower.includes("groceries") ||
-      lower.includes("food")
-    )
-      return "fast-food-outline";
-    if (
-      lower.includes("uber") ||
-      lower.includes("transporte") ||
-      lower.includes("car")
-    )
-      return "car-outline";
-    if (
-      lower.includes("ocio") ||
-      lower.includes("leisure") ||
-      lower.includes("game")
-    )
-      return "game-controller-outline";
-    if (lower.includes("salud") || lower.includes("health"))
-      return "medical-outline";
-    return "fast-food-outline";
-  };
 
   /**
    * Abre el modal para agregar un nuevo gasto con feedback háptico.
@@ -374,31 +349,35 @@ export default function DashboardScreen() {
 
           {recentTransactions.length > 0 ? (
             <AppBox>
-              {recentTransactions.map((tx, index) => (
-                <React.Fragment key={tx.id}>
-                  <AppListItem
-                    icon={getCategoryIcon(tx.category)}
-                    label={tx.category}  // ✅ NOTA ELIMINADA: antes era tx.category + (tx.note ? ` (${tx.note})` : "")
-                    subLabel={formatRelativeTime(new Date(tx.date))}
-                    rightContent={
-                      <AppBadge
-                        label={`-${formatMoney(tx.amount, currency)}`}
-                        status="warning"
-                        variant="subtle"
-                      />
-                    }
-                    onPress={handleTransactionPress}
-                    iconColor="secondary"
-                  />
-                  {index < recentTransactions.length - 1 && (
-                    <AppDivider
-                      color="darkBorder"
-                      thickness={1}
-                      marginVertical="s"
+              {recentTransactions.map((tx, index) => {
+                // Obtener icono dinámico usando el feature categories
+                const iconName = useCategoryIcon(tx.category);
+                return (
+                  <React.Fragment key={tx.id}>
+                    <AppListItem
+                      icon={iconName}
+                      label={t(`categories.${tx.category}`)}
+                      subLabel={formatRelativeTime(new Date(tx.date))}
+                      rightContent={
+                        <AppBadge
+                          label={`-${formatMoney(tx.amount, currency)}`}
+                          status="warning"
+                          variant="subtle"
+                        />
+                      }
+                      onPress={handleTransactionPress}
+                      iconColor="secondary"
                     />
-                  )}
-                </React.Fragment>
-              ))}
+                    {index < recentTransactions.length - 1 && (
+                      <AppDivider
+                        color="darkBorder"
+                        thickness={1}
+                        marginVertical="s"
+                      />
+                    )}
+                  </React.Fragment>
+                );
+              })}
             </AppBox>
           ) : (
             <AppBox align="center" padding="xl">

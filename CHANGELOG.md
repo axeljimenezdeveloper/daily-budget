@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.47.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.46.1...v1.47.0) (2026-05-18)
+
+
+### Features
+
+* **add-expense:** Limitar la longitud de la nota a 160 caracteres y añadir un contador de caracteres. ([4eca9c7](https://github.com/axeljimenezdeveloper/VulpisDays/commit/4eca9c7df1de88a5047c52a1d8d240f9250bccbe))
+
 ### [1.46.1](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.46.0...v1.46.1) (2026-05-18)
 
 

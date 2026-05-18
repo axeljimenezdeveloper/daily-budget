@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.46.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.45.1...v1.46.0) (2026-05-18)
+
+
+### Features
+
+* **historial:** mejora visual de notas y añade modal de detalle de gasto ([8d02063](https://github.com/axeljimenezdeveloper/VulpisDays/commit/8d020639f72c4011ce7e0d6513174819b6e3639c))
+
 ### [1.45.1](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.45.0...v1.45.1) (2026-05-18)
 
 ## [1.45.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.44.0...v1.45.0) (2026-05-15)

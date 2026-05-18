@@ -347,7 +347,8 @@
     "error_message": "No se pudo agregar el gasto",
     "validation_amount_positive": "El monto debe ser mayor a cero",
     "validation_amount_exceeds_budget": "El monto supera el presupuesto restante",
-    "validation_category_required": "Por favor selecciona una categoría"
+    "validation_category_required": "Por favor selecciona una categoría",
+    "note_counter": "{{current}}/{{max}} caracteres"
   },
   "categories": {
     "food": "Comida",

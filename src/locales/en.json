@@ -347,7 +347,8 @@
     "error_message": "Could not add expense",
     "validation_amount_positive": "Amount must be greater than zero",
     "validation_amount_exceeds_budget": "Amount exceeds remaining budget",
-    "validation_category_required": "Please select a category"
+    "validation_category_required": "Please select a category",
+    "note_counter": "{{current}}/{{max}} characters"
   },
   "categories": {
     "food": "Food",

@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { useVaultStore } from '@/store/useVaultStore';
 import { useToast } from '@/hooks/useToast';
 import { FormData, ValidationErrors } from '../types';
+import { MAX_NOTE_LENGTH } from '@/constants/validation';
 
 // ----------------------------------------------------------------------------
 // CONSTANTES LOCALES
@@ -63,7 +64,7 @@ interface UseAddExpenseFormOptions {
  *   - isSubmitting: Flag que indica si se está enviando (útil para deshabilitar botones).
  *   - setAmount: Actualiza el campo amount y dispara validación.
  *   - setCategoryId: Actualiza categoryId y limpia error de categoría.
- *   - setNote: Actualiza nota (sin validación).
+ *   - setNote: Actualiza nota aplicando límite de caracteres.
  *   - handleSubmit: Función asíncrona para enviar el gasto.
  *   - resetForm: Reinicia el formulario al estado inicial.
  */
@@ -139,12 +140,16 @@ export const useAddExpenseForm = (options?: UseAddExpenseFormOptions) => {
   }, []);
 
   /**
-   * Actualiza la nota opcional.
-   * No dispara validación.
-   * @param value - Texto de la nota.
+   * Actualiza la nota opcional aplicando límite de caracteres.
+   * Trunca automáticamente el texto si supera MAX_NOTE_LENGTH,
+   * útil al pegar contenido largo.
+   *
+   * @param value - Texto de la nota (opcional).
    */
   const setNote = useCallback((value: string) => {
-    setFormData((prev) => ({ ...prev, note: value }));
+    // Aplicar truncado para respetar el límite máximo de caracteres
+    const truncated = value.slice(0, MAX_NOTE_LENGTH);
+    setFormData((prev) => ({ ...prev, note: truncated }));
   }, []);
 
   /**

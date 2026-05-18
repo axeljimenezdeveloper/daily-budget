@@ -35,6 +35,7 @@ import AppFormField from '@/components/molecules/forms/AppFormField';
 // ----------------------------------------------------------------------------
 import { PALETTE } from '@/constants/colors';
 import { SPACING } from '@/constants/metrics';
+import { MAX_NOTE_LENGTH } from '@/constants/validation';
 
 // ----------------------------------------------------------------------------
 // TIPOS, CONSTANTES Y HOOKS LOCALES
@@ -191,17 +192,29 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
         </AppFormField>
 
         {/* --------------------------------------------------------------------
-          CAMPO: NOTA (opcional, multilínea)
+          CAMPO: NOTA (opcional, multilínea) con límite de caracteres y contador
         -------------------------------------------------------------------- */}
         <AppFormField label={t('addExpense.note_label')}>
-          <AppInput
-            value={formData.note}
-            onChangeText={setNote}
-            placeholder={t('addExpense.note_placeholder')}
-            multiline
-            numberOfLines={2}
-            textAlignVertical="top"
-          />
+          <AppBox gap="xs">
+            <AppInput
+              value={formData.note}
+              onChangeText={setNote}
+              placeholder={t('addExpense.note_placeholder')}
+              multiline
+              numberOfLines={2}
+              textAlignVertical="top"
+              maxLength={MAX_NOTE_LENGTH}
+            />
+            {/* Contador de caracteres */}
+            <AppBox direction="row" justify="flex-end">
+              <AppText variant="caption" color="secondary">
+                {t('addExpense.note_counter', {
+                  current: formData.note.length,
+                  max: MAX_NOTE_LENGTH,
+                })}
+              </AppText>
+            </AppBox>
+          </AppBox>
         </AppFormField>
 
         {/* --------------------------------------------------------------------
@@ -249,7 +262,7 @@ export const AddExpenseModal: React.FC<AddExpenseModalProps> = ({
 // ----------------------------------------------------------------------------
 const styles = StyleSheet.create({
   categoryButton: {
-    flex: 1, // Hace que todos los botones en la misma fila tengan el mismo ancho
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: SPACING.m,

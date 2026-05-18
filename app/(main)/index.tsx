@@ -378,7 +378,7 @@ export default function DashboardScreen() {
                 <React.Fragment key={tx.id}>
                   <AppListItem
                     icon={getCategoryIcon(tx.category)}
-                    label={tx.category + (tx.note ? ` (${tx.note})` : "")}
+                    label={tx.category}  // ✅ NOTA ELIMINADA: antes era tx.category + (tx.note ? ` (${tx.note})` : "")
                     subLabel={formatRelativeTime(new Date(tx.date))}
                     rightContent={
                       <AppBadge
@@ -453,7 +453,7 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   fabIcon: {
-    fontSize: SIZES.xxl, // 32 según SIZES
+    fontSize: SIZES.xxl,
     color: PALETTE.creamWhite,
     fontWeight: "300",
     lineHeight: SIZES.xxl,

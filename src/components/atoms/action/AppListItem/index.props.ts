@@ -1,3 +1,7 @@
+// ============================================================================
+// PROPS DEL COMPONENTE AppListItem
+// ============================================================================
+
 import { ReactNode } from "react";
 import { ViewStyle } from "react-native";
 import { PALETTE } from "@/constants/colors";
@@ -10,6 +14,10 @@ export interface AppListItemProps {
   onPress?: () => void;
   /** Texto secundario (opcional) */
   subLabel?: string;
+  /** Número máximo de líneas para el subLabel (opcional, por defecto sin límite) */
+  subLabelNumberOfLines?: number;
+  /** Modo de truncado para el subLabel (opcional, por defecto 'tail') */
+  subLabelEllipsizeMode?: 'head' | 'middle' | 'tail' | 'clip';
   /** Nombre del ícono (desde Ionicons) */
   icon?: string;
   /** Color del ícono */

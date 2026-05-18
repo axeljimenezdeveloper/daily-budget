@@ -355,5 +355,13 @@
     "leisure": "Ocio",
     "health": "Salud",
     "other": "Otro"
+  },
+  "expenseDetail": {
+    "title": "Detalle del gasto",
+    "category": "Categoría",
+    "amount": "Monto",
+    "date": "Fecha",
+    "note": "Nota",
+    "close": "Cerrar"
   }
 }

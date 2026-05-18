@@ -4,12 +4,13 @@
 // Renderiza la lista completa del historial de gastos agrupada por día.
 // Para cada grupo, muestra un encabezado con la fecha formateada y un separador,
 // luego itera sobre las transacciones del grupo renderizando un ExpenseRow.
+// Ahora soporta la apertura del modal de detalle al presionar cada fila.
 // ============================================================================
 
 // ----------------------------------------------------------------------------
 // DEPENDENCIAS EXTERNAS
 // ----------------------------------------------------------------------------
-import React, { useMemo } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------------
@@ -48,7 +49,7 @@ const formatDateHeader = (dateString: string, locale: string): string => {
 // COMPONENTE PRINCIPAL (MEMOIZADO PARA EVITAR RE-RENDERS INNECESARIOS)
 // ----------------------------------------------------------------------------
 export const ExpensesList: React.FC<ExpensesListProps> = React.memo(
-  ({ groupedExpenses, currency, onDeletePress }) => {
+  ({ groupedExpenses, currency, onDeletePress, onDetailPress }) => {
     const { i18n } = useTranslation();
     const currentLocale = i18n.language; // 'es' o 'en'
 
@@ -62,8 +63,8 @@ export const ExpensesList: React.FC<ExpensesListProps> = React.memo(
         {groupedExpenses.map((group, groupIndex) => (
           <AppStack key={group.date} gap="s">
             {/* ----------------------------------------------------------------
-            ENCABEZADO DEL DÍA
-          ---------------------------------------------------------------- */}
+              ENCABEZADO DEL DÍA
+              ---------------------------------------------------------------- */}
             <AppText
               variant="h3"
               color="accent"
@@ -80,6 +81,7 @@ export const ExpensesList: React.FC<ExpensesListProps> = React.memo(
                   transaction={transaction}
                   currency={currency}
                   onDelete={onDeletePress}
+                  onDetailPress={onDetailPress}
                 />
               ))}
             </AppStack>

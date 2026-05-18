@@ -1,3 +1,11 @@
+// ============================================================================
+// COMPONENTE DE TEXTO REUTILIZABLE - AppText
+//
+// Wrapper del componente Text de React Native que aplica los tokens de diseño
+// de la aplicación: variantes tipográficas, colores semánticos, alineación,
+// y soporta truncado con numberOfLines y ellipsizeMode.
+// ============================================================================
+
 import React from "react";
 import { Text } from "react-native";
 import { AppTextProps } from "./index.props";
@@ -11,6 +19,7 @@ export default function AppText({
   style,
   adjustsFontSizeToFit,
   numberOfLines,
+  ellipsizeMode,
 }: AppTextProps) {
   const combinedStyles = [
     TEXT_VARIANTS[variant],
@@ -24,6 +33,7 @@ export default function AppText({
       style={combinedStyles}
       adjustsFontSizeToFit={adjustsFontSizeToFit}
       numberOfLines={numberOfLines}
+      ellipsizeMode={ellipsizeMode}
     >
       {children}
     </Text>

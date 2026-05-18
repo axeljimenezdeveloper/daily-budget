@@ -355,5 +355,13 @@
     "leisure": "Leisure",
     "health": "Health",
     "other": "Other"
+  },
+  "expenseDetail": {
+    "title": "Expense Detail",
+    "category": "Category",
+    "amount": "Amount",
+    "date": "Date",
+    "note": "Note",
+    "close": "Close"
   }
 }

@@ -4,11 +4,12 @@
 // Representa un elemento de lista con ícono, etiqueta, subetiqueta y contenido
 // derecho opcional. Puede ser presionable o no. Si se proporciona onPress,
 // se envuelve en AppPressable para manejar la interacción.
-// Ahora soporta throttling opcional para prevenir pulsaciones rápidas.
+// Soporta throttling opcional para prevenir pulsaciones rápidas y ahora
+// permite truncar el subLabel mediante numberOfLines y ellipsizeMode.
 // ============================================================================
 
 import React from "react";
-import { ANIMATION } from "@/constants/animations"; // ← Importamos constante global
+import { ANIMATION } from "@/constants/animations";
 
 import AppBox from "../../structure/AppBox";
 import AppText from "../../content/AppText";
@@ -22,6 +23,8 @@ export default function AppListItem({
   label,
   onPress,
   subLabel,
+  subLabelNumberOfLines,
+  subLabelEllipsizeMode = 'tail',
   icon,
   iconColor: customIconColor,
   rightContent,
@@ -31,7 +34,7 @@ export default function AppListItem({
   activeBackground = "nightBlue",
   padding = "m",
   style,
-  throttleMs = ANIMATION.DEFAULT_PRESS_THROTTLE_MS, // ← Valor por defecto
+  throttleMs = ANIMATION.DEFAULT_PRESS_THROTTLE_MS,
 }: AppListItemProps) {
   const { currentBackground, iconColor } = getStyleHelpers({
     isActive,
@@ -56,7 +59,12 @@ export default function AppListItem({
           {label}
         </AppText>
         {subLabel && (
-          <AppText variant="caption" color="secondary">
+          <AppText
+            variant="caption"
+            color="secondary"
+            numberOfLines={subLabelNumberOfLines}
+            ellipsizeMode={subLabelEllipsizeMode}
+          >
             {subLabel}
           </AppText>
         )}

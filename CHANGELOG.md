@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.48.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.47.0...v1.48.0) (2026-05-18)
+
+
+### Features
+
+* **categories:** unificar iconos dinámicos y traducción de categorías en toda la app ([df2a8b8](https://github.com/axeljimenezdeveloper/VulpisDays/commit/df2a8b8b7d8f40a2bf3c1191ca3f7994f90ae0dd))
+
 ## [1.47.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.46.1...v1.47.0) (2026-05-18)
 
 

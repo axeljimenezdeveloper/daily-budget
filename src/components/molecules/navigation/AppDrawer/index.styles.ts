@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: "#ffffff10",
   },
-  oxygenInfo: {
+  budgetInfo: {
     marginBottom: 8,
   },
 });

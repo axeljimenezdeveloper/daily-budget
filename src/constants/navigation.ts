@@ -39,4 +39,10 @@ export const ROUTES = {
     SETTINGS: '/(main)/settings',
     DEBUG_RESET: '/(main)/debug-reset',
   },
+
+  // Sección informativa (placeholders) – ¡CORREGIDO!
+  INFO: {
+    GUIDE: '/(info)/guide',
+    PROTOCOLS: '/(info)/protocols',
+  },
 } as const;

@@ -27,6 +27,31 @@
       "placeholder": "Select time"
     }
   },
+  "drawer": {
+    "main_menu": "Main Menu",
+    "information": "Information",
+    "user_id": "ID: {{id}}",
+    "budget_progress": "Remaining budget",
+    "remaining": "Remaining",
+    "spent": "Spent",
+    "dashboard": "Dashboard",
+    "history": "History",
+    "settings": "Settings",
+    "guide": "Guide",
+    "protocols": "Protocols"
+  },
+  "info": {
+    "guide_title": "User Guide",
+    "protocols_title": "Terms & Protocols",
+    "coming_soon": "Coming soon"
+  },
+  "screens": {
+    "dashboard": "DASHBOARD",
+    "history": "HISTORY",
+    "settings": "SETTINGS",
+    "guide": "GUIDE",
+    "protocols": "PROTOCOLS"
+  },
   "animations": {
     "loading": {
       "subtitle": "Loading"

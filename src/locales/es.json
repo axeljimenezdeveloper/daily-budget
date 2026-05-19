@@ -27,6 +27,31 @@
       "placeholder": "Selecciona una hora"
     }
   },
+  "drawer": {
+    "main_menu": "Menú principal",
+    "information": "Información",
+    "user_id": "ID: {{id}}",
+    "budget_progress": "Presupuesto restante",
+    "remaining": "Restante",
+    "spent": "Gastado",
+    "dashboard": "Panel",
+    "history": "Historial",
+    "settings": "Ajustes",
+    "guide": "Guía",
+    "protocols": "Protocolos"
+  },
+  "info": {
+    "guide_title": "Guía de uso",
+    "protocols_title": "Términos y protocolos",
+    "coming_soon": "Próximamente"
+  },
+  "screens": {
+    "dashboard": "INICIO",
+    "history": "HISTORIAL",
+    "settings": "AJUSTES",
+    "guide": "GUÍA",
+    "protocols": "PROTOCOLOS"
+  },
   "animations": {
     "loading": {
       "subtitle": "Cargando"

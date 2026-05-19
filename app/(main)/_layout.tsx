@@ -6,38 +6,24 @@
 // Responsabilidades:
 // - Proveer el Stack Navigator para las pantallas: inicio, historial, ajustes y debug.
 // - Controlar el estado del drawer lateral (menú hamburguesa).
-// - Montar el hook de notificaciones automáticas (modo cuidado, presupuesto excedido)
-//   para que se activen cuando las condiciones del store lo requieran.
+// - Montar el hook de notificaciones automáticas.
 // ============================================================================
 
 import React, { useState } from "react";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { PALETTE } from "@/constants/colors";
 import { SPACING } from "@/constants/metrics";
 
 import AppPressable from "@/components/atoms/action/AppPressable";
 import AppIcon from "@/components/atoms/content/AppIcon";
 import AppDrawer from "@/components/molecules/navigation/AppDrawer";
-
-// ----------------------------------------------------------------------------
-// HOOKS DE NOTIFICACIONES (alertas automáticas)
-// ----------------------------------------------------------------------------
+import HeaderTitle from "@/components/molecules/navigation/HeaderTitle";
 import { useNotificationTriggers } from "@/features/notifications/hooks/useNotificationTriggers";
 
 export default function MainLayout() {
-  // --------------------------------------------------------------------------
-  // ESTADO LOCAL
-  // --------------------------------------------------------------------------
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const router = useRouter();
 
-  // --------------------------------------------------------------------------
-  // EFECTOS Y HOOKS DE DOM
-  // --------------------------------------------------------------------------
-  // useNotificationTriggers: Se monta una sola vez al cargar el layout.
-  // Este hook se suscribe a los cambios del store (remainingBudget, isExtremeMode)
-  // y dispara notificaciones locales automáticamente cuando se activan las alertas
-  // de "modo cuidado" o "presupuesto excedido", siempre que el usuario tenga
-  // habilitadas esas preferencias.
   useNotificationTriggers();
 
   return (
@@ -52,20 +38,71 @@ export default function MainLayout() {
           },
           headerTitleAlign: "center",
           headerShadowVisible: false,
-          headerLeft: () => (
-            <AppPressable
-              onPress={() => setIsDrawerOpen(true)}
-              style={{ marginLeft: SPACING.m }}
-            >
-              <AppIcon name="menu" size="xl" />
-            </AppPressable>
-          ),
         }}
       >
-        <Stack.Screen name="index" options={{ title: "INICIO" }} />
-        <Stack.Screen name="history" options={{ title: "HISTORIAL" }} />
-        <Stack.Screen name="settings" options={{ title: "AJUSTES" }} />
-        <Stack.Screen name="debug-reset" options={{ title: "DEBUG PANEL" }} />
+        {/* INICIO – menú hamburguesa (blanco) */}
+        <Stack.Screen
+          name="index"
+          options={{
+            headerTitle: () => <HeaderTitle i18nKey="screens.dashboard" />,
+            headerLeft: () => (
+              <AppPressable
+                onPress={() => setIsDrawerOpen(true)}
+                style={{ marginLeft: SPACING.m }}
+              >
+                <AppIcon name="menu" size="xl" />
+              </AppPressable>
+            ),
+          }}
+        />
+
+        {/* HISTORIAL – flecha naranja */}
+        <Stack.Screen
+          name="history"
+          options={{
+            headerTitle: () => <HeaderTitle i18nKey="screens.history" />,
+            headerLeft: () => (
+              <AppPressable
+                onPress={() => router.back()}
+                style={{ marginLeft: SPACING.m }}
+              >
+                <AppIcon name="arrow-back-outline" size="xl" color="accent" />
+              </AppPressable>
+            ),
+          }}
+        />
+
+        {/* AJUSTES – flecha naranja */}
+        <Stack.Screen
+          name="settings"
+          options={{
+            headerTitle: () => <HeaderTitle i18nKey="screens.settings" />,
+            headerLeft: () => (
+              <AppPressable
+                onPress={() => router.back()}
+                style={{ marginLeft: SPACING.m }}
+              >
+                <AppIcon name="arrow-back-outline" size="xl" color="accent" />
+              </AppPressable>
+            ),
+          }}
+        />
+
+        {/* DEBUG – flecha naranja */}
+        <Stack.Screen
+          name="debug-reset"
+          options={{
+            headerTitle: () => <HeaderTitle i18nKey="screens.settings" fallback="DEBUG" />,
+            headerLeft: () => (
+              <AppPressable
+                onPress={() => router.back()}
+                style={{ marginLeft: SPACING.m }}
+              >
+                <AppIcon name="arrow-back-outline" size="xl" color="accent" />
+              </AppPressable>
+            ),
+          }}
+        />
       </Stack>
 
       <AppDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />

@@ -12,7 +12,7 @@ import {
 } from "@/store/useVaultStore/index.utils";
 import { useNotificationScheduler } from "./useNotificationScheduler";
 import { NOTIFICATION_CHANNELS, NOTIFICATION_IDS } from "../constants";
-import { ROUTES } from "@/constants/navigation"; // <-- NUEVA IMPORTACIÓN
+import { ROUTES } from "@/constants/navigation";
 
 export const useNotificationPreferences = () => {
   const { t } = useTranslation();
@@ -49,7 +49,7 @@ export const useNotificationPreferences = () => {
   const { scheduleDailyReminder, requestPermissions, cancelNotificationById } =
     useNotificationScheduler();
 
-  // --- Función interna handleReschedule (igual) ---
+  // --- Función interna handleReschedule ---
   const handleReschedule = useCallback(
     async (targetPrefs: { dailyReminder: boolean; reminderTime: string }): Promise<boolean> => {
       if (!targetPrefs.dailyReminder) return false;
@@ -78,8 +78,8 @@ export const useNotificationPreferences = () => {
           t("notifications.daily_reminder.body"),
           {
             channelId: NOTIFICATION_CHANNELS.REMINDERS.id,
-            data: { // <-- NUEVO: datos de navegación
-              screen: ROUTES.ADD_EXPENSE,
+            data: {
+              screen: ROUTES.MAIN.INDEX, // Redirige al dashboard (donde está el BottomSheet)
               from: 'daily_reminder',
             },
           }
@@ -88,7 +88,7 @@ export const useNotificationPreferences = () => {
         setScheduledToday();
         return true;
       } catch (e) {
-        console.error("[SURV] Error en scheduler:", e);
+        console.error("[DailyBudget] Error en scheduler:", e);
         return false;
       } finally {
         setIsSaving(false);
@@ -155,7 +155,7 @@ export const useNotificationPreferences = () => {
     }
   }, [hasHydrated, dailyReminder, reminderTime, scheduledDate, handleReschedule]);
 
-  // --- API pública: devolvemos tanto el objeto completo (para compatibilidad) como valores individuales ---
+  // --- API pública ---
   return {
     // Objeto completo (mantenido por si hay código legacy)
     preferences: {

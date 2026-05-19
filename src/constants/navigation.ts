@@ -35,7 +35,6 @@ export const ROUTES = {
   // Sección principal (después del onboarding)
   MAIN: {
     INDEX: '/(main)',
-    ADD_EXPENSE: '/(main)/add-expense',
     HISTORY: '/(main)/history',
     SETTINGS: '/(main)/settings',
     DEBUG_RESET: '/(main)/debug-reset',

@@ -1,5 +1,5 @@
 // ============================================================================
-// CONSTANTES DE LA APLICACIÓN - "Metadatos centralizados de Vulpis"
+// CONSTANTES DE LA APLICACIÓN - Metadatos centralizados
 //
 // Este archivo define las constantes fundamentales de la aplicación que son
 // utilizadas en múltiples componentes y módulos. Centraliza información como
@@ -18,39 +18,39 @@ export const APP_INFO = {
   // --------------------------------------------------------------------------
   // INFORMACIÓN BÁSICA (EN USO ACTUAL)
   // --------------------------------------------------------------------------
-  // NAME: Nombre oficial de la aplicación, utilizado en branding y UI
-  // VERSION: Versión actual de la aplicación en formato semántico (MAJOR.MINOR.PATCH)
-  NAME: 'Vulpis' as const,
-  VERSION: '1.40.0' as const,
+  // NAME: Nombre oficial de la aplicación, utilizado en branding y UI.
+  // VERSION: Versión actual de la aplicación en formato semántico (MAJOR.MINOR.PATCH).
+  NAME: 'Daily Budget' as const,
+  VERSION: '1.49.0' as const,
   
   // --------------------------------------------------------------------------
   // PARA USO FUTURO - DESCOMENTAR SEGÚN NECESIDAD
   // --------------------------------------------------------------------------
-  // DISPLAY_NAME: Nombre completo para mostrar en tiendas o pantallas de inicio
-  // DISPLAY_NAME: 'Vulpis - Tu compañero de bolsillo' as const,
+  // DISPLAY_NAME: Nombre completo para mostrar en tiendas o pantallas de inicio.
+  // DISPLAY_NAME: 'Daily Budget - Controla tus gastos día a día' as const,
   
   // --------------------------------------------------------------------------
   // CONFIGURACIÓN DE ENTORNO
   // --------------------------------------------------------------------------
-  // ENVIRONMENT: Determina si la aplicación está en desarrollo o producción
-  // BUILD_TYPE: Indica la fase de desarrollo (alpha, beta, estable)
+  // ENVIRONMENT: Determina si la aplicación está en desarrollo o producción.
+  // BUILD_TYPE: Indica la fase de desarrollo (alpha, beta, estable).
   // ENVIRONMENT: __DEV__ ? 'development' : 'production' as const,
   // BUILD_TYPE: 'alpha' as const, // alpha, beta, stable
   
   // --------------------------------------------------------------------------
   // INFORMACIÓN DE CONTACTO Y SOPORTE
   // --------------------------------------------------------------------------
-  // SUPPORT_EMAIL: Correo para soporte técnico y retroalimentación de usuarios
-  // WEBSITE: URL oficial de la aplicación para más información
-  // SUPPORT_EMAIL: 'soporte@vulpisapp.com' as const,
-  // WEBSITE: 'https://vulpisapp.com' as const,
+  // SUPPORT_EMAIL: Correo para soporte técnico y retroalimentación de usuarios.
+  // WEBSITE: URL oficial de la aplicación para más información.
+  // SUPPORT_EMAIL: 'soporte@dailybudget.app' as const,
+  // WEBSITE: 'https://dailybudget.app' as const,
   
   // --------------------------------------------------------------------------
   // CONFIGURACIÓN ESPECÍFICA POR ENTORNO
   // --------------------------------------------------------------------------
-  // CONFIG: Objeto con configuraciones que varían según el entorno de ejecución
-  // LOG_LEVEL: Nivel de detalle de logs (debug en desarrollo, error en producción)
-  // ENABLE_ANALYTICS: Controla si se recopilan datos analíticos
+  // CONFIG: Objeto con configuraciones que varían según el entorno de ejecución.
+  // LOG_LEVEL: Nivel de detalle de logs (debug en desarrollo, error en producción).
+  // ENABLE_ANALYTICS: Controla si se recopilan datos analíticos.
   // CONFIG: {
   //   LOG_LEVEL: __DEV__ ? 'debug' : 'error' as const,
   //   ENABLE_ANALYTICS: !__DEV__,

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Vulpis",
-    "slug": "Vulpis",
+    "name": "Daily Budget",
+    "slug": "daily-budget",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -10,7 +10,8 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "userInterfaceStyle": "dark"
+      "userInterfaceStyle": "dark",
+      "bundleIdentifier": "com.presupuestodiario.app"
     },
     "android": {
       "backgroundColor": "#0A0F1C",
@@ -20,7 +21,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.vulpisdays"
+      "package": "com.presupuestodiario.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -37,6 +38,15 @@
           "image": "./assets/splash-icon.png",
           "imageWidth": 150,
           "resizeMode": "contain"
+        }
+      ],
+      [
+        "expo-plugin-app-name-localization",
+        {
+          "localizations": {
+            "en": "Daily Budget",
+            "es": "Presupuesto Diario"
+          }
         }
       ]
     ]

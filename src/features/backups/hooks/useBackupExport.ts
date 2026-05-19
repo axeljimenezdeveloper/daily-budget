@@ -1,8 +1,8 @@
 // ============================================================================
 // HOOK PERSONALIZADO: useBackupExport (CORREGIDO - NUEVA API EXPO FILE SYSTEM)
 //
-// Encapsula la lógica para exportar un backup cifrado del estado actual de la
-// bóveda (useVaultStore). El proceso incluye:
+// Encapsula la lógica para exportar un backup cifrado del estado actual del
+// store global (useVaultStore). El proceso incluye:
 //   - Obtener la clave biométrica mediante useBackupKey (se genera si no existe).
 //   - Serializar el estado a JSON y cifrarlo con AES-256-GCM (nonce aleatorio).
 //   - Escribir el archivo cifrado en el directorio temporal de la app usando la nueva API.
@@ -31,7 +31,7 @@ import { BackupOperationResult } from '../types';
 // ----------------------------------------------------------------------------
 // CONSTANTES
 // ----------------------------------------------------------------------------
-const BACKUP_FILE_NAME = 'vulpis-backup.vulpis';
+const BACKUP_FILE_NAME = 'dailybudget-backup.bkp';   // extensión .bkp (backup)
 const BACKUP_MIME_TYPE = 'application/octet-stream';
 const NONCE_LENGTH = 12; // bytes (recomendado para AES-GCM)
 const BACKUP_VERSION = 1;

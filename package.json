@@ -1,5 +1,5 @@
 {
-  "name": "vulpis",
+  "name": "daily-budget",
   "version": "1.49.0",
   "main": "expo-router/entry",
   "scripts": {
@@ -29,11 +29,13 @@
     "expo-localization": "~17.0.8",
     "expo-modules-core": "~3.0.30",
     "expo-notifications": "~0.32.17",
+    "expo-plugin-app-name-localization": "^0.1.1",
     "expo-router": "~6.0.23",
     "expo-secure-store": "~15.0.8",
     "expo-sharing": "~14.0.8",
     "expo-splash-screen": "~31.0.13",
     "expo-status-bar": "~3.0.9",
+    "fs-extra": "^11.3.5",
     "i18next": "^25.8.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",

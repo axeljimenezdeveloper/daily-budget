@@ -3,8 +3,8 @@
     "total_budget": "Tu presupuesto",
     "essential_expenses": "Lo esencial",
     "discretionary_spending": "Lo flexible",
-    "saving_mode": "MODO CUIDADO ACTIVADO",
-    "financial_autonomy": "Tus días de tranquilidad",
+    "saving_mode": "MODO AHORRO ACTIVADO",
+    "financial_autonomy": "Tu presupuesto planificado",
     "error": "Algo no salió bien",
     "back": "Volver",
     "continue": "Continuar",
@@ -15,7 +15,7 @@
     "total": "total",
     "select": "Elegir",
     "custom": "Personalizar",
-    "companion": "Tu compañero Vulpis",
+    "companion": "Tu presupuesto",
     "processing": "Preparando todo...",
     "days_short": "d",
     "error_occurred": "Algo no salió bien",
@@ -33,33 +33,33 @@
     },
     "success": {
       "title": "¡Todo listo!",
-      "subtitle": "Estamos configurando tu tablero personal...",
-      "app_slogan": "Tu compañero financiero"
+      "subtitle": "Estamos configurando tu panel personal...",
+      "app_slogan": "Tu compañero de presupuesto"
     },
     "transition": {
       "title": "Cargando recursos",
-      "subtitle": "Preparando la configuración inicial de tu misión..."
+      "subtitle": "Preparando la configuración inicial..."
     }
   },
   "onboarding": {
     "screen_1": {
-      "title": "Tu dinero, en días de tranquilidad",
-      "description_part_1": "Olvida los números fríos. En Vulpis, tu dinero se convierte en",
-      "description_highlight": "días de calma",
-      "description_part_2": "que puedes disfrutar."
+      "title": "Controla tu dinero, día a día",
+      "description_part_1": "Olvida los números complicados. Con esta app, tu dinero se convierte en",
+      "description_highlight": "días presupuestados",
+      "description_part_2": "que puedes planificar con confianza."
     },
     "screen_2": {
-      "title": "Ve el futuro con claridad",
-      "description_part_1": "Cada mañana sabrás",
-      "description_highlight": "cuántos días de tranquilidad ",
-      "description_part_2": "te quedan por delante."
+      "title": "Siempre sabrás cuánto te queda",
+      "description_part_1": "Cada día sabrás",
+      "description_highlight": "cuántos días cubiertos ",
+      "description_part_2": "tienes por delante."
     },
     "screen_3": {
-      "title": "Dos formas de gastar",
-      "description_part_1": "Registra rápido lo que",
-      "description_essential": "te sostiene",
-      "description_part_2": "y lo que",
-      "description_discretionary": "te hace feliz",
+      "title": "Clasifica tus gastos",
+      "description_part_1": "Registra rápido lo que es",
+      "description_essential": "esencial",
+      "description_part_2": "y lo que es",
+      "description_discretionary": "personal",
       "description_part_3": ". Así de simple."
     },
     "navigation": {
@@ -70,8 +70,8 @@
   },
   "setup": {
     "titles": {
-      "main": "Vamos a prepararlo todo",
-      "subtitle": "Cuéntame cómo quieres que te acompañe",
+      "main": "Configura tu presupuesto",
+      "subtitle": "Elige cómo quieres gestionar tu dinero",
       "initial_configuration": "CONFIGURACIÓN INICIAL"
     },
     "budget_screen": {
@@ -159,31 +159,31 @@
     }
   },
   "dashboard": {
-    "remaining_autonomy": "Tienes {{count}} días de tranquilidad por delante",
+    "remaining_autonomy": "Presupuesto para {{count}} días",
     "status": {
-      "safe": "TODO ESTÁ BIEN",
-      "warning": "VAMOS A REVISAR"
+      "safe": "DENTRO DEL PRESUPUESTO",
+      "warning": "CERCA DEL LÍMITE"
     },
     "greeting": {
-      "morning_calm": "Buenos días. Todo está en calma.",
-      "afternoon_calm": "Buenas tardes. Sigamos con el plan.",
+      "morning_calm": "Buenos días. Vas según lo previsto.",
+      "afternoon_calm": "Buenas tardes. Sigue con el plan.",
       "evening_calm": "Buenas noches. Descansa, mañana continuamos.",
-      "morning_extreme": "Buenos días. Hoy toca ir con cuidado.",
-      "afternoon_extreme": "Buenas tardes. Revisa bien tus pasos.",
+      "morning_extreme": "Buenos días. Revisa tus gastos hoy.",
+      "afternoon_extreme": "Buenas tardes. Revisa bien tus gastos.",
       "evening_extreme": "Buenas noches. Mañana será un día clave.",
-      "calm": "Todo en calma.",
-      "extreme": "Vamos con cuidado."
+      "calm": "Vas bien.",
+      "extreme": "Revisa tus gastos."
     },
-    "days_of_tranquility": "día de tranquilidad",
-    "days_of_tranquility_plural": "días de tranquilidad",
+    "days_of_tranquility": "día cubierto",
+    "days_of_tranquility_plural": "días cubiertos",
     "progress": "{{passed}}/{{total}} días",
     "per_day": "por día",
     "spent": "gastado",
     "days_since_start": "días desde inicio",
-    "recent_trails": "Últimas huellas",
+    "recent_trails": "Gastos recientes",
     "empty": {
-      "title": "Todavía no hay movimientos",
-      "message": "Tus primeras huellas aparecerán aquí."
+      "title": "No hay gastos aún",
+      "message": "Agrega tu primer gasto con el botón +"
     },
     "loading": "Cargando...",
     "circular": {
@@ -208,9 +208,9 @@
     "badge": {
       "no_spending": "Sin gastos hoy",
       "on_track": "Al día",
-      "caution": "Cuidado",
+      "caution": "Revisa",
       "over": "Excedido",
-      "extreme_mode": "Modo cuidado"
+      "extreme_mode": "Modo ahorro"
     }
   },
   "notifications": {
@@ -219,8 +219,8 @@
       "body": "No olvides registrar tus gastos de hoy."
     },
     "extreme_mode_alert": {
-      "title": "Modo cuidado activado",
-      "body": "Estás gastando más rápido de lo recomendado."
+      "title": "Modo ahorro activado",
+      "body": "Estás gastando más de lo planeado por día."
     },
     "budget_exceeded_alert": {
       "title": "Presupuesto excedido",
@@ -239,8 +239,8 @@
     "notifications_section": "Notificaciones",
     "daily_reminder_title": "Recordatorio diario",
     "daily_reminder_description": "Recibe un recordatorio diario para registrar tus gastos.",
-    "extreme_alert_title": "Modo cuidado",
-    "extreme_alert_description": "Te avisamos si gastas más rápido de lo recomendado.",
+    "extreme_alert_title": "Alertas de ahorro",
+    "extreme_alert_description": "Te avisamos si gastas más de lo planeado por día.",
     "budget_exceeded_title": "Presupuesto excedido",
     "budget_exceeded_description": "Notificación cuando el presupuesto restante sea negativo.",
     "test_button": "Enviar notificación de prueba",
@@ -262,18 +262,18 @@
     "currency_section": "Moneda",
     "currency": "Moneda",
     "danger_zone": "Zona de peligro",
-    "reset_vault": "Reiniciar bóveda",
+    "reset_vault": "Borrar todos los datos",
     "export_section": "Exportar datos",
     "language_section": "Idioma",
     "language": "Idioma",
     "language_modal_title": "Idioma",
-    "reset_modal_title": "Reiniciar bóveda",
+    "reset_modal_title": "Borrar todos los datos",
     "reset_confirmation": "¿Estás seguro? Se perderán todos tus datos de presupuesto y gastos.",
-    "reset_confirm": "Reiniciar",
+    "reset_confirm": "Borrar",
     "current_plan_section": "Tu plan actual",
     "total_budget": "Presupuesto total",
     "remaining_days": "Días restantes",
-    "extreme_mode": "Modo cuidado",
+    "extreme_mode": "Modo ahorro",
     "activated": "Activado",
     "edit_plan": "Editar plan",
     "export_backup": "Exportar respaldo cifrado",

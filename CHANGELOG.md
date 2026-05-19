@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.50.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.49.0...v1.50.0) (2026-05-19)
+
+
+### Features
+
+* **rebranding:** renombrar app a Daily Budget / Presupuesto Diario, actualizar textos y eliminar referencias a Vulpis ([dc57b1b](https://github.com/axeljimenezdeveloper/VulpisDays/commit/dc57b1b4d5e85816148a586e298399254cad047c))
+
 ## [1.49.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.48.0...v1.49.0) (2026-05-19)
 
 

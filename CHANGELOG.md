@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.51.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.50.0...v1.51.0) (2026-05-19)
+
+
+### Features
+
+* **drawer:** refactorizar menú lateral con branding Daily Budget, agregar pantallas placeholder de Guía y Protocolos, e internacionalizar títulos de navegación ([f823ce9](https://github.com/axeljimenezdeveloper/VulpisDays/commit/f823ce9a1ef135bb793de445f149d69bc02c40db))
+
 ## [1.50.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.49.0...v1.50.0) (2026-05-19)
 
 

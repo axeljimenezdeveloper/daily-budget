@@ -1,6 +1,6 @@
 {
   "name": "daily-budget",
-  "version": "1.50.0",
+  "version": "1.51.0",
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",

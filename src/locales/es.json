@@ -331,7 +331,9 @@
       "error": "No se pudo eliminar el gasto"
     },
     "total_spent": "Total gastado",
-    "average_per_day": "Promedio por día"
+    "average_per_day": "Promedio por día",
+    "loadMore": "Cargar más",
+    "noMore": "No hay más gastos"
   },
   "addExpense": {
     "title": "Registrar gasto",

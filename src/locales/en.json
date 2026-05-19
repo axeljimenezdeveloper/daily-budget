@@ -331,7 +331,9 @@
       "error": "Could not delete expense"
     },
     "total_spent": "Total spent",
-    "average_per_day": "Average per day"
+    "average_per_day": "Average per day",
+    "loadMore": "Load more",
+    "noMore": "No more expenses"
   },
   "addExpense": {
     "title": "Add expense",

@@ -1,11 +1,14 @@
 // ============================================================================
-// PANTALLA DE HISTORIAL DE GASTOS
+// PANTALLA DE HISTORIAL DE GASTOS - CARGA INFINITA
 //
 // Punto de entrada de la funcionalidad de historial.
 // Consume los componentes del template history y los hooks correspondientes.
 // Obtiene los datos reales del store (useVaultStore) y gestiona la eliminación
 // de gastos con confirmación modal y feedback visual mediante toasts.
 // Ahora también permite ver el detalle completo de un gasto al presionar la fila.
+//
+// IMPLEMENTA CARGA INFINITA (FlatList con onEndReached) para mejorar el
+// rendimiento con muchos gastos.
 //
 // IMPORTANTE: Los modales (DeleteModal y ExpenseDetailModal) se renderizan
 // FUERA de HistoryLayout para evitar problemas de posicionamiento (centrado
@@ -27,6 +30,7 @@ import { ExpenseDetailModal } from '@/components/templates/history/components/mo
 // HOOKS DEL TEMPLATE HISTORY (implementaciones reales)
 // ----------------------------------------------------------------------------
 import { useHistory } from '@/components/templates/history/hooks/useHistory';
+import { usePaginatedHistory } from '@/components/templates/history/hooks/usePaginatedHistory';
 import { useExpenseDelete } from '@/components/templates/history/hooks/useExpenseDelete';
 
 // ----------------------------------------------------------------------------
@@ -40,6 +44,14 @@ import { Transaction } from '@/store/useVaultStore/index.types';
 export default function HistoryScreen() {
   // Obtener datos agrupados y moneda desde el store
   const { groupedExpenses, currency, hasTransactions } = useHistory();
+
+  // Paginación (carga infinita)
+  const {
+    paginatedGroups,
+    loadMore,
+    hasMore,
+    isLoadingMore,
+  } = usePaginatedHistory(groupedExpenses);
 
   // Lógica de eliminación (modal, confirmación, toast)
   const {
@@ -63,31 +75,51 @@ export default function HistoryScreen() {
     setIsDetailModalOpen(true);
   };
 
+  // --------------------------------------------------------------------------
+  // RENDERIZADO CONDICIONAL (sin gastos)
+  // --------------------------------------------------------------------------
+  if (!hasTransactions) {
+    return (
+      <>
+        <HistoryLayout>
+          <EmptyState />
+        </HistoryLayout>
+        {/* Los modales se renderizan igual aunque no haya gastos (no se abrirán) */}
+        <DeleteModal
+          isOpen={showDeleteModal}
+          onClose={cancelDelete}
+          onConfirm={confirmDelete}
+        />
+        <ExpenseDetailModal
+          isOpen={isDetailModalOpen}
+          onClose={() => setIsDetailModalOpen(false)}
+          transaction={selectedTransaction}
+          currency={currency}
+        />
+      </>
+    );
+  }
+
+  // --------------------------------------------------------------------------
+  // RENDER CON CARGA INFINITA (FlatList)
+  // --------------------------------------------------------------------------
   return (
     <>
-      {/* --------------------------------------------------------------------
-        LAYOUT PRINCIPAL (SOLO CONTENIDO DE LA PANTALLA)
-      -------------------------------------------------------------------- */}
-      <HistoryLayout>
-        {/* Mostrar lista de gastos si existen, de lo contrario estado vacío */}
-        {!hasTransactions ? (
-          <EmptyState />
-        ) : (
+      <HistoryLayout
+        flatListData={paginatedGroups}
+        renderGroup={(group) => (
           <ExpensesList
-            groupedExpenses={groupedExpenses}
+            singleGroup={group}
             currency={currency}
             onDeletePress={openDeleteModal}
             onDetailPress={openDetailModal}
           />
         )}
-      </HistoryLayout>
-
-      {/* --------------------------------------------------------------------
-        MODALES (FUERA DEL LAYOUT PARA EVITAR PROBLEMAS DE POSICIONAMIENTO)
-        Nota: Se renderizan al mismo nivel que HistoryLayout, igual que en
-        settings.tsx. Esto asegura que AppOverlay ocupe toda la pantalla y
-        AppModal pueda alinear su contenido al fondo correctamente.
-      -------------------------------------------------------------------- */}
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.5}
+        isLoadingMore={isLoadingMore}
+        hasMore={hasMore}
+      />
 
       {/* Modal de confirmación de eliminación */}
       <DeleteModal

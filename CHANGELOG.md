@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.49.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.48.0...v1.49.0) (2026-05-19)
+
+
+### Features
+
+* **history:** implementar paginación y carga infinita con corrección de zona horaria ([5697a6d](https://github.com/axeljimenezdeveloper/VulpisDays/commit/5697a6d9a63f39fa6dd893dde8474aaaf709b895))
+
 ## [1.48.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.47.0...v1.48.0) (2026-05-18)
 
 

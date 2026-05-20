@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.53.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.52.0...v1.53.0) (2026-05-20)
+
+
+### Features
+
+* **protocols:** implementar pantalla de términos y condiciones con 9 acordeones ([5034d41](https://github.com/axeljimenezdeveloper/VulpisDays/commit/5034d41c5d47a443b3ca7d4653947b50e36c3966))
+
 ## [1.52.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.51.0...v1.52.0) (2026-05-20)
 
 

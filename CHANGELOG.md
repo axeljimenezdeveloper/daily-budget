@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.52.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.51.0...v1.52.0) (2026-05-20)
+
+
+### Features
+
+* **guide:** implementar FAQ con acordeones y layout dedicado ([485a9c5](https://github.com/axeljimenezdeveloper/VulpisDays/commit/485a9c50c68be2c9a045891141c8109d40c58373))
+
 ## [1.51.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.50.0...v1.51.0) (2026-05-19)
 
 

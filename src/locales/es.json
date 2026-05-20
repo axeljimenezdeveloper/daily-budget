@@ -52,6 +52,55 @@
     "guide": "GUÍA",
     "protocols": "PROTOCOLOS"
   },
+  "guide": {
+    "faq": {
+      "1": {
+        "question": "¿Qué es Daily Budget?",
+        "answer": "Daily Budget transforma tu presupuesto en 'días cubiertos'. En lugar de solo números, ves cuántos días puedes vivir con el dinero que te queda.",
+        "icon": "bulb-outline"
+      },
+      "2": {
+        "question": "¿Cómo registro un gasto?",
+        "answer": "Presiona el botón '+' en la pantalla principal. Introduce el monto, selecciona una categoría (Comida, Transporte, Ocio, Salud, Otro) y añade una nota opcional. El gasto se resta automáticamente de tu presupuesto.",
+        "icon": "add-circle-outline"
+      },
+      "3": {
+        "question": "¿Qué significan los colores del anillo de progreso?",
+        "answer": "El anillo muestra el porcentaje de presupuesto restante. Verde: seguro (>70%), Naranja: cerca del límite (30-70%), Rojo: crítico (<30%) o modo ahorro activado.",
+        "icon": "pie-chart-outline"
+      },
+      "4": {
+        "question": "¿Qué es el 'Modo ahorro'?",
+        "answer": "Se activa cuando gastas más del 120% de lo ideal por día o cuando tu presupuesto restante es negativo. Te ayuda a identificar que debes reducir gastos.",
+        "icon": "warning-outline"
+      },
+      "5": {
+        "question": "¿Puedo eliminar un gasto?",
+        "answer": "Sí. En el historial, toca el icono de papelera en la fila del gasto, confirma la eliminación y el presupuesto se recuperará automáticamente.",
+        "icon": "trash-outline"
+      },
+      "6": {
+        "question": "¿Cómo funciona el historial?",
+        "answer": "Todas tus transacciones se agrupan por día. Puedes ver el detalle de cada gasto tocando la fila. También puedes cargar más elementos desplazándote hacia abajo (carga infinita).",
+        "icon": "list-outline"
+      },
+      "7": {
+        "question": "¿Mis datos están seguros?",
+        "answer": "Sí. Todos los datos se almacenan únicamente en tu dispositivo. Además, puedes activar el bloqueo biométrico (huella) y hacer backups cifrados desde Ajustes.",
+        "icon": "shield-checkmark-outline"
+      },
+      "8": {
+        "question": "¿Puedo cambiar mi presupuesto o duración?",
+        "answer": "Actualmente puedes editar tu plan desde Ajustes > 'Tu plan actual' (próximamente). Mientras tanto, puedes reiniciar la bóveda (borrar todos los datos) y volver a configurar desde cero.",
+        "icon": "create-outline"
+      },
+      "9": {
+        "question": "¿Cómo exporto mis datos?",
+        "answer": "Ve a Ajustes > Exportar datos. Puedes generar un archivo CSV con tus gastos o crear un backup cifrado protegido con biometría.",
+        "icon": "download-outline"
+      }
+    }
+  },
   "animations": {
     "loading": {
       "subtitle": "Cargando"

@@ -52,6 +52,55 @@
     "guide": "GUIDE",
     "protocols": "PROTOCOLS"
   },
+  "guide": {
+    "faq": {
+      "1": {
+        "question": "What is Daily Budget?",
+        "answer": "Daily Budget turns your budget into 'covered days'. Instead of just numbers, you see how many days you can live with the money you have left.",
+        "icon": "bulb-outline"
+      },
+      "2": {
+        "question": "How do I record an expense?",
+        "answer": "Press the '+' button on the main screen. Enter the amount, select a category (Food, Transport, Leisure, Health, Other) and add an optional note. The expense is automatically deducted from your budget.",
+        "icon": "add-circle-outline"
+      },
+      "3": {
+        "question": "What do the colors of the progress ring mean?",
+        "answer": "The ring shows your remaining budget percentage. Green: safe (>70%), Orange: close to limit (30-70%), Red: critical (<30%) or saving mode active.",
+        "icon": "pie-chart-outline"
+      },
+      "4": {
+        "question": "What is 'Saving mode'?",
+        "answer": "It activates when you spend more than 120% of the ideal daily amount or when your remaining budget is negative. It helps you identify that you need to reduce expenses.",
+        "icon": "warning-outline"
+      },
+      "5": {
+        "question": "Can I delete an expense?",
+        "answer": "Yes. In history, tap the trash icon on the expense row, confirm deletion, and the budget will be automatically recovered.",
+        "icon": "trash-outline"
+      },
+      "6": {
+        "question": "How does the history work?",
+        "answer": "All transactions are grouped by day. Tap any row to see details. Scroll down to load more items (infinite pagination).",
+        "icon": "list-outline"
+      },
+      "7": {
+        "question": "Is my data safe?",
+        "answer": "Yes. All data is stored only on your device. You can also enable biometric lock (fingerprint) and make encrypted backups from Settings.",
+        "icon": "shield-checkmark-outline"
+      },
+      "8": {
+        "question": "Can I change my budget or duration?",
+        "answer": "Currently you can edit your plan from Settings > 'Your current plan' (coming soon). Meanwhile, you can reset the vault (delete all data) and reconfigure from scratch.",
+        "icon": "create-outline"
+      },
+      "9": {
+        "question": "How do I export my data?",
+        "answer": "Go to Settings > Export data. You can generate a CSV file with your expenses or create an encrypted backup protected by biometrics.",
+        "icon": "download-outline"
+      }
+    }
+  },
   "animations": {
     "loading": {
       "subtitle": "Loading"

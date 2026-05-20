@@ -101,6 +101,27 @@
       }
     }
   },
+  "protocols": {
+  "title": "Términos y protocolos",
+  "data_storage_title": "Almacenamiento de datos",
+  "data_storage_text": "Todos tus datos (presupuesto, gastos, notas, preferencias) se almacenan únicamente en tu dispositivo. No se envían a ningún servidor externo ni se sincronizan en la nube.",
+  "privacy_title": "Privacidad",
+  "privacy_text": "No recopilamos información personal (nombre, correo, ubicación). La app no utiliza analíticas ni rastreadores de terceros.",
+  "security_title": "Seguridad",
+  "security_text": "Puedes activar el bloqueo biométrico (huella dactilar) para proteger el acceso. Los backups se cifran con AES-256-GCM y se guardan donde tú elijas. Si pierdes el dispositivo o lo restauras, los datos se perderán a menos que tengas un backup.",
+  "liability_title": "Limitación de responsabilidad",
+  "liability_text": "Esta app es una herramienta de ayuda para gestionar tu presupuesto. No proporciona asesoramiento financiero profesional. Eres tú quien toma las decisiones de gasto. La app no se hace responsable de pérdidas económicas derivadas del uso de la información.",
+  "license_title": "Licencia y uso",
+  "license_text": "La aplicación es de uso gratuito y personal. No está permitida su redistribución o modificación con fines comerciales sin autorización.",
+  "contact_title": "Contacto",
+  "contact_text": "Si tienes dudas o sugerencias, escríbeme a: tucorreo@ejemplo.com",
+  "updates_title": "Actualizaciones de este documento",
+  "updates_text": "Podemos actualizar estos términos ocasionalmente. Los cambios se reflejarán en esta pantalla. El uso continuado de la app después de los cambios implica la aceptación de los nuevos términos.",
+  "third_party_title": "Servicios de terceros",
+  "third_party_text": "La app utiliza módulos de Expo y librerías de React Native, pero no tiene analíticas ni rastreadores de terceros. Toda la funcionalidad se ejecuta localmente en tu dispositivo.",
+  "data_export_title": "Exportación y portabilidad de datos",
+  "data_export_text": "Puedes exportar tus datos a CSV o crear backups cifrados en cualquier momento. Los backups están cifrados con AES-256-GCM y solo tú puedes restaurarlos con tu clave biométrica."
+},
   "animations": {
     "loading": {
       "subtitle": "Cargando"

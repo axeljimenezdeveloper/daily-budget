@@ -101,6 +101,27 @@
       }
     }
   },
+  "protocols": {
+  "title": "Terms & Protocols",
+  "data_storage_title": "Data storage",
+  "data_storage_text": "All your data (budget, expenses, notes, preferences) is stored only on your device. It is never sent to any external server or synced to the cloud.",
+  "privacy_title": "Privacy",
+  "privacy_text": "We do not collect any personal information (name, email, location). The app does not use analytics or third-party trackers.",
+  "security_title": "Security",
+  "security_text": "You can enable biometric lock (fingerprint) to protect access. Backups are encrypted with AES-256-GCM and saved where you choose. If you lose your device or reset it, your data will be lost unless you have a backup.",
+  "liability_title": "Limitation of liability",
+  "liability_text": "This app is a helping tool to manage your budget. It does not provide professional financial advice. You are responsible for your spending decisions. The app is not liable for any financial loss arising from the use of the information.",
+  "license_title": "License and use",
+  "license_text": "The app is free for personal use. Redistribution or modification for commercial purposes without permission is not allowed.",
+  "contact_title": "Contact",
+  "contact_text": "If you have questions or suggestions, write to me at: your@email.com",
+  "updates_title": "Updates to this document",
+  "updates_text": "We may update these terms occasionally. Any changes will be reflected in this screen. Continued use of the app after changes means acceptance of the new terms.",
+  "third_party_title": "Third-party services",
+  "third_party_text": "The app uses Expo modules and React Native libraries, but no third-party analytics or tracking. All functionality runs locally on your device.",
+  "data_export_title": "Data export and portability",
+  "data_export_text": "You can export your data to CSV or create encrypted backups at any time. Backups are AES-256-GCM encrypted and only you can restore them with your biometric key."
+},
   "animations": {
     "loading": {
       "subtitle": "Loading"

@@ -1,5 +1,5 @@
 // ============================================================================
-// PANTALLA PRINCIPAL - DASHBOARD (CON IDEAL DINÁMICO Y MODO CUIDADO)
+// PANTALLA PRINCIPAL - DASHBOARD (CON GRÁFICO DE GASTOS DIARIOS)
 // ============================================================================
 
 import React, { useEffect, useState } from "react";
@@ -26,7 +26,7 @@ import AppDivider from "@/components/atoms/structure/AppDivider";
 import AppBadge from "@/components/atoms/visual/AppBadge";
 import { DashboardLayout } from "@/components/templates/dashboard/components/layout/DashboardLayout";
 import AppCircularProgress from "@/components/molecules/visual/AppCircularProgress";
-import MetricPill from "@/components/molecules/display/MetricPill";
+import DailySpendingChart from "@/components/molecules/visual/DailySpendingChart";
 
 // ----------------------------------------------------------------------------
 // HOOKS PERSONALIZADOS
@@ -60,41 +60,27 @@ import { AddExpenseModal } from "@/components/templates/add-expense/components/m
 // COMPONENTE PRINCIPAL
 // ----------------------------------------------------------------------------
 
-/**
- * Pantalla principal del dashboard.
- * Muestra el resumen financiero: anillo de progreso, píldoras, transacciones recientes,
- * y permite añadir gasto mediante un modal o navegar al historial.
- * Se actualiza automáticamente al cambiar de día o al volver a primer plano.
- */
 export default function DashboardScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const haptic = useHaptic();
 
-  // Estado para forzar re-render en cambios de día o cuando la app vuelve a primer plano
   const [tick, setTick] = useState(0);
-
-  // Estado para controlar la visibilidad del modal de agregar gasto
   const [isAddExpenseModalOpen, setIsAddExpenseModalOpen] = useState(false);
 
   useEffect(() => {
     const forceUpdate = () => setTick((t) => t + 1);
 
-    // 1. Timeout hasta la próxima medianoche
     const now = new Date();
     const midnight = new Date(now);
-    midnight.setHours(24, 0, 0, 0); // próxima medianoche
+    midnight.setHours(24, 0, 0, 0);
     const timeUntilMidnight = midnight.getTime() - now.getTime();
-
     const timeout = setTimeout(forceUpdate, timeUntilMidnight);
 
-    // 2. Listener de AppState para actualizar cuando la app vuelve a primer plano
     const subscription = AppState.addEventListener(
       "change",
       (nextAppState: AppStateStatus) => {
-        if (nextAppState === "active") {
-          forceUpdate();
-        }
+        if (nextAppState === "active") forceUpdate();
       }
     );
 
@@ -104,7 +90,6 @@ export default function DashboardScreen() {
     };
   }, []);
 
-  // Datos reales del store
   const {
     remainingDays,
     daysDuration,
@@ -118,13 +103,15 @@ export default function DashboardScreen() {
     totalBudget,
     idealToday,
     todaySpent,
+    originalIdeal,
+    spentDeviation,
+    transactions,
   } = useDashboardData();
 
   const greeting = useGreeting(isExtremeMode);
   const { refreshing, onRefresh } = usePullToRefresh();
   const hydrated = useStoreHydration();
 
-  // Mientras el store no esté hidratado, mostramos un spinner
   if (!hydrated) {
     return (
       <View style={styles.loadingContainer}>
@@ -138,7 +125,6 @@ export default function DashboardScreen() {
 
   const daysPassed = summary.daysPassed;
 
-  // Debug: Mostrar valores reales para verificar el porcentaje (solo en desarrollo)
   if (__DEV__) {
     useEffect(() => {
       console.log("📊 Dashboard data:", {
@@ -150,6 +136,8 @@ export default function DashboardScreen() {
         daysPassed,
         idealToday,
         todaySpent,
+        originalIdeal,
+        spentDeviation,
         recentTransactions: recentTransactions.length,
         isExtremeMode,
         tick,
@@ -163,42 +151,24 @@ export default function DashboardScreen() {
       daysPassed,
       idealToday,
       todaySpent,
+      originalIdeal,
+      spentDeviation,
       recentTransactions,
       isExtremeMode,
       tick,
     ]);
   }
 
-  /**
-   * Abre el modal para agregar un nuevo gasto con feedback háptico.
-   */
   const handleAddExpense = () => {
     haptic.light();
     setIsAddExpenseModalOpen(true);
   };
 
-  /**
-   * Navega al historial de transacciones con feedback háptico.
-   */
   const handleTransactionPress = () => {
     haptic.selection();
     router.push(ROUTES.MAIN.HISTORY);
   };
 
-  /**
-   * Determina el estado semántico de la píldora "Ideal hoy".
-   * @returns 'error' | 'warning' | 'success' | 'default'
-   */
-  const getIdealTodayStatus = (): 'error' | 'warning' | 'success' | 'default' => {
-    if (idealToday < 0) return "error";
-    if (isExtremeMode) return "warning";
-    if (idealToday > 0) return "success";
-    return "default";
-  };
-
-  /**
-   * Retorna la etiqueta traducida del ciclo según la duración configurada.
-   */
   const getCycleLabel = (): string => {
     if (daysDuration === 7) return t("dashboard.cycle.weekly", "Semanal");
     if (daysDuration === 15) return t("dashboard.cycle.biweekly", "Quincenal");
@@ -206,10 +176,7 @@ export default function DashboardScreen() {
     return t("dashboard.cycle.custom", "Personalizado");
   };
 
-  /**
-   * Determina el estado semántico de la badge de gasto diario.
-   * @returns 'info' | 'success' | 'warning' | 'error'
-   */
+  // Para la badge (soporta 'info')
   const getDailyStatus = (): 'info' | 'success' | 'warning' | 'error' => {
     if (todaySpent === 0) return "info";
     if (todaySpent <= idealToday) return "success";
@@ -217,9 +184,6 @@ export default function DashboardScreen() {
     return "error";
   };
 
-  /**
-   * Retorna la etiqueta traducida de la badge de gasto diario.
-   */
   const getDailyLabel = (): string => {
     if (todaySpent === 0)
       return t("dashboard.badge.no_spending", "Sin gastos hoy");
@@ -264,9 +228,7 @@ export default function DashboardScreen() {
               gap="s"
               style={{ marginTop: SPACING.s, flexWrap: "wrap" }}
             >
-              {/* Badge del ciclo */}
               <AppBadge label={getCycleLabel()} status="info" variant="subtle" />
-              {/* Badge del estado diario */}
               <AppBadge
                 label={getDailyLabel()}
                 status={getDailyStatus()}
@@ -280,6 +242,9 @@ export default function DashboardScreen() {
                 />
               )}
             </AppStack>
+            <AppText variant="caption" color="secondary" style={{ marginTop: SPACING.s }}>
+              {t("dashboard.cycle_info", { passed: daysPassed, total: daysDuration })}
+            </AppText>
           </View>
         </AppBox>
 
@@ -319,23 +284,18 @@ export default function DashboardScreen() {
           />
         </AppBox>
 
-        {/* PÍLDORAS DE MICRO-RESUMEN */}
-        <AppBox marginBottom="xl">
-          <AppStack direction="horizontal" gap="m" fullWidth>
-            <MetricPill
-              label={t("dashboard.pill.ideal_today", "Ideal hoy")}
-              value={formatMoney(idealToday, currency)}
-              status={getIdealTodayStatus()}
-            />
-            <MetricPill
-              label={t("dashboard.pill.cycle", "Ciclo")}
-              value={t("dashboard.pill.cycle_format", {
-                passed: daysPassed,
-                total: daysDuration,
-              })}
-            />
-          </AppStack>
-        </AppBox>
+        {/* GRÁFICO DE GASTOS DIARIOS CON FOOTER INFORMATIVO */}
+        <DailySpendingChart
+          transactions={transactions}
+          currency={currency}
+          daysCount={7}
+          maxBarHeight={80}
+          originalIdeal={originalIdeal}
+          todaySpent={todaySpent}
+          spentDeviation={spentDeviation}
+          remainingBudget={remainingBudget}  
+          remainingDays={remainingDays}  
+        />
 
         {/* LISTA DE ACTIVIDADES RECIENTES */}
         <AppBox marginBottom="xl">
@@ -350,7 +310,6 @@ export default function DashboardScreen() {
           {recentTransactions.length > 0 ? (
             <AppBox>
               {recentTransactions.map((tx, index) => {
-                // Obtener icono dinámico usando el feature categories
                 const iconName = useCategoryIcon(tx.category);
                 return (
                   <React.Fragment key={tx.id}>
@@ -396,7 +355,6 @@ export default function DashboardScreen() {
         </AppBox>
       </DashboardLayout>
 
-      {/* MODAL PARA AGREGAR GASTO */}
       <AddExpenseModal
         isOpen={isAddExpenseModalOpen}
         onClose={() => setIsAddExpenseModalOpen(false)}
@@ -406,7 +364,7 @@ export default function DashboardScreen() {
 }
 
 // ----------------------------------------------------------------------------
-// ESTILOS (SOLO LOS NECESARIOS)
+// ESTILOS
 // ----------------------------------------------------------------------------
 const styles = StyleSheet.create({
   loadingContainer: {

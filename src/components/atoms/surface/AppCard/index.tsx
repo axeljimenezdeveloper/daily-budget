@@ -1,20 +1,21 @@
-import React from "react"; // Core React library
-import { View } from "react-native"; // Native container component
-import { SPACING } from "@/constants/metrics"; // Standardized spacing
-import { AppCardProps } from "./index.props"; // Interface definitions
-import { styles } from "./index.styles"; // Static styles
+import React from "react";
+import { View } from "react-native";
+import { SPACING } from "@/constants/metrics";
+import { AppCardProps } from "./index.props";
+import { styles } from "./index.styles";
 
 export default function AppCard({
   children,
-  padding = "m", // Defaults to 16px padding
+  padding = "m",
   style,
 }: AppCardProps) {
+  const paddingValue = padding === "none" ? 0 : SPACING[padding];
   return (
-    <View 
+    <View
       style={[
-        styles.container, 
-        { padding: SPACING[padding] }, // Dynamic padding based on props
-        style
+        styles.container,
+        { padding: paddingValue },
+        style,
       ]}
     >
       {children}

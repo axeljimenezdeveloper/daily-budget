@@ -29,6 +29,10 @@ import { useShallow } from 'zustand/react/shallow';
  *   - recentTransactions: Transaction[] – Últimas 3 transacciones.
  *   - idealToday: number – Presupuesto ideal para hoy (remainingBudget / remainingDays).
  *   - todaySpent: number – Total gastado en el día de hoy.
+ *   - originalIdeal: number – Ideal diario original (totalBudget / daysDuration).
+ *   - spentDeviation: number – Diferencia entre gastado hoy y el ideal original (todaySpent - originalIdeal).
+ *   - adjustedDaily: number – Alias de idealToday, representa el presupuesto diario ajustado.
+ *   - transactions: Transaction[] – Lista completa de transacciones (para el gráfico).
  */
 export const useDashboardData = () => {
   const totalBudget = useVaultStore((state) => state.totalBudget);
@@ -36,7 +40,7 @@ export const useDashboardData = () => {
   const daysDuration = useVaultStore((state) => state.daysDuration);
   const isExtremeMode = useVaultStore((state) => state.isExtremeMode);
   const currency = useVaultStore((state) => state.currency);
-  const transactions = useVaultStore((state) => state.transactions);
+  const transactions = useVaultStore((state) => state.transactions); // ✅ Añadido
   const hasHydrated = useVaultStore((state) => state._hasHydrated);
 
   const summary = useVaultStore(
@@ -70,6 +74,18 @@ export const useDashboardData = () => {
     return transactions.slice(0, 3);
   }, [transactions]);
 
+  // Nuevos campos derivados para la UI mejorada
+  const originalIdeal = useMemo(() => {
+    if (daysDuration <= 0) return 0;
+    return totalBudget / daysDuration;
+  }, [totalBudget, daysDuration]);
+
+  const spentDeviation = useMemo(() => {
+    return todaySpent - originalIdeal;
+  }, [todaySpent, originalIdeal]);
+
+  const adjustedDaily = idealToday; // Alias semántico
+
   return {
     totalBudget,
     remainingBudget,
@@ -83,5 +99,9 @@ export const useDashboardData = () => {
     recentTransactions,
     idealToday,
     todaySpent,
+    originalIdeal,
+    spentDeviation,
+    adjustedDaily,
+    transactions, // ✅ Añadido al retorno
   };
 };

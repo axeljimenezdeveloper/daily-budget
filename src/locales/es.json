@@ -56,12 +56,12 @@
     "faq": {
       "1": {
         "question": "¿Qué es Daily Budget?",
-        "answer": "Daily Budget transforma tu presupuesto en 'días cubiertos'. En lugar de solo números, ves cuántos días puedes vivir con el dinero que te queda.",
+        "answer": "Daily Budget transforma tu presupuesto en 'días cubiertos'. En lugar de solo números, ves cuántos días puedes vivir con el dinero que te queda. Tu dinero se convierte en tiempo, lo que facilita la planificación.",
         "icon": "bulb-outline"
       },
       "2": {
         "question": "¿Cómo registro un gasto?",
-        "answer": "Presiona el botón '+' en la pantalla principal. Introduce el monto, selecciona una categoría (Comida, Transporte, Ocio, Salud, Otro) y añade una nota opcional. El gasto se resta automáticamente de tu presupuesto.",
+        "answer": "Presiona el botón '+' en la pantalla principal. Introduce el monto, selecciona una categoría (Comida, Transporte, Ocio, Salud, Otro) y añade una nota opcional. El gasto se resta automáticamente de tu presupuesto y el gráfico se actualiza en tiempo real.",
         "icon": "add-circle-outline"
       },
       "3": {
@@ -75,26 +75,36 @@
         "icon": "warning-outline"
       },
       "5": {
+        "question": "¿Qué es el gráfico de gastos?",
+        "answer": "El gráfico que aparece debajo del anillo muestra tus gastos diarios de los últimos 7 días. Cada barra representa un día. Puedes tocar cualquier barra para ver el monto exacto gastado ese día. El día actual se resalta en naranja.",
+        "icon": "bar-chart-outline"
+      },
+      "6": {
+        "question": "¿Qué significa 'Presupuesto diario ajustado'?",
+        "answer": "Es el promedio de lo que puedes gastar por día de ahora en adelante, basado en tu presupuesto restante y los días que quedan. Si gastas de más o ahorras, este número se ajusta automáticamente para ayudarte a mantener el rumbo.",
+        "icon": "calculator-outline"
+      },
+      "7": {
         "question": "¿Puedo eliminar un gasto?",
         "answer": "Sí. En el historial, toca el icono de papelera en la fila del gasto, confirma la eliminación y el presupuesto se recuperará automáticamente.",
         "icon": "trash-outline"
       },
-      "6": {
+      "8": {
         "question": "¿Cómo funciona el historial?",
         "answer": "Todas tus transacciones se agrupan por día. Puedes ver el detalle de cada gasto tocando la fila. También puedes cargar más elementos desplazándote hacia abajo (carga infinita).",
         "icon": "list-outline"
       },
-      "7": {
+      "9": {
         "question": "¿Mis datos están seguros?",
-        "answer": "Sí. Todos los datos se almacenan únicamente en tu dispositivo. Además, puedes activar el bloqueo biométrico (huella) y hacer backups cifrados desde Ajustes.",
+        "answer": "Sí. Todos los datos se almacenan únicamente en tu dispositivo. Además, puedes activar el bloqueo biométrico (huella o Face ID) y hacer backups cifrados desde Ajustes.",
         "icon": "shield-checkmark-outline"
       },
-      "8": {
+      "10": {
         "question": "¿Puedo cambiar mi presupuesto o duración?",
         "answer": "Actualmente puedes editar tu plan desde Ajustes > 'Tu plan actual' (próximamente). Mientras tanto, puedes reiniciar la bóveda (borrar todos los datos) y volver a configurar desde cero.",
         "icon": "create-outline"
       },
-      "9": {
+      "11": {
         "question": "¿Cómo exporto mis datos?",
         "answer": "Ve a Ajustes > Exportar datos. Puedes generar un archivo CSV con tus gastos o crear un backup cifrado protegido con biometría.",
         "icon": "download-outline"
@@ -102,26 +112,26 @@
     }
   },
   "protocols": {
-  "title": "Términos y protocolos",
-  "data_storage_title": "Almacenamiento de datos",
-  "data_storage_text": "Todos tus datos (presupuesto, gastos, notas, preferencias) se almacenan únicamente en tu dispositivo. No se envían a ningún servidor externo ni se sincronizan en la nube.",
-  "privacy_title": "Privacidad",
-  "privacy_text": "No recopilamos información personal (nombre, correo, ubicación). La app no utiliza analíticas ni rastreadores de terceros.",
-  "security_title": "Seguridad",
-  "security_text": "Puedes activar el bloqueo biométrico (huella dactilar) para proteger el acceso. Los backups se cifran con AES-256-GCM y se guardan donde tú elijas. Si pierdes el dispositivo o lo restauras, los datos se perderán a menos que tengas un backup.",
-  "liability_title": "Limitación de responsabilidad",
-  "liability_text": "Esta app es una herramienta de ayuda para gestionar tu presupuesto. No proporciona asesoramiento financiero profesional. Eres tú quien toma las decisiones de gasto. La app no se hace responsable de pérdidas económicas derivadas del uso de la información.",
-  "license_title": "Licencia y uso",
-  "license_text": "La aplicación es de uso gratuito y personal. No está permitida su redistribución o modificación con fines comerciales sin autorización.",
-  "contact_title": "Contacto",
-  "contact_text": "Si tienes dudas o sugerencias, escríbeme a: tucorreo@ejemplo.com",
-  "updates_title": "Actualizaciones de este documento",
-  "updates_text": "Podemos actualizar estos términos ocasionalmente. Los cambios se reflejarán en esta pantalla. El uso continuado de la app después de los cambios implica la aceptación de los nuevos términos.",
-  "third_party_title": "Servicios de terceros",
-  "third_party_text": "La app utiliza módulos de Expo y librerías de React Native, pero no tiene analíticas ni rastreadores de terceros. Toda la funcionalidad se ejecuta localmente en tu dispositivo.",
-  "data_export_title": "Exportación y portabilidad de datos",
-  "data_export_text": "Puedes exportar tus datos a CSV o crear backups cifrados en cualquier momento. Los backups están cifrados con AES-256-GCM y solo tú puedes restaurarlos con tu clave biométrica."
-},
+    "title": "Términos y protocolos",
+    "data_storage_title": "Almacenamiento de datos",
+    "data_storage_text": "Todos tus datos (presupuesto, gastos, notas, preferencias) se almacenan únicamente en tu dispositivo mediante AsyncStorage. No se envían a ningún servidor externo ni se sincronizan en la nube.",
+    "privacy_title": "Privacidad",
+    "privacy_text": "No recopilamos información personal (nombre, correo, ubicación). La app no utiliza analíticas ni rastreadores de terceros. Tus datos financieros permanecen exclusivamente en tu dispositivo.",
+    "security_title": "Seguridad",
+    "security_text": "Puedes activar el bloqueo biométrico (huella dactilar o Face ID) para proteger el acceso. Los backups se cifran con AES-256-GCM y se guardan donde tú elijas. Si pierdes el dispositivo o lo restauras, los datos se perderán a menos que tengas un backup.",
+    "liability_title": "Limitación de responsabilidad",
+    "liability_text": "Esta app es una herramienta de ayuda para gestionar tu presupuesto. No proporciona asesoramiento financiero profesional. Eres tú quien toma las decisiones de gasto. La app no se hace responsable de pérdidas económicas derivadas del uso de la información.",
+    "license_title": "Licencia y uso",
+    "license_text": "La aplicación es de uso gratuito y personal. No está permitida su redistribución o modificación con fines comerciales sin autorización.",
+    "contact_title": "Contacto",
+    "contact_text": "Si tienes dudas o sugerencias, escríbeme a: tucorreo@ejemplo.com",
+    "updates_title": "Actualizaciones de este documento",
+    "updates_text": "Podemos actualizar estos términos ocasionalmente. Los cambios se reflejarán en esta pantalla. El uso continuado de la app después de los cambios implica la aceptación de los nuevos términos.",
+    "third_party_title": "Servicios de terceros",
+    "third_party_text": "La app utiliza módulos de Expo y librerías de React Native, pero no tiene analíticas ni rastreadores de terceros. Toda la funcionalidad se ejecuta localmente en tu dispositivo.",
+    "data_export_title": "Exportación y portabilidad de datos",
+    "data_export_text": "Puedes exportar tus datos a CSV o crear backups cifrados en cualquier momento. Los backups están cifrados con AES-256-GCM y solo tú puedes restaurarlos con tu clave biométrica."
+  },
   "animations": {
     "loading": {
       "subtitle": "Cargando"
@@ -291,8 +301,15 @@
       "ideal_today": "Ideal hoy",
       "cycle": "Ciclo",
       "day": "Día",
-      "cycle_format": "Día {{passed}} de {{total}}"
+      "cycle_format": "Día {{passed}} de {{total}}",
+      "spent_today": "Gastado hoy",
+      "adjusted_daily": "Presupuesto diario restante"
     },
+    "cycle_info": "Día {{passed}} de {{total}}",
+    "overspent_message": "Te excediste por {{amount}} hoy. Para los {{days}} días restantes, ajusta a {{newDaily}}/día.",
+    "underspent_message": "Gastaste menos hoy. Tu presupuesto diario restante es de {{newDaily}}.",
+    "overspent_message_short": "▲ Excediste {{amount}} hoy",
+    "underspent_message_short": "▼ Ahorraste {{amount}} hoy",
     "subtitle": "Estado financiero",
     "cycle": {
       "weekly": "Semanal",
@@ -306,6 +323,13 @@
       "caution": "Revisa",
       "over": "Excedido",
       "extreme_mode": "Modo ahorro"
+    },
+    "summary": {
+      "spent_today": "Gastado hoy",
+      "ideal_daily": "Presupuesto diario",
+      "days_left": "{{count}} día restante",
+      "days_left_plural": "{{count}} días restantes",
+      "remaining_budget": "Presupuesto restante"
     }
   },
   "notifications": {

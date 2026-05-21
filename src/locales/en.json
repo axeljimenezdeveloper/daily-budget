@@ -56,12 +56,12 @@
     "faq": {
       "1": {
         "question": "What is Daily Budget?",
-        "answer": "Daily Budget turns your budget into 'covered days'. Instead of just numbers, you see how many days you can live with the money you have left.",
+        "answer": "Daily Budget turns your budget into 'covered days'. Instead of just numbers, you see how many days you can live with the money you have left. Your money becomes time, making it easier to plan.",
         "icon": "bulb-outline"
       },
       "2": {
         "question": "How do I record an expense?",
-        "answer": "Press the '+' button on the main screen. Enter the amount, select a category (Food, Transport, Leisure, Health, Other) and add an optional note. The expense is automatically deducted from your budget.",
+        "answer": "Press the '+' button on the main screen. Enter the amount, select a category (Food, Transport, Leisure, Health, Other) and add an optional note. The expense is automatically deducted from your budget and the chart updates in real time.",
         "icon": "add-circle-outline"
       },
       "3": {
@@ -75,26 +75,31 @@
         "icon": "warning-outline"
       },
       "5": {
-        "question": "Can I delete an expense?",
-        "answer": "Yes. In history, tap the trash icon on the expense row, confirm deletion, and the budget will be automatically recovered.",
-        "icon": "trash-outline"
+        "question": "What is the spending chart?",
+        "answer": "The chart below the ring shows your daily spending for the last 7 days. Each bar represents a day, and you can tap any bar to see the exact amount spent that day. The current day is highlighted in orange.",
+        "icon": "bar-chart-outline"
       },
       "6": {
-        "question": "How does the history work?",
-        "answer": "All transactions are grouped by day. Tap any row to see details. Scroll down to load more items (infinite pagination).",
-        "icon": "list-outline"
+        "question": "What does 'Adjusted daily budget' mean?",
+        "answer": "It's the average amount you can spend per day from now on, based on your remaining budget and remaining days. If you overspend or save, this number automatically adjusts to help you stay on track.",
+        "icon": "calculator-outline"
       },
       "7": {
+        "question": "How does the history work?",
+        "answer": "All transactions are grouped by day. Tap any row to see details. Scroll down to load more items (infinite pagination). You can also delete an expense by tapping the trash icon.",
+        "icon": "list-outline"
+      },
+      "8": {
         "question": "Is my data safe?",
         "answer": "Yes. All data is stored only on your device. You can also enable biometric lock (fingerprint) and make encrypted backups from Settings.",
         "icon": "shield-checkmark-outline"
       },
-      "8": {
+      "9": {
         "question": "Can I change my budget or duration?",
         "answer": "Currently you can edit your plan from Settings > 'Your current plan' (coming soon). Meanwhile, you can reset the vault (delete all data) and reconfigure from scratch.",
         "icon": "create-outline"
       },
-      "9": {
+      "10": {
         "question": "How do I export my data?",
         "answer": "Go to Settings > Export data. You can generate a CSV file with your expenses or create an encrypted backup protected by biometrics.",
         "icon": "download-outline"
@@ -102,26 +107,26 @@
     }
   },
   "protocols": {
-  "title": "Terms & Protocols",
-  "data_storage_title": "Data storage",
-  "data_storage_text": "All your data (budget, expenses, notes, preferences) is stored only on your device. It is never sent to any external server or synced to the cloud.",
-  "privacy_title": "Privacy",
-  "privacy_text": "We do not collect any personal information (name, email, location). The app does not use analytics or third-party trackers.",
-  "security_title": "Security",
-  "security_text": "You can enable biometric lock (fingerprint) to protect access. Backups are encrypted with AES-256-GCM and saved where you choose. If you lose your device or reset it, your data will be lost unless you have a backup.",
-  "liability_title": "Limitation of liability",
-  "liability_text": "This app is a helping tool to manage your budget. It does not provide professional financial advice. You are responsible for your spending decisions. The app is not liable for any financial loss arising from the use of the information.",
-  "license_title": "License and use",
-  "license_text": "The app is free for personal use. Redistribution or modification for commercial purposes without permission is not allowed.",
-  "contact_title": "Contact",
-  "contact_text": "If you have questions or suggestions, write to me at: your@email.com",
-  "updates_title": "Updates to this document",
-  "updates_text": "We may update these terms occasionally. Any changes will be reflected in this screen. Continued use of the app after changes means acceptance of the new terms.",
-  "third_party_title": "Third-party services",
-  "third_party_text": "The app uses Expo modules and React Native libraries, but no third-party analytics or tracking. All functionality runs locally on your device.",
-  "data_export_title": "Data export and portability",
-  "data_export_text": "You can export your data to CSV or create encrypted backups at any time. Backups are AES-256-GCM encrypted and only you can restore them with your biometric key."
-},
+    "title": "Terms & Protocols",
+    "data_storage_title": "Data storage",
+    "data_storage_text": "All your data (budget, expenses, notes, preferences) is stored only on your device using AsyncStorage. It is never sent to any external server or synced to the cloud.",
+    "privacy_title": "Privacy",
+    "privacy_text": "We do not collect any personal information (name, email, location). The app does not use analytics or third-party trackers. Your financial data remains exclusively on your device.",
+    "security_title": "Security",
+    "security_text": "You can enable biometric lock (fingerprint or Face ID) to protect access. Backups are encrypted with AES-256-GCM and saved where you choose. If you lose your device or reset it, your data will be lost unless you have a backup.",
+    "liability_title": "Limitation of liability",
+    "liability_text": "This app is a helping tool to manage your budget. It does not provide professional financial advice. You are responsible for your spending decisions. The app is not liable for any financial loss arising from the use of the information.",
+    "license_title": "License and use",
+    "license_text": "The app is free for personal use. Redistribution or modification for commercial purposes without permission is not allowed.",
+    "contact_title": "Contact",
+    "contact_text": "If you have questions or suggestions, write to me at: your@email.com",
+    "updates_title": "Updates to this document",
+    "updates_text": "We may update these terms occasionally. Any changes will be reflected in this screen. Continued use of the app after changes means acceptance of the new terms.",
+    "third_party_title": "Third-party services",
+    "third_party_text": "The app uses Expo modules and React Native libraries, but no third-party analytics or tracking. All functionality runs locally on your device.",
+    "data_export_title": "Data export and portability",
+    "data_export_text": "You can export your data to CSV or create encrypted backups at any time. Backups are AES-256-GCM encrypted and only you can restore them with your biometric key."
+  },
   "animations": {
     "loading": {
       "subtitle": "Loading"
@@ -291,8 +296,15 @@
       "ideal_today": "Ideal today",
       "cycle": "Cycle",
       "day": "Day",
-      "cycle_format": "Day {{passed}} of {{total}}"
+      "cycle_format": "Day {{passed}} of {{total}}",
+      "spent_today": "Spent today",
+      "adjusted_daily": "Remaining daily budget"
     },
+    "cycle_info": "Day {{passed}} of {{total}}",
+    "overspent_message": "You overspent by {{amount}} today. For the next {{days}} days, adjust to {{newDaily}}/day.",
+    "underspent_message": "You spent less today. Your remaining daily budget is {{newDaily}}.",
+    "overspent_message_short": "▲ Overspent by {{amount}} today",
+    "underspent_message_short": "▼ Saved {{amount}} today",
     "subtitle": "Financial status",
     "cycle": {
       "weekly": "Weekly",
@@ -306,6 +318,13 @@
       "caution": "Check",
       "over": "Over budget",
       "extreme_mode": "Saving mode"
+    },
+    "summary": {
+      "spent_today": "Spent today",
+      "ideal_daily": "Daily budget",
+      "days_left": "{{count}} day left",
+      "days_left_plural": "{{count}} days left",
+      "remaining_budget": "Remaining budget"
     }
   },
   "notifications": {

@@ -14,10 +14,10 @@ const deviceLanguage = locales[0]?.languageCode || 'es';
 const isSpanish = deviceLanguage.startsWith('es');
 
 // DEBUG: Ver qué está pasando
-console.log('🔍 DEBUG i18n:');
-console.log('  - Locales:', locales.map(l => l.languageCode));
-console.log('  - Idioma dispositivo:', deviceLanguage);
-console.log('  - ¿Es español?:', isSpanish);
+// console.log('🔍 DEBUG i18n:');
+// console.log('  - Locales:', locales.map(l => l.languageCode));
+// console.log('  - Idioma dispositivo:', deviceLanguage);
+// console.log('  - ¿Es español?:', isSpanish);
 
 // SOLUCIÓN: Siempre comenzar en español si el dispositivo es español
 // Ignorar cualquier valor persistido al inicio
@@ -34,6 +34,6 @@ i18n
   });
 
 // Verificar que se inicializó correctamente
-console.log('✅ i18n inicializado con idioma:', i18n.language);
+// console.log('✅ i18n inicializado con idioma:', i18n.language);
 
 export default i18n;

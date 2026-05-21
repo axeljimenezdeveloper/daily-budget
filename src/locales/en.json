@@ -96,7 +96,7 @@
       },
       "9": {
         "question": "Can I change my budget or duration?",
-        "answer": "Currently you can edit your plan from Settings > 'Your current plan' (coming soon). Meanwhile, you can reset the vault (delete all data) and reconfigure from scratch.",
+        "answer": "This feature is not yet available. For now, to change your budget or plan duration, you must reset the app: go to Settings → Danger zone → 'Delete all data'. This will clear all your expenses and let you start the onboarding again from scratch. We are working on an edit option for a future update.",
         "icon": "create-outline"
       },
       "10": {

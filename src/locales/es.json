@@ -101,7 +101,7 @@
       },
       "10": {
         "question": "¿Puedo cambiar mi presupuesto o duración?",
-        "answer": "Actualmente puedes editar tu plan desde Ajustes > 'Tu plan actual' (próximamente). Mientras tanto, puedes reiniciar la bóveda (borrar todos los datos) y volver a configurar desde cero.",
+        "answer": "Esta funcionalidad aún no está disponible. Por ahora, para cambiar tu presupuesto o la duración del plan, debes reiniciar la aplicación: ve a Ajustes → Zona de peligro → 'Borrar todos los datos'. Esto eliminará todos tus gastos y te permitirá comenzar de nuevo el proceso de configuración. Estamos trabajando en una opción de edición directa para una actualización futura.",
         "icon": "create-outline"
       },
       "11": {

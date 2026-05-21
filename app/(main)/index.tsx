@@ -1,6 +1,17 @@
 // ============================================================================
 // PANTALLA PRINCIPAL - DASHBOARD (CON GRÁFICO DE GASTOS DIARIOS)
 // ============================================================================
+//
+// Esta pantalla es el núcleo de la aplicación. Muestra:
+//   - Anillo circular con el progreso del presupuesto.
+//   - Gráfico de gastos de los últimos 7 días (DailySpendingChart).
+//   - Lista de los últimos 3 gastos.
+//   - Botón flotante (FAB) para registrar un nuevo gasto.
+//   - Cabecera con saludo dinámico, badges y número de día del ciclo.
+//
+// La pantalla se actualiza automáticamente al cambiar de día o al volver
+// a primer plano (AppState). Los datos provienen del hook useDashboardData.
+// ============================================================================
 
 import React, { useEffect, useState } from "react";
 import {
@@ -60,14 +71,28 @@ import { AddExpenseModal } from "@/components/templates/add-expense/components/m
 // COMPONENTE PRINCIPAL
 // ----------------------------------------------------------------------------
 
+/**
+ * Pantalla principal del dashboard.
+ * Muestra el resumen financiero: anillo de progreso, gráfico de gastos diarios,
+ * métricas ajustadas y lista de gastos recientes.
+ * Se actualiza automáticamente al cambiar de día o al volver a primer plano.
+ */
 export default function DashboardScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const haptic = useHaptic();
 
+  // Estado para forzar un re-render cuando cambia el día o la app vuelve a primer plano
   const [tick, setTick] = useState(0);
+  // Controla la visibilidad del modal para agregar gasto
   const [isAddExpenseModalOpen, setIsAddExpenseModalOpen] = useState(false);
 
+  // --------------------------------------------------------------------------
+  // EFECTO PARA FORZAR ACTUALIZACIÓN EN CAMBIO DE DÍA Y APPSTATE
+  // --------------------------------------------------------------------------
+  // Se programa un timeout hasta la próxima medianoche y se añade un listener
+  // de AppState para actualizar la UI cuando la app vuelve a primer plano.
+  // --------------------------------------------------------------------------
   useEffect(() => {
     const forceUpdate = () => setTick((t) => t + 1);
 
@@ -90,6 +115,9 @@ export default function DashboardScreen() {
     };
   }, []);
 
+  // --------------------------------------------------------------------------
+  // OBTENCIÓN DE DATOS DEL STORE (useDashboardData)
+  // --------------------------------------------------------------------------
   const {
     remainingDays,
     daysDuration,
@@ -112,6 +140,8 @@ export default function DashboardScreen() {
   const { refreshing, onRefresh } = usePullToRefresh();
   const hydrated = useStoreHydration();
 
+  // Mientras el store no esté hidratado (datos cargados desde AsyncStorage),
+  // mostramos un spinner de carga.
   if (!hydrated) {
     return (
       <View style={styles.loadingContainer}>
@@ -125,6 +155,13 @@ export default function DashboardScreen() {
 
   const daysPassed = summary.daysPassed;
 
+  // --------------------------------------------------------------------------
+  // LOG DE DEBUG (solo en desarrollo)
+  // --------------------------------------------------------------------------
+  // NOTE: Este console.log se ejecuta solo en modo desarrollo (__DEV__) y
+  // muestra los valores actuales del dashboard para facilitar la depuración.
+  // Se actualiza cada vez que cambia alguna de las dependencias.
+  // --------------------------------------------------------------------------
   if (__DEV__) {
     useEffect(() => {
       console.log("📊 Dashboard data:", {
@@ -159,6 +196,9 @@ export default function DashboardScreen() {
     ]);
   }
 
+  // --------------------------------------------------------------------------
+  // MANEJADORES DE EVENTOS
+  // --------------------------------------------------------------------------
   const handleAddExpense = () => {
     haptic.light();
     setIsAddExpenseModalOpen(true);
@@ -169,6 +209,7 @@ export default function DashboardScreen() {
     router.push(ROUTES.MAIN.HISTORY);
   };
 
+  // Retorna la etiqueta del ciclo (Semanal, Quincenal, Mensual, Personalizado)
   const getCycleLabel = (): string => {
     if (daysDuration === 7) return t("dashboard.cycle.weekly", "Semanal");
     if (daysDuration === 15) return t("dashboard.cycle.biweekly", "Quincenal");
@@ -176,7 +217,8 @@ export default function DashboardScreen() {
     return t("dashboard.cycle.custom", "Personalizado");
   };
 
-  // Para la badge (soporta 'info')
+  // Determina el estado semántico de la badge que resume el gasto de hoy
+  // (info, success, warning, error). Soporta 'info' para cuando no hay gastos.
   const getDailyStatus = (): 'info' | 'success' | 'warning' | 'error' => {
     if (todaySpent === 0) return "info";
     if (todaySpent <= idealToday) return "success";
@@ -184,6 +226,7 @@ export default function DashboardScreen() {
     return "error";
   };
 
+  // Retorna el texto traducido para la badge de gasto diario
   const getDailyLabel = (): string => {
     if (todaySpent === 0)
       return t("dashboard.badge.no_spending", "Sin gastos hoy");
@@ -210,7 +253,11 @@ export default function DashboardScreen() {
           </TouchableOpacity>
         }
       >
-        {/* CABECERA */}
+        {/* --------------------------------------------------------------------
+          CABECERA
+          Saludo dinámico, subtítulo, badges de ciclo y estado diario,
+          y texto del ciclo (día X de N).
+        -------------------------------------------------------------------- */}
         <AppBox marginBottom="xl">
           <View style={styles.greetingHeader}>
             <AppText variant="h2" color="primary">
@@ -248,7 +295,11 @@ export default function DashboardScreen() {
           </View>
         </AppBox>
 
-        {/* ANILLO INTERACTIVO */}
+        {/* --------------------------------------------------------------------
+          ANILLO INTERACTIVO DE PROGRESO
+          Muestra el porcentaje de presupuesto restante. Al presionar alterna
+          entre mostrar porcentaje y monto disponible.
+        -------------------------------------------------------------------- */}
         <AppBox marginBottom="xl" align="center">
           <AppCircularProgress
             progress={progressPercent}
@@ -284,7 +335,13 @@ export default function DashboardScreen() {
           />
         </AppBox>
 
-        {/* GRÁFICO DE GASTOS DIARIOS CON FOOTER INFORMATIVO */}
+        {/* --------------------------------------------------------------------
+          GRÁFICO DE GASTOS DIARIOS
+          Muestra los últimos 7 días con barras, puntos tooltip y footer
+          con métricas ajustadas (presupuesto diario ideal, gastado hoy,
+          presupuesto restante, días restantes, presupuesto ajustado y
+          mensaje de desviación).
+        -------------------------------------------------------------------- */}
         <DailySpendingChart
           transactions={transactions}
           currency={currency}
@@ -293,11 +350,16 @@ export default function DashboardScreen() {
           originalIdeal={originalIdeal}
           todaySpent={todaySpent}
           spentDeviation={spentDeviation}
-          remainingBudget={remainingBudget}  
-          remainingDays={remainingDays}  
+          remainingBudget={remainingBudget}
+          remainingDays={remainingDays}
         />
 
-        {/* LISTA DE ACTIVIDADES RECIENTES */}
+        {/* --------------------------------------------------------------------
+          LISTA DE GASTOS RECIENTES
+          Muestra los últimos 3 gastos. Al presionar una fila navega al
+          historial completo. El icono de cada categoría se obtiene
+          dinámicamente desde el feature categories.
+        -------------------------------------------------------------------- */}
         <AppBox marginBottom="xl">
           <AppText
             variant="h3"
@@ -355,6 +417,7 @@ export default function DashboardScreen() {
         </AppBox>
       </DashboardLayout>
 
+      {/* Modal para registrar un nuevo gasto */}
       <AddExpenseModal
         isOpen={isAddExpenseModalOpen}
         onClose={() => setIsAddExpenseModalOpen(false)}
@@ -364,7 +427,7 @@ export default function DashboardScreen() {
 }
 
 // ----------------------------------------------------------------------------
-// ESTILOS
+// ESTILOS (SOLO LOS NECESARIOS, EL RESTO SE MANEJA CON COMPONENTES ATÓMICOS)
 // ----------------------------------------------------------------------------
 const styles = StyleSheet.create({
   loadingContainer: {

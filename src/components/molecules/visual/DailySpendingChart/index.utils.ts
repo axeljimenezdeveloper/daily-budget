@@ -4,6 +4,7 @@
 
 import { Transaction } from '@/store/useVaultStore/index.types';
 import i18next from 'i18next';
+import { getLocalDateKey } from '@/utils/date'; // <-- NUEVA IMPORTACIÓN
 
 export interface DailySpendingData {
   date: Date;
@@ -43,27 +44,22 @@ export const getLastDaysSpending = (
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Normalizar a medianoche (hora local)
   
-  // Mapa de gastos por fecha YYYY-MM-DD (formato ISO local)
+  // Mapa de gastos por fecha local YYYY-MM-DD
   const spendingByDate: Record<string, number> = {};
   transactions.forEach((tx) => {
-    // La fecha de la transacción está en ISO (UTC). Tomamos solo la parte YYYY-MM-DD
-    const dateKey = tx.date.split('T')[0];
-    spendingByDate[dateKey] = (spendingByDate[dateKey] || 0) + tx.amount;
+    // Obtener la clave de fecha local (resuelve zona horaria)
+    const localKey = getLocalDateKey(tx.date);
+    spendingByDate[localKey] = (spendingByDate[localKey] || 0) + tx.amount;
   });
 
   const result: DailySpendingData[] = [];
   for (let i = daysCount - 1; i >= 0; i--) {
     const date = new Date(today);
     date.setDate(today.getDate() - i);
-    // Normalizar la fecha a medianoche para comparar correctamente
     date.setHours(0, 0, 0, 0);
     
-    // Clave en formato YYYY-MM-DD para buscar gastos
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const dateKey = `${year}-${month}-${day}`;
-    
+    // Obtener clave de fecha local para este día del rango
+    const dateKey = getLocalDateKey(date);
     const amount = spendingByDate[dateKey] || 0;
     const isFuture = date > today;
     // Comparación robusta usando string de fecha (ignora hora y zona horaria)

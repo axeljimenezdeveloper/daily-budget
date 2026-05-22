@@ -4,6 +4,56 @@
 
 import i18next from 'i18next';
 
+// ----------------------------------------------------------------------------
+// NUEVAS FUNCIONES PARA FECHAS LOCALES (RESUELVEN PROBLEMAS DE ZONA HORARIA)
+// ----------------------------------------------------------------------------
+
+/**
+ * Convierte una fecha (Date o string ISO) a string YYYY-MM-DD en la zona horaria LOCAL.
+ * 
+ * @param date - Objeto Date o string ISO (ej. "2026-05-21T00:00:00Z")
+ * @returns Fecha local en formato "YYYY-MM-DD"
+ * 
+ * @example
+ * getLocalDateKey('2026-05-21T03:00:00Z') 
+ * // En UTC-3 retorna "2026-05-20" (porque la hora local sigue siendo 20)
+ */
+export const getLocalDateKey = (date: Date | string): string => {
+  const d = typeof date === 'string' ? new Date(date) : date;
+  // Extraer componentes en hora local
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+/**
+ * Obtiene la fecha actual en formato local YYYY-MM-DD.
+ * Útil para comparar con getLocalDateKey de transacciones.
+ * 
+ * @returns Fecha local actual en "YYYY-MM-DD"
+ */
+export const getTodayLocalKey = (): string => {
+  return getLocalDateKey(new Date());
+};
+
+/**
+ * Convierte una fecha local YYYY-MM-DD a un objeto Date en la zona horaria local.
+ * Útil cuando se tiene una clave de fecha y se necesita un objeto Date para formateo.
+ * 
+ * @param localDateKey - Fecha en formato "YYYY-MM-DD" (asumida en hora local)
+ * @returns Objeto Date con la fecha correcta en hora local (00:00:00)
+ */
+export const getDateFromLocalKey = (localDateKey: string): Date => {
+  const [year, month, day] = localDateKey.split('-').map(Number);
+  // Nota: new Date(year, month-1, day) crea la fecha en zona horaria local
+  return new Date(year, month - 1, day);
+};
+
+// ----------------------------------------------------------------------------
+// FUNCIONES EXISTENTES (formateo para UI)
+// ----------------------------------------------------------------------------
+
 /**
  * Formatea una fecha ISO a formato legible según el idioma actual.
  * Ejemplo (es): "15 may 2021" | Ejemplo (en): "May 15, 2021"

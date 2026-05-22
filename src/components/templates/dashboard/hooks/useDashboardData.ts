@@ -12,6 +12,7 @@
 import { useMemo } from 'react';
 import { useVaultStore } from '@/store/useVaultStore';
 import { useShallow } from 'zustand/react/shallow';
+import { getLocalDateKey, getTodayLocalKey } from '@/utils/date'; // <-- NUEVA IMPORTACIÓN
 
 /**
  * Hook personalizado que encapsula toda la lógica de datos para el dashboard.
@@ -40,7 +41,7 @@ export const useDashboardData = () => {
   const daysDuration = useVaultStore((state) => state.daysDuration);
   const isExtremeMode = useVaultStore((state) => state.isExtremeMode);
   const currency = useVaultStore((state) => state.currency);
-  const transactions = useVaultStore((state) => state.transactions); // ✅ Añadido
+  const transactions = useVaultStore((state) => state.transactions);
   const hasHydrated = useVaultStore((state) => state._hasHydrated);
 
   const summary = useVaultStore(
@@ -62,11 +63,11 @@ export const useDashboardData = () => {
     return remainingBudget / remainingDays;
   }, [remainingBudget, remainingDays]);
 
-  // Gasto de hoy
+  // ✅ CORREGIDO: Gasto de hoy usando fecha local
   const todaySpent = useMemo(() => {
-    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    const todayKey = getTodayLocalKey();
     return transactions
-      .filter((tx) => tx.date.startsWith(today))
+      .filter((tx) => getLocalDateKey(tx.date) === todayKey)
       .reduce((sum, tx) => sum + tx.amount, 0);
   }, [transactions]);
 
@@ -102,6 +103,6 @@ export const useDashboardData = () => {
     originalIdeal,
     spentDeviation,
     adjustedDaily,
-    transactions, // ✅ Añadido al retorno
+    transactions,
   };
 };

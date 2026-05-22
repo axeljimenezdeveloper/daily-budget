@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.55.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.54.2...v1.55.0) (2026-05-22)
+
+
+### Features
+
+* **history:** implementar edición de gastos con modal y validación inteligente ([69ae03c](https://github.com/axeljimenezdeveloper/VulpisDays/commit/69ae03c2cbc087efd2e1a95486ac038be401701c))
+
 ### [1.54.2](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.54.1...v1.54.2) (2026-05-22)
 
 

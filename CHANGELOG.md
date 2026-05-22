@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.54.2](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.54.1...v1.54.2) (2026-05-22)
+
+
+### Bug Fixes
+
+* **dates:** corregir zona horaria en gráfico e historial ([1d93d20](https://github.com/axeljimenezdeveloper/VulpisDays/commit/1d93d200d778492789f241fa7a07e63c2e21a1d2))
+
 ### [1.54.1](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.54.0...v1.54.1) (2026-05-21)
 
 ## [1.54.0](https://github.com/axeljimenezdeveloper/VulpisDays/compare/v1.53.0...v1.54.0) (2026-05-21)

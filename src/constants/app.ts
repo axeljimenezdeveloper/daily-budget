@@ -21,7 +21,7 @@ export const APP_INFO = {
   // NAME: Nombre oficial de la aplicación, utilizado en branding y UI.
   // VERSION: Versión actual de la aplicación en formato semántico (MAJOR.MINOR.PATCH).
   NAME: 'Daily Budget' as const,
-  VERSION: '1.49.0' as const,
+  VERSION: '1.55.0' as const,
   
   // --------------------------------------------------------------------------
   // PARA USO FUTURO - DESCOMENTAR SEGÚN NECESIDAD

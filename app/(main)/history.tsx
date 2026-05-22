@@ -5,14 +5,15 @@
 // Consume los componentes del template history y los hooks correspondientes.
 // Obtiene los datos reales del store (useVaultStore) y gestiona la eliminación
 // de gastos con confirmación modal y feedback visual mediante toasts.
-// Ahora también permite ver el detalle completo de un gasto al presionar la fila.
+// Ahora también permite ver el detalle completo de un gasto al presionar la fila
+// y editar un gasto mediante el modal de edición.
 //
 // IMPLEMENTA CARGA INFINITA (FlatList con onEndReached) para mejorar el
 // rendimiento con muchos gastos.
 //
-// IMPORTANTE: Los modales (DeleteModal y ExpenseDetailModal) se renderizan
-// FUERA de HistoryLayout para evitar problemas de posicionamiento (centrado
-// incorrecto). Este mismo patrón se usa en settings.tsx y funciona correctamente.
+// IMPORTANTE: Los modales (DeleteModal, ExpenseDetailModal y EditExpenseModal)
+// se renderizan FUERA de HistoryLayout para evitar problemas de posicionamiento
+// (centrado incorrecto). Este mismo patrón se usa en settings.tsx y funciona correctamente.
 // ============================================================================
 
 import React, { useState } from 'react';
@@ -25,6 +26,7 @@ import { ExpensesList } from '@/components/templates/history/components/sections
 import { EmptyState } from '@/components/templates/history/components/sections/EmptyState';
 import { DeleteModal } from '@/components/templates/history/components/modals/DeleteModal';
 import { ExpenseDetailModal } from '@/components/templates/history/components/modals/ExpenseDetailModal';
+import { EditExpenseModal } from '@/components/templates/history/components/modals/EditExpenseModal';
 
 // ----------------------------------------------------------------------------
 // HOOKS DEL TEMPLATE HISTORY (implementaciones reales)
@@ -68,11 +70,22 @@ export default function HistoryScreen() {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
   // --------------------------------------------------------------------------
-  // FUNCIÓN PARA ABRIR EL MODAL DE DETALLE
+  // ESTADO PARA EL MODAL DE EDICIÓN
+  // --------------------------------------------------------------------------
+  const [selectedEditTransaction, setSelectedEditTransaction] = useState<Transaction | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  // --------------------------------------------------------------------------
+  // FUNCIONES PARA ABRIR MODALES
   // --------------------------------------------------------------------------
   const openDetailModal = (transaction: Transaction) => {
     setSelectedTransaction(transaction);
     setIsDetailModalOpen(true);
+  };
+
+  const openEditModal = (transaction: Transaction) => {
+    setSelectedEditTransaction(transaction);
+    setIsEditModalOpen(true);
   };
 
   // --------------------------------------------------------------------------
@@ -96,6 +109,12 @@ export default function HistoryScreen() {
           transaction={selectedTransaction}
           currency={currency}
         />
+        <EditExpenseModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          transaction={selectedEditTransaction}
+          currency={currency}
+        />
       </>
     );
   }
@@ -113,6 +132,7 @@ export default function HistoryScreen() {
             currency={currency}
             onDeletePress={openDeleteModal}
             onDetailPress={openDetailModal}
+            onEditPress={openEditModal}
           />
         )}
         onEndReached={loadMore}
@@ -133,6 +153,14 @@ export default function HistoryScreen() {
         isOpen={isDetailModalOpen}
         onClose={() => setIsDetailModalOpen(false)}
         transaction={selectedTransaction}
+        currency={currency}
+      />
+
+      {/* Modal de edición del gasto */}
+      <EditExpenseModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        transaction={selectedEditTransaction}
         currency={currency}
       />
     </>

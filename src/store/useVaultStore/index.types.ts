@@ -102,7 +102,7 @@ export interface VaultState {
   /** Símbolo de la moneda (ej. "$", "Bs", "€") */
   currency: string;
   /** Código de idioma activo - solo se soporta 'es' o 'en' */
-  language: 'es' | 'en';  // ← MEJORA: tipado estricto
+  language: 'es' | 'en';
 
   /** 
    * Indica si el store ya fue rehidratado desde AsyncStorage.
@@ -160,6 +160,13 @@ export interface VaultState {
    * @param id - Identificador de la transacción a eliminar
    */
   deleteTransaction: (id: string) => void;
+  /**
+   * Actualiza una transacción existente.
+   * Ajusta el presupuesto restante según la diferencia de monto y recalcula el modo cuidado.
+   * @param id - Identificador de la transacción a actualizar
+   * @param updates - Objeto parcial con los campos a modificar (amount, category, note)
+   */
+  updateTransaction: (id: string, updates: Partial<Transaction>) => void;
   /** Reinicia la bóveda al estado inicial y fuerza el idioma a español */
   resetVault: () => void;
   /**
@@ -172,7 +179,7 @@ export interface VaultState {
    * Actualiza el store y sincroniza i18next.
    * @param lang - Código de idioma ('es' | 'en')
    */
-  setLanguage: (lang: 'es' | 'en') => void;  // ← MEJORA: tipado estricto
+  setLanguage: (lang: 'es' | 'en') => void;
 
   // --- Acción para restaurar backup ---
   /**

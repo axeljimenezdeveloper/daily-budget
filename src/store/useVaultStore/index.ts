@@ -167,6 +167,56 @@ export const useVaultStore = create<VaultState>()(
         }),
 
       /**
+       * Actualiza una transacción existente.
+       * - Ajusta el presupuesto restante según la diferencia de monto.
+       * - Reemplaza la transacción en el array (manteniendo el orden original).
+       * - Recalcula el modo cuidado (isExtremeMode) con los nuevos valores.
+       *
+       * @param id      - Identificador de la transacción a actualizar
+       * @param updates - Objeto parcial con los campos a modificar (amount, category, note)
+       */
+      updateTransaction: (id, updates) =>
+        set((state) => {
+          // Buscar la transacción original
+          const oldTransaction = state.transactions.find((t) => t.id === id);
+          if (!oldTransaction) {
+            console.warn('[Vulpis] updateTransaction: transacción no encontrada', id);
+            return state;
+          }
+
+          // Construir la nueva transacción (fusionar cambios)
+          const updatedTransaction: Transaction = {
+            ...oldTransaction,
+            ...updates,
+          };
+
+          // Calcular la diferencia de monto (nuevo - antiguo)
+          const amountDiff = updatedTransaction.amount - oldTransaction.amount;
+
+          // Actualizar el presupuesto restante (restar la diferencia positiva, sumar si es negativa)
+          const newRemaining = state.remainingBudget - amountDiff;
+
+          // Reemplazar la transacción en el array (manteniendo la posición)
+          const newTransactions = state.transactions.map((t) =>
+            t.id === id ? updatedTransaction : t
+          );
+
+          // Recalcular el modo cuidado
+          const shouldBeExtreme = checkExtremeMode(
+            state.totalBudget,
+            newRemaining,
+            state.daysDuration,
+            state.startDate
+          );
+
+          return {
+            remainingBudget: newRemaining,
+            transactions: newTransactions,
+            isExtremeMode: shouldBeExtreme,
+          };
+        }),
+
+      /**
        * Reinicia completamente la bóveda al estado inicial.
        * - Fuerza el idioma a español (i18next y store).
        * - Limpia presupuesto, transacciones y fechas.

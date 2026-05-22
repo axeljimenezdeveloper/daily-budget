@@ -62,6 +62,7 @@ export const ExpensesList: React.FC<ExpensesListProps> = React.memo(
     currency,
     onDeletePress,
     onDetailPress,
+    onEditPress,
     onLoadMore,
     isLoadingMore = false,
     hasMore = false,
@@ -90,6 +91,7 @@ export const ExpensesList: React.FC<ExpensesListProps> = React.memo(
                 currency={currency}
                 onDelete={onDeletePress}
                 onDetailPress={onDetailPress}
+                onEdit={onEditPress}
               />
             ))}
           </AppStack>
@@ -126,6 +128,7 @@ export const ExpensesList: React.FC<ExpensesListProps> = React.memo(
                   currency={currency}
                   onDelete={onDeletePress}
                   onDetailPress={onDetailPress}
+                  onEdit={onEditPress}
                 />
               ))}
             </AppStack>

@@ -30,10 +30,16 @@ export interface ExpensesListProps {
   onDeletePress: (id: string) => void;
 
   /**
-   * Callback que se ejecuta al presionar una fila (excepto el botón eliminar).
+   * Callback que se ejecuta al presionar una fila (excepto los botones de acción).
    * Recibe la transacción completa para mostrar el modal de detalle.
    */
   onDetailPress?: (transaction: Transaction) => void;
+
+  /**
+   * Callback que se ejecuta al presionar el botón de editar de un gasto.
+   * Recibe la transacción completa para editarla.
+   */
+  onEditPress?: (transaction: Transaction) => void;
 
   // --------------------------------------------------------------------------
   // PROPS DE PAGINACIÓN (solo para modo lista completa)

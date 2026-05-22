@@ -6,7 +6,7 @@
 // - Muestra el icono DINÁMICO según la categoría (comida, transporte, etc.).
 // - La nota se trunca a 2 líneas con puntos suspensivos.
 // - El monto formateado se muestra a la derecha, dentro del área presionable.
-// - El botón de eliminar es independiente (no abre el modal de detalle).
+// - Botón de editar (lápiz) y botón de eliminar (basura), independientes.
 // - Al presionar cualquier otra área de la fila se ejecuta onDetailPress.
 // ============================================================================
 
@@ -44,28 +44,28 @@ export const ExpenseRow: React.FC<ExpenseRowProps> = ({
   currency,
   onDelete,
   onDetailPress,
+  onEdit,
 }) => {
   const { t } = useTranslation();
   const iconName = useCategoryIcon(transaction.category);
 
   // --------------------------------------------------------------------------
-  // MANEJADOR DE ELIMINACIÓN (con throttling y haptic por AppPressable)
+  // MANEJADORES
   // --------------------------------------------------------------------------
   const handleDelete = () => {
     onDelete(transaction.id);
   };
 
-  // --------------------------------------------------------------------------
-  // MANEJADOR DE DETALLLE (solo si se proporcionó el callback)
-  // --------------------------------------------------------------------------
   const handleDetail = () => {
-    if (onDetailPress) {
-      onDetailPress(transaction);
-    }
+    onDetailPress?.(transaction);
+  };
+
+  const handleEdit = () => {
+    onEdit?.(transaction);
   };
 
   // --------------------------------------------------------------------------
-  // RENDER: Estructura con área presionable para detalle + botón eliminar aparte
+  // RENDER: Área principal presionable + botones de acción
   // --------------------------------------------------------------------------
   return (
     <AppBox
@@ -111,6 +111,19 @@ export const ExpenseRow: React.FC<ExpenseRowProps> = ({
           </AppText>
         </AppBox>
       </AppPressable>
+
+      {/* --------------------------------------------------------------------
+        BOTÓN DE EDITAR (independiente, no abre el modal de detalle)
+        -------------------------------------------------------------------- */}
+      {onEdit && (
+        <AppPressable
+          onPress={handleEdit}
+          hapticFeedback="light"
+          throttleMs={300}
+        >
+          <AppIcon name="create-outline" color="accent" size="m" />
+        </AppPressable>
+      )}
 
       {/* --------------------------------------------------------------------
         BOTÓN DE ELIMINAR (independiente, no abre el modal de detalle)

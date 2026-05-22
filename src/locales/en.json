@@ -20,6 +20,7 @@
     "days_short": "d",
     "error_occurred": "Something went wrong",
     "cancel": "Cancel",
+    "edit": "Edit",
     "time_picker": {
       "title": "Select time",
       "cancel": "Cancel",
@@ -465,6 +466,11 @@
     "validation_amount_exceeds_budget": "Amount exceeds remaining budget",
     "validation_category_required": "Please select a category",
     "note_counter": "{{current}}/{{max}} characters"
+  },
+  "editExpense": {
+    "title": "Edit expense",
+    "update": "Update",
+    "success": "Expense updated successfully"
   },
   "categories": {
     "food": "Food",

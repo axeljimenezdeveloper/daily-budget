@@ -20,6 +20,7 @@
     "days_short": "d",
     "error_occurred": "Algo no salió bien",
     "cancel": "Cancelar",
+    "edit": "Editar",
     "time_picker": {
       "title": "Seleccionar hora",
       "cancel": "Cancelar",
@@ -85,26 +86,21 @@
         "icon": "calculator-outline"
       },
       "7": {
-        "question": "¿Puedo eliminar un gasto?",
-        "answer": "Sí. En el historial, toca el icono de papelera en la fila del gasto, confirma la eliminación y el presupuesto se recuperará automáticamente.",
-        "icon": "trash-outline"
-      },
-      "8": {
         "question": "¿Cómo funciona el historial?",
         "answer": "Todas tus transacciones se agrupan por día. Puedes ver el detalle de cada gasto tocando la fila. También puedes cargar más elementos desplazándote hacia abajo (carga infinita).",
         "icon": "list-outline"
       },
-      "9": {
+      "8": {
         "question": "¿Mis datos están seguros?",
         "answer": "Sí. Todos los datos se almacenan únicamente en tu dispositivo. Además, puedes activar el bloqueo biométrico (huella o Face ID) y hacer backups cifrados desde Ajustes.",
         "icon": "shield-checkmark-outline"
       },
-      "10": {
+      "9": {
         "question": "¿Puedo cambiar mi presupuesto o duración?",
         "answer": "Esta funcionalidad aún no está disponible. Por ahora, para cambiar tu presupuesto o la duración del plan, debes reiniciar la aplicación: ve a Ajustes → Zona de peligro → 'Borrar todos los datos'. Esto eliminará todos tus gastos y te permitirá comenzar de nuevo el proceso de configuración. Estamos trabajando en una opción de edición directa para una actualización futura.",
         "icon": "create-outline"
       },
-      "11": {
+      "10": {
         "question": "¿Cómo exporto mis datos?",
         "answer": "Ve a Ajustes > Exportar datos. Puedes generar un archivo CSV con tus gastos o crear un backup cifrado protegido con biometría.",
         "icon": "download-outline"
@@ -470,6 +466,11 @@
     "validation_amount_exceeds_budget": "El monto supera el presupuesto restante",
     "validation_category_required": "Por favor selecciona una categoría",
     "note_counter": "{{current}}/{{max}} caracteres"
+  },
+  "editExpense": {
+    "title": "Editar gasto",
+    "update": "Actualizar",
+    "success": "Gasto actualizado correctamente"
   },
   "categories": {
     "food": "Comida",

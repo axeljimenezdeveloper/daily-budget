@@ -80,37 +80,6 @@ Desarrollada con **React Native (Expo SDK 54)** y **Expo Router**, sigue una arq
    eas build --platform android
    eas build --platform ios
 
-## 📁 Estructura del proyecto (resumida)
-
-daily-budget/
-├── app/ # Pantallas (Expo Router)
-│   ├── (welcome)/ # Onboarding + Setup (3+3 pantallas)
-│   ├── (main)/ # Dashboard, History, Settings, Debug
-│   ├── (animations)/ # Loading, Transition, Success
-│   ├── (auth)/ # Biometric
-│   └── (info)/ # Guide, Protocols
-├── src/
-│   ├── components/ # Atomic Design
-│   │   ├── atoms/ # AppText, AppButton, AppInput, AppIcon, AppPressable, etc.
-│   │   ├── molecules/ # ExpenseRow, AccordionItem, AppDrawer, DailySpendingChart, AppCircularProgress, etc.
-│   │   └── templates/ # DashboardLayout, SettingsLayout, HistoryLayout, GuideLayout, etc.
-│   ├── constants/ # Tokens (colores, métricas, animaciones, rutas, validación, paginación)
-│   ├── store/ # Zustand stores
-│   │   ├── useVaultStore/ # Store principal (presupuesto, transacciones, preferencias)
-│   │   └── useToastStore/ # Store de toasts globales
-│   ├── locales/ # i18n (en.json, es.json, i18n.ts)
-│   ├── hooks/ # Hooks globales (useToast, useHaptic, useExportCSV, useThrottledCallback, useToggleAnimation)
-│   ├── features/ # Módulos por funcionalidad
-│   │   ├── notifications/ # Preferencias, scheduler, triggers
-│   │   ├── categories/ # Lista de categorías, iconos, hook useCategoryIcon
-│   │   ├── biometrics/ # Autenticación biométrica
-│   │   └── backups/ # Exportación/importación de backups cifrados, gestión de clave
-│   └── utils/ # Utilidades (date, version)
-├── assets/ # Imágenes, fuentes
-├── package.json
-├── tsconfig.json
-└── README.md
-
 ## 🌍 Internacionalización
 
 La app soporta **español** e **inglés**. El idioma se detecta automáticamente al inicio según el dispositivo, y el usuario puede cambiarlo desde **Ajustes > Idioma** sin reiniciar la app.

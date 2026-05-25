@@ -63,7 +63,7 @@ Desarrollada con **React Native (Expo SDK 54)** y **Expo Router**, sigue una arq
 ## 🚀 Instalación y ejecución
 
 1. **Clonar el repositorio** (privado, requiere acceso)
-   git clone https://github.com/tu-usuario/daily-budget.git
+   git clone https://github.com/axeljimenezdeveloper/daily-budget.git
    cd daily-budget
 
 2. **Instalar dependencias**

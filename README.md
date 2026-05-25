@@ -68,7 +68,7 @@ Desarrollada con **React Native (Expo SDK 54)** y **Expo Router**, sigue una arq
 
 2. **Instalar dependencias**
    npm install
-   # o
+   o
    yarn install
 
 3. **Ejecutar en modo desarrollo**
